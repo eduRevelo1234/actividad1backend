@@ -1,6 +1,6 @@
 <?php
 require_once('../../Models/Language.php');
-require_once('../../Models/Language.php');
+
 //funcion para listar todos los registros 
 function listLanguages()
 {
