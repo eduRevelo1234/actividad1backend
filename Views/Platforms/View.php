@@ -65,7 +65,7 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
         {
     ?>
             <?php
-                print_r($platformResult);
+                print_r();
                 switch ($platformResult) {
                     case 'errorvacio':
             ?>
