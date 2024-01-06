@@ -124,7 +124,7 @@
         {
             $languageUpdate = false;
 
-            $sql = "DELETE FROM platforms WHERE id = ?";
+            $sql = "DELETE FROM languages WHERE id = ?";
             $array = array($this->id);
             $data = $this->saveRecord($sql, $array);
             
