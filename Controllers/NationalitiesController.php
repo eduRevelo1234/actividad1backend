@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . '../../Models/Nationalities.php');
+
 // Función para listar todos los registros de nacionalidades
 function listNationalities()
 {
