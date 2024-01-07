@@ -20,7 +20,7 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
         {
             if(isset($_POST['platformName'])) 
             {
-                $platformResult = savePlatform($_POST['platformId'],$_POST['platformName'],$_POST['platformNameCurrent']);
+                $platformResult = burnPlatform($_POST['platformId'],$_POST['platformName'],$_POST['platformNameCurrent']);
             }
         }
         if(!$sendData)

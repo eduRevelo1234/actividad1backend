@@ -18,22 +18,22 @@ function listLanguage($languageId)
 }
 
 //funcion para guardar el registro
-function saveLanguage($languageId, $languageName, $languageIsocode, $languageNameCurrent, $languageIsocodeCurrent)
+function burnLanguage($languageId, $languageName, $languageIsocode, $languageNameCurrent, $languageIsocodeCurrent)
 {
     //Validacion del nombre
     if (empty($languageName)) {
-        $message = 'errorvacio';
+        $message = 'errornamevacio';
     } else if (!preg_match("/^[a-zA-Zñ]+$/", $languageName)) {
-        $message = 'errorformat';
+        $message = 'errornameformat';
     } else {
         $message = 'ok';
     }
 
     //Validacion del ISO code
     if (empty($languageIsocode)) {
-        $message = 'errorvacio';
+        $message = 'errorcodevacio';
     } else if (!preg_match("/^[a-zA-Z]{2}$/", $languageIsocode)) {
-        $message = 'errorformat';
+        $message = 'errorcodeformat';
     } else {
         $message = 'ok';
     }

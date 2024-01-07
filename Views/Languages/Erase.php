@@ -21,7 +21,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
 
         <div class="card">
             <div class="card-header text-center">
-                <h1>BORAR UN IDIOMA</h1>
+                <h1>BORRAR UN IDIOMA</h1>
             </div>
             <div class="card-body">
                 <form name="create_language" action="" method="POST">

@@ -21,10 +21,10 @@ require_once(__DIR__ . '/../../Controllers/FilmController.php');
 
         <div class="card">
             <div class="card-header text-center">
-                <h1>BORAR UNA PELICULA</h1>
+                <h1>BORRAR UN PELICULA</h1>
             </div>
             <div class="card-body">
-                <form title="create_film" action="" method="POST">
+                <form name="create_film" action="" method="POST">
                     <h3 class="text-center">
                         Desea borrar la Pelicula
                     </h3>
@@ -34,7 +34,7 @@ require_once(__DIR__ . '/../../Controllers/FilmController.php');
                     </h3>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <input type="submit" value="Borrar" class="btn btn-success" title="eraseBtn">
+                        <input type="submit" value="Borrar" class="btn btn-success" name="eraseBtn">
                         <br> 
                         <a class="btn btn-danger" href="List.php">Regresar</a>
                     </div>
@@ -51,7 +51,7 @@ require_once(__DIR__ . '/../../Controllers/FilmController.php');
             ?>
                         <div class="alert alert-success" role="alert">
                             <i class="bi bi-check-circle-fill"></i>
-                            La Pelicula fue borrado exitosamente ! 
+                            La Pelicula fue borrada exitosamente ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">

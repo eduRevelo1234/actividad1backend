@@ -4,7 +4,7 @@ require_once('../../Models/Film.php');
 //funcion para listar todos los registros 
 function listFilms()
 {
-    $model = new Film(null, null, null, null, null, null, null, null);
+    $model = new Film(null, null, null, null, null);
     $filmList = $model->getFilms();
     return $filmList;
 }
@@ -12,29 +12,62 @@ function listFilms()
 //funcion para leer un registro
 function listFilm($filmId)
 {
-    $model = new Film($filmId, null, null, null, null, null, null, null);
+    $model = new Film($filmId, null, null, null, null);
     $filmObject = $model->getFilm();
     return $filmObject;
 }
 
 //funcion para guardar el registro
-function saveFilm($filmTitle, $filmIdplatform,$filmIddirector,$filmActors,$filmLanguagesaudio,$filmLanguagescaption,$filmPremiereyear,$filmTitleCurrent)
+
+function burnFilm($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremiereyear,$filmTitleCurrent)
 {
-    //Validacion del nombre
+    $error=[];
+    //Validacion del titulo
     if (empty($filmTitle)) {
-        $message = 'errorvacio';
-    } else if (!preg_match("/^[\s]*$/", $filmTitle)) {
-        $message = 'errorformat';
+        $message = 'errortitulovacio';
+        $error[0] = 'error';
+    } else if (!preg_match("/^(.|\s)*\S(.|\s)*$/", $filmTitle)) {
+        $message = 'errortitulovacio';
+        $error[0] = 'error';
     } else {
-        $message = 'ok';
+        $error[0] = 'ok';
     }
     
+    //Validacion del plataforma
+    if ($filmIdplatform == 0) {
+        $message = 'errorplataformavacio';
+        $error[1] = 'error';
+    } else {
+        $error[1] = 'ok';
+    }
+    
+    //Validacion del director
+    if ($filmIddirector == 0) {
+        $message = 'errordirectorvacio';
+        $error[2] = 'error';
+    } else {
+        $error[2] = 'ok';
+    }
+
+    //Validacion del año
+    if (empty($filmPremiereyear)) {
+        $message = 'erroranovacio';
+        $error[3] = 'error';
+    } else if (!preg_match("/^[0-9]{4}$/", $filmPremiereyear)) {
+        $message = 'erroranoformat';
+        $error[3] = 'error';
+    } else {
+        $error[3] = 'ok';
+    }
+        
     //No existe error en las entradas
-    if ($message == 'ok')
+    if ($error[0] == 'ok' && $error[1] == 'ok' && $error[2] == 'ok' && $error[3] == 'ok')
     {
-        $model = new Film($filmTitle, $filmIdplatform,$filmIddirector,$filmActors,$filmLanguagesaudio,$filmLanguagescaption,$filmPremiereyear);
+        
+        $model = new Film($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremiereyear);
+        
         if ($filmId > 0 )
-        {
+        {   
             //Editar Pelicula
             if ($filmTitle == $filmTitleCurrent )
             {
@@ -45,7 +78,7 @@ function saveFilm($filmTitle, $filmIdplatform,$filmIddirector,$filmActors,$filmL
                 $resultFilm = $model->getFilmTitle();
                 if (empty($resultFilm))
                 {
-                    $model = new Film($filmTitle, $filmIdplatform,$filmIddirector,$filmActors,$filmLanguagesaudio,$filmLanguagescaption,$filmPremiereyear);
+                    $model = new Film($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremiereyear);
                     $result = $model->updateFilm();
                     if ($result == 1) {
                         $message = 'edited';
@@ -64,11 +97,10 @@ function saveFilm($filmTitle, $filmIdplatform,$filmIddirector,$filmActors,$filmL
                     
             //Verificamos si el nombre de la pelicula no existe en la base 
             $resultFilm = $model->getFilmTitle();
-            
+
             if (empty($resultFilm))
             {
-                $model = new Film($filmTitle, $filmIdplatform,$filmIddirector,$filmActors,$filmLanguagesaudio,$filmLanguagescaption,$filmPremiereyear);
-                $result = $model->saveFilm();
+                $result = $model->saveFilm(); 
                 if ($result > 0) {
                     $message = 'registered';
                 } else {
@@ -87,7 +119,7 @@ function saveFilm($filmTitle, $filmIdplatform,$filmIddirector,$filmActors,$filmL
 //funcion para borrar el estado del registro
 function eraseFilm($filmId)
 {
-    $model = new Film($filmId, null, null);
+    $model = new Film($filmId, null, null,null,null);
     $result = $model->eliminateFilm();
     if ($result == 1) {
         $message = 'erased';
@@ -96,4 +128,5 @@ function eraseFilm($filmId)
     }           
     return $message;
 }
+
 ?>

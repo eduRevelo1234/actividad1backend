@@ -18,7 +18,7 @@ function listPlatform($platformId)
 }
 
 //funcion para guardar el registro
-function savePlatform($platformId, $platformName, $platformNameCurrent)
+function burnPlatform($platformId, $platformName, $platformNameCurrent)
 {
     //Validacion del nombre
     if (empty($platformName)) {

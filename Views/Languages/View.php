@@ -20,7 +20,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
         {
             if(isset($_POST['languageName'])) 
             {
-                $languageResult = saveLanguage($_POST['languageId'],$_POST['languageName'],$_POST['languageIsocode'],$_POST['languageNameCurrent'],$_POST['languageIsocodeCurrent']);          
+                $languageResult = burnLanguage($_POST['languageId'],$_POST['languageName'],$_POST['languageIsocode'],$_POST['languageNameCurrent'],$_POST['languageIsocodeCurrent']);          
             }
         }
         if(!$sendData)
@@ -72,7 +72,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
     ?>
             <?php
                 switch ($languageResult) {
-                    case 'errorvacio':
+                    case 'errornamevacio':
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
@@ -86,11 +86,39 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                         </div>
             <?php
                         break;
-                    case 'errorformat':
+                    case 'errornameformat':
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
                             El nombre del Idioma solo debe contener letras ! 
+                            <br> 
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary" href="List.php">
+                                    Regresar
+                                </a>
+                            </div>         
+                        </div>
+            <?php
+                        break;
+                    case 'errorcodevacio':
+            ?>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-x-circle-fill"></i>
+                            El ISO Code no debe estar vacio ! 
+                            <br> 
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary" href="List.php">
+                                    Regresar
+                                </a>
+                            </div>      
+                        </div>
+            <?php
+                        break;
+                    case 'errorcodeformat':
+            ?>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-x-circle-fill"></i>
+                            El ISO Code solo debe contener 2 letras ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">

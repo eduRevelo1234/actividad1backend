@@ -8,21 +8,15 @@
         private $title;
         private $idplatform;
         private $iddirector;
-        private $actors;
-        private $languagesaudio;
-        private $languagescaption;
         private $premiereyear;
         
         //Constructor
-        public function __construct($idFilm, $titleFilm, $idplatformFilm,$iddirectorFilm,$actorsFilm,$languagesaudioFilm,$languagescaptionFilm,$premiereyearFilm)
+        public function __construct($idFilm, $titleFilm, $idplatformFilm,$iddirectorFilm,$premiereyearFilm)
         {
             $this->id = $idFilm;
             $this->title = $titleFilm;
             $this->idplatform = $idplatformFilm;
             $this->iddirector = $iddirectorFilm;
-            $this->actors = $actorsFilm;
-            $this->languagesaudio = $languagesaudioFilm;
-            $this->languagescaption = $languagescaptionFilm;
             $this->premiereyear = $premiereyearFilm;
             parent::__construct();
         }
@@ -70,45 +64,9 @@
         }
         
         //funcion para insertar en base de datos el id director
-        public function setId($iddirector)
+        public function setIddirector($iddirector)
         {
             $this->iddirector = $iddirector;
-        }
-        
-        //funcion para leer de base de datos los actores
-        public function getActors()
-        {
-            return $this->actors;
-        }
-        
-        //funcion para insertar en base de datos los actores
-        public function setTitle($actors)
-        {
-            $this->actors = $actors;
-        }
-
-        //funcion para leer de base de datos los lenguajes de audio 
-        public function getLanguagesaudio()
-        {
-            return $this->languagesaudio;
-        }
-        
-        //funcion para insertar en base de datos los lenguajes de audio
-        public function setLanguagesaudio($languagesaudio)
-        {
-            $this->languagesaudio = $languagesaudio;
-        }
-
-        //funcion para leer de base de datos los lenguajes de subtitulos 
-        public function getLanguagescaption()
-        {
-            return $this->languagescaption;
-        }
-        
-        //funcion para insertar en base de datos los lenguajes de subtitulos 
-        public function setLanguagescaption($languagescaption)
-        {
-            $this->languagescaption = $languagescaption;
         }
         
         //funcion para leer de base de datos el año 
@@ -131,7 +89,7 @@
             $listData = [];
 
             foreach ($data as $item) {
-                $itemObject = new Film($item['id'], $item['title'], $item['idplatform'], $item['iddirectorFilm'], $item['actorsFilm'], $item['languagesaudioFilm'], $item['languagescaptionFilm'], $item['premiereyearFilm']);
+                $itemObject = new Film($item['id'], $item['title'], $item['idplatform'], $item['iddirector'], $item['premiereyear']);
                 array_push($listData,$itemObject);
             }
             
@@ -159,8 +117,9 @@
         //funcion para guardar el registro
         public function saveFilm()
         {
-            $sql = "INSERT INTO films (title,id_platform,id_director,actors,languages_audio,languages_caption,premiere_year) VALUES (?,?,?,?,?,?,?)";
-            $array = array($this->title,$this->id_platform,$this->id_director,$this->actors,$this->languages_audio,$this->languages_caption,$this->premiere_year);
+            
+            $sql = "INSERT INTO films (title,idplatform,iddirector,premiereyear) VALUES (?,?,?,?)";
+            $array = array($this->title,$this->idplatform,$this->iddirector,$this->premiereyear);
             $result = $this->insertRecord($sql, $array);
             return $result;
         }
@@ -170,8 +129,8 @@
         {
             $filmUpdate = false;
 
-            $sql = "UPDATE films SET title=?, id_platform=?, id_director=?, actors=?, languages_audio=?, languages_caption=?, premiere_year=? WHERE id = ?";
-            $array = array($this->title,$this->id_platform,$this->id_director,$this->actors,$this->languages_audio,$this->languages_caption,$this->premiere_year,$this->id);
+            $sql = "UPDATE films SET title=?, idplatform=?, iddirector=?, premiereyear=? WHERE id = ?";
+            $array = array($this->title,$this->idplatform,$this->iddirector,$this->premiereyear,$this->id);
             $data = $this->saveRecord($sql, $array);
             
             if($data){

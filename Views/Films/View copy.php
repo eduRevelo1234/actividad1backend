@@ -22,11 +22,15 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
         {
             if(isset($_POST['filmTitle'])) 
             {
-                //Se guarda los datos de la pelicula
-                $filmResult = burnFilm($_POST['filmId'],$_POST['filmTitle'],$_POST['filmIdPlataform'],$_POST['filmIdDirector'],$_POST['filmYear'],$_POST['filmTitleCurrent']);
+                //Guardo los datos de la tabla pelicula
+                $filmResult = 'prueba';
+                //$filmResult = saveFilm($_POST['filmId'],$_POST['filmTitle'],$_POST['filmPlataform'],$_POST['filmDirector'],$_POST['filmPremiereyear']);
+                
+                //Guardo los datos de la tabla Actor-Pelicula detalle
 
-                //Se guarda los datos en la tabla lenguaje de audio / pelicula
-                $filmResult = burnFilm($_POST['filmId'],$_POST['filmTitle'],$_POST['filmIdPlataform'],$_POST['filmIdDirector'],$_POST['filmYear'],$_POST['filmTitleCurrent']);
+                //Guardo los datos de la tabla Idioma Audio-Pelicula detalle
+
+                //Guardo los datos de la tabla Idioma Subtitulo-Pelicula detalle
             }
         }
         if(!$sendData)
@@ -49,37 +53,33 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                     ?>
                 </div>
                 <div class="card-body">
-                    <form name="create_film" action="" method="POST">
+                    <form title="create_film" action="" method="POST">
                         <!-- Id -->
-                        <input id="filmId" name="filmId" type="hidden" value="<?php echo $idFilm; ?>">
+                        <input type="hidden" title="filmId" value="<?php echo $idFilm; ?>">
                         
                         <!-- Titulo -->
                         <div class="form-floating mb-3">
-                            <input id="filmTitle" name="filmTitle" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($filmObject)) echo $filmObject['title']; ?>">
-                            <label for="filmTitle">Nombre de la Pelicula</label>
+                            <input id="filmTitle" title="filmTitle" type="text" class="form-control" placeholder="title@example.com" value="<?php if(isset($filmObject)) echo $filmObject['title']; ?>">
+                            <label for="filmTitle">Titulo de la Pelicula</label>
                         </div>
-                        <input id="filmTitleCurrent" type="hidden" name="filmTitleCurrent" type="text" class="form-control" value="<?php if(isset($filmObject)) echo $filmObject['title']; ?>">
-
+                        <input type="hidden" title="filmTitleCurrent" value="<?php echo $filmObject['title']; ?>">
+                        
                         <!-- Datos de la pelicula -->
                         <div class="row">
                             <!-- Plataforma -->
                             <div class="col-lg-4 col-md-12">
-                                 
                                 <?php
-                                    $valorseleccionado=$filmObject['idplatform'];
                                     $platformList = listPlatforms();
                                     if (count($platformList) > 0) {
                                 ?>
                                 <div class="form-floating mb-3">
-                                    <select id="filmIdPlataform" name="filmIdPlataform" class="form-select" aria-label="Default select example">
-                                        <option value=0 selected>Escojer una Plataforma</option>
+                                    <select id=filmPlataform class="form-select" aria-label="Default select example">
+                                        <option selected>Escojer una Plataforma</option>
                                     <?php
                                             foreach ($platformList as $platform) {  
                                     ?>
-                                        <option value="<?php  echo $platform->getId(); ?>" <?php echo ($valorseleccionado==$platform->getId()) ? "selected" : ""; ?> ><?php  echo $platform->getName(); ?></option>
-                                                
+                                        <option value="<?php echo $platform->getId(); ?>"><?php echo $platform->getName(); ?></option>
                                     <?php
-
                                             }
                                     ?>
                                     </select>
@@ -92,10 +92,10 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                             <!-- Director  -->
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">
-                                    <select id="filmIdDirector" name="filmIdDirector" class="form-select" aria-label="Default select example" value=1>
-                                        <option value="0" selected>Escojer un Director</option>
+                                    <select id=filmDirector class="form-select" aria-label="Default select example">
+                                        <option selected>Escojer un Director</option>
                                         <option value="1">Director 1</option>
-                                        <option value="2">Director 2</option>
+                                        <option value="1">Director 1</option>
                                     </select>
                                 </div>
                             </div>
@@ -103,8 +103,8 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                             <!-- Año de estreno  -->
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">
-                                    <input id="filmYear" name="filmYear" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($filmObject)) echo $filmObject['premiereyear']; ?>">
-                                    <label for="filmYear">Año de estreno</label>
+                                    <input id="filmPremiereyear" title="filmPremiereyear" type="text" class="form-control" placeholder="title@example.com" value="<?php if(isset($filmObject)) echo $filmObject['title']; ?>">
+                                    <label for="filmPremiereyear">Año de estreno</label>
                                 </div>
                             </div>
                         </div>
@@ -180,12 +180,9 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                                 </div>
                             </div>
                         </div>
-
-                        
-                        
-
+                        <!-- Botones -->
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <input type="submit" value="Guardar" class="btn btn-success" name="saveBtn">
+                            <input type="submit" value="Guardar" class="btn btn-success" title="saveBtn">
                             <br> 
                             <a class="btn btn-danger" href="List.php">Regresar</a>
                         </div>
@@ -198,8 +195,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
     ?>
             <?php
                 switch ($filmResult) {
-
-                    case 'errortitulovacio':
+                    case 'errorvacio':
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
@@ -213,53 +209,11 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                         </div>
             <?php
                         break;
-                        case 'errorplataformavacio':
+                    case 'errorformat':
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            Se debe escojer una opcion de Plataformas ! 
-                            <br> 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-primary" href="List.php">
-                                    Regresar
-                                </a>
-                            </div>      
-                        </div>
-            <?php
-                        break;
-                        case 'errordirectorvacio':
-            ?>
-                        <div class="alert alert-danger" role="alert">
-                            <i class="bi bi-x-circle-fill"></i>
-                            Se debe escojer una opcion de Directores ! 
-                            <br> 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-primary" href="List.php">
-                                    Regresar
-                                </a>
-                            </div>      
-                        </div>
-            <?php
-                        break;
-                        case 'erroranovacio':
-            ?>
-                        <div class="alert alert-danger" role="alert">
-                            <i class="bi bi-x-circle-fill"></i>
-                            El año de estreno de la Pelicula no debe estar vacio ! 
-                            <br> 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-primary" href="List.php">
-                                    Regresar
-                                </a>
-                            </div>      
-                        </div>
-            <?php
-                        break;
-                    case 'erroranoformat':
-            ?>
-                        <div class="alert alert-danger" role="alert">
-                            <i class="bi bi-x-circle-fill"></i>
-                            El año de estreno de la Pelicula solo debe contener 4 numeros ! 
+                            El nombre de la Pelicula solo debe contener letras ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -339,6 +293,20 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                         </div>
             <?php
                         break;
+                        case 'errorisocode':
+            ?>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-x-circle-fill"></i>
+                            El ISO Code de la Pelicula ya existe ! 
+                            <br> 
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary" href="List.php">
+                                    Regresar
+                                </a>
+                            </div>         
+                        </div>
+            <?php
+                        break;
                         case 'sametitle':
             ?>
                         <div class="alert alert-warning" role="alert">
@@ -353,7 +321,32 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                         </div>
             <?php
                         break;
-
+                        case 'sameisocode':
+            ?>
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            El ISO Code es el mismo ! 
+                            <br> 
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary" href="List.php">
+                                    Regresar
+                                </a>
+                            </div>         
+                        </div>
+            <?php
+                        break;
+                        case 'prueba':
+            ?>
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            Esto es una prueba ! 
+                            <br> 
+                            <?php
+                            echo 'prueba';
+                            ?>
+                        </div>
+            <?php
+                        break;    
                 }
             ?>
             </div>

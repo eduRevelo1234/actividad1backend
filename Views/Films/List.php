@@ -1,6 +1,7 @@
 <?php
 include_once(__DIR__ . '/../Templates/Header.php');
 require_once(__DIR__ . '/../../Controllers/FilmController.php');
+require_once(__DIR__ . '/../../Controllers/PlatformController.php');
 ?>
 
 <!-- Contenido -->
@@ -26,21 +27,26 @@ require_once(__DIR__ . '/../../Controllers/FilmController.php');
                         <tr>
                             <th>Id</th>
                             <th>Titulo</th>
-                            <th>Plataforma ISO</th>
+                            <th>Plataforma</th>
                             <th>Director</th>
                             <th>Año</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
+                        
                         <?php
                         foreach ($filmList as $film) {
                         ?>
                             <tr>
                                 <td><?php echo $film->getId(); ?> </td>
                                 <td><?php echo $film->getTitle(); ?></td>
-                                $platformObject = listPlatform($idFilm);
-                                <td><?php echo $film->getIsocode(); ?> </td>
+                                <?php
+                                    $platformList = listPlatform($film->getIdplatform());
+                                ?>   
+                                <td><?php if(isset($platformList)) echo $platformList['name']; ?></td>
+                                <td><?php echo $film->getIddirector(); ?> </td>
+                                <td><?php echo $film->getPremiereyear(); ?> </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a class="btn btn-primary" href="View.php?id=<?php echo $film->getId(); ?>">
