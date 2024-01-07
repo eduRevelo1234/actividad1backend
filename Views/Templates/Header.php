@@ -41,7 +41,7 @@
                         <a class="nav-link" aria-current="page" href="http://localhost/Sericine/Views/Platforms/List.php">Plataformas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#">Peliculas</a>
+                        <a class="nav-link" aria-current="page" href="http://localhost/Sericine/Views/Films/List.php">Peliculas</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

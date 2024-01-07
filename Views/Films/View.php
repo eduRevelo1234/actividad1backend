@@ -1,16 +1,16 @@
 <?php
 include_once(__DIR__ . '/../Templates/Header.php');
-require_once(__DIR__ . '/../../Controllers/LanguageController.php');
+require_once(__DIR__ . '/../../Controllers/FilmController.php');
 
 ?>
 
 <!-- Contenido -->
 <div class="container mt-4">
     <?php
-        $idLanguage = $_GET['id'];
-        $languageObject = listLanguage($idLanguage);
+        $idFilm = $_GET['id'];
+        $filmObject = listFilm($idFilm);
         $sendData = false;
-        $languageResult = false;
+        $filmResult = false;
 
         if(isset($_POST['saveBtn'])) 
         {
@@ -18,9 +18,9 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
         }
         if($sendData) 
         {
-            if(isset($_POST['languageName'])) 
+            if(isset($_POST['filmTitle'])) 
             {
-                $languageResult = saveLanguage($_POST['languageId'],$_POST['languageName'],$_POST['languageIsocode'],$_POST['languageNameCurrent'],$_POST['languageIsocodeCurrent']);          
+                $filmResult = saveFilm($_POST['filmId'],$_POST['filmTitle'],$_POST['filmIsocode'],$_POST['filmTitleCurrent'],$_POST['filmIsocodeCurrent']);          
             }
         }
         if(!$sendData)
@@ -29,37 +29,37 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             <div class="card">
                 <div class="card-header text-center">
                     <?php 
-                        if($idLanguage > 0)
+                        if($idFilm > 0)
                         {
                     ?>
-                        <h1>EDICION DE UN IDIOMA</h1>
+                        <h1>EDICION DE UN PELICULA</h1>
                     <?php 
                         }else
                         {
                     ?>
-                        <h1>CREACION DE UN NUEVO IDIOMA</h1>
+                        <h1>CREACION DE UN NUEVO PELICULA</h1>
                     <?php 
                         }
                     ?>
                 </div>
                 <div class="card-body">
-                    <form name="create_language" action="" method="POST">
+                    <form title="create_film" action="" method="POST">
                         <div class="form-floating mb-3">
-                            <input id="languageName" name="languageName" type="text" class="form-control" placeholder="name@example.com" value="<?php if(isset($languageObject)) echo $languageObject['name']; ?>">
-                            <label for="languageName">Nombre del Idioma</label>
+                            <input id="filmTitle" title="filmTitle" type="text" class="form-control" placeholder="title@example.com" value="<?php if(isset($filmObject)) echo $filmObject['title']; ?>">
+                            <label for="filmTitle">Nombre de la Pelicula</label>
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input id="languageIsocode" name="languageIsocode" type="text" class="form-control" placeholder="name@example.com" value="<?php if(isset($languageObject)) echo $languageObject['isocode']; ?>">
-                            <label for="languageIsocode">Codigo ISO 639</label>
+                            <input id="filmIsocode" title="filmIsocode" type="text" class="form-control" placeholder="title@example.com" value="<?php if(isset($filmObject)) echo $filmObject['isocode']; ?>">
+                            <label for="filmIsocode">Codigo ISO 639</label>
                         </div>
                         
-                        <input type="hidden" name="languageId" value="<?php echo $idLanguage; ?>">
-                        <input type="hidden" name="languageNameCurrent" value="<?php echo $languageObject['name']; ?>">
-                        <input type="hidden" name="languageIsocodeCurrent" value="<?php echo $languageObject['isocode']; ?>">
+                        <input type="hidden" title="filmId" value="<?php echo $idFilm; ?>">
+                        <input type="hidden" title="filmTitleCurrent" value="<?php echo $filmObject['title']; ?>">
+                        <input type="hidden" title="filmIsocodeCurrent" value="<?php echo $filmObject['isocode']; ?>">
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <input type="submit" value="Guardar" class="btn btn-success" name="saveBtn">
+                            <input type="submit" value="Guardar" class="btn btn-success" title="saveBtn">
                             <br> 
                             <a class="btn btn-danger" href="List.php">Regresar</a>
                         </div>
@@ -71,12 +71,12 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
         {
     ?>
             <?php
-                switch ($languageResult) {
+                switch ($filmResult) {
                     case 'errorvacio':
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            El nombre del Idioma no debe estar vacio ! 
+                            El nombre de la Pelicula no debe estar vacio ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -90,7 +90,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            El nombre del Idioma solo debe contener letras ! 
+                            El nombre de la Pelicula solo debe contener letras ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -104,7 +104,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-success" role="alert">
                             <i class="bi bi-check-circle-fill"></i>
-                            El Idioma se creo exitosamente ! 
+                            La Pelicula se creo exitosamente ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -118,7 +118,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            Hubo un error en la creacion del Idioma ! 
+                            Hubo un error en la creacion de la Pelicula ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -132,7 +132,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-success" role="alert">
                             <i class="bi bi-check-circle-fill"></i>
-                            El Idioma se edito exitosamente ! 
+                            La Pelicula se edito exitosamente ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -146,7 +146,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            Hubo un error en la edicion del Idioma ! 
+                            Hubo un error en la edicion de la Pelicula ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -156,11 +156,11 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                         </div>
             <?php
                         break;
-                        case 'errorname':
+                        case 'errortitle':
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            El nombre del Idioma ya existe ! 
+                            El nombre de la Pelicula ya existe ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -174,7 +174,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            El ISO Code del Idioma ya existe ! 
+                            El ISO Code de la Pelicula ya existe ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -184,11 +184,11 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                         </div>
             <?php
                         break;
-                        case 'samename':
+                        case 'sametitle':
             ?>
                         <div class="alert alert-warning" role="alert">
                             <i class="bi bi-exclamation-circle-fill"></i>
-                            El nombre del Idioma es el mismo  ! 
+                            El nombre de la Pelicula es el mismo  ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
