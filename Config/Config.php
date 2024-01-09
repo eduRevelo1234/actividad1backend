@@ -11,6 +11,9 @@
 	define('PLATFORMS', VIEWS.'Platforms/');
 	define('TEMPLATES', VIEWS.'Templates/');
 	
+	//Variables Gobales
+
+	
 	//Zona horaria
 	date_default_timezone_set('America/Guatemala');
 

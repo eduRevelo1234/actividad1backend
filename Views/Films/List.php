@@ -8,7 +8,7 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
 <div class="container mt-4">
     <div class="card">
         <div class="card-header text-center">
-            <h1>LISTADO DE IDIOMAS</h1>
+            <h1>LISTADO DE PELICULAS</h1>
             <p>Se podra crear, actualizar o borrar/suspender una Pelicula</p>
         </div>
         <div class="card-body">

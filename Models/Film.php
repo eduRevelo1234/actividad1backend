@@ -139,7 +139,7 @@
             return $filmUpdate;
         }
 
-        //funcion para actualizar el registro
+        //funcion para borrar el registro
         public function eliminateFilm()
         {
             $filmUpdate = false;
@@ -154,6 +154,16 @@
             return $filmUpdate;
         }
         
+        //funcion para obtener el id del ultimo registro
+        public function getendFilm()
+        {
+            $sql = "SELECT MAX( id ) AS maxid FROM films
+            
+            ;";
+            $array = null;
+            $result = $this->selectRecord($sql, $array);
+            return $result;
+        }
     }
 
  ?>

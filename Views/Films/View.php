@@ -3,16 +3,24 @@ include_once(__DIR__ . '/../Templates/Header.php');
 require_once(__DIR__ . '/../../Controllers/FilmController.php');
 require_once(__DIR__ . '/../../Controllers/PlatformController.php');
 require_once(__DIR__ . '/../../Controllers/LanguageController.php');
+require_once(__DIR__ . '/../../Controllers/LanguageAudioFilmController.php');
+require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
+
 
 ?>
 
 <!-- Contenido -->
 <div class="container mt-4">
     <?php
+        $contlangaud = 0;
         $idFilm = $_GET['id'];
         $filmObject = listFilm($idFilm);
         $sendData = false;
-        $filmResult = false;
+        $filmResult = "";
+        $eraseAudioResult = "";
+        $saveAudioResult = "";
+        $eraseCaptionResult = "";
+        $saveCaptionResult = "";
 
         if(isset($_POST['saveBtn'])) 
         {
@@ -20,14 +28,67 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
         }
         if($sendData) 
         {
-            if(isset($_POST['filmTitle'])) 
-            {
+           
                 //Se guarda los datos de la pelicula
                 $filmResult = burnFilm($_POST['filmId'],$_POST['filmTitle'],$_POST['filmIdPlataform'],$_POST['filmIdDirector'],$_POST['filmYear'],$_POST['filmTitleCurrent']);
+                $endfilm = endFilm();
+                echo $endfilm['maxid'];
+                
 
                 //Se guarda los datos en la tabla lenguaje de audio / pelicula
-                $filmResult = burnFilm($_POST['filmId'],$_POST['filmTitle'],$_POST['filmIdPlataform'],$_POST['filmIdDirector'],$_POST['filmYear'],$_POST['filmTitleCurrent']);
-            }
+                if(!empty($_POST['check_audio_list'])) 
+                {
+                    echo 'Aqui 1  -';
+                    //Si estamos editando se borra todos los registros de la pelicula 
+                    if($_POST['filmId']>0)
+                    {
+                        echo 'Aqui 2  -';
+                        $eraseAudioResult = eraseAudioFilm($_POST['filmId']);
+                        echo 'Aqui 3  -';
+                    } 
+                    echo 'Aqui 4  -';
+                    //Grabamos el id de la pelicula y del lenguaje audio
+                    if($_POST['filmId']>0)
+                    {
+                    foreach($_POST['check_audio_list'] as $selection) 
+                    {
+                        echo 'Aqui 5  -';
+                        echo $_POST['filmId'];
+                        echo 'Aqui 5.1  -';
+                        echo $selection;
+                        echo 'Aqui 5.2  -';
+
+                        $saveAudioResult = burnAudioFilm($_POST['filmId'],$selection);        
+                    }
+                }
+                echo 'Aqui 6  -';
+                //Se guarda los datos en la tabla lenguaje de subtitulo / pelicula
+                if(!empty($_POST['check_caption_list'])) 
+                {
+                    echo 'Aqui 7  -';
+                    //Si estamos editando se borra todos los registros de la pelicula 
+                    if($_POST['filmId']>0)
+                    {
+                        echo 'Aqui 8  -';
+                        $eraseCaptionResult = eraseCaptionFilm($_POST['filmId']);
+                        echo 'Aqui 9  -';
+                    } 
+                    echo 'Aqui 10  -';
+                    //Si existen registros de la apelicula se borra todos 
+                    //$filmList = listCaptionFilm($_POST['filmId']);
+                    //if (count($filmList) > 0) {
+                    //    $eraseCaptionResult = eraseCaptionFilm($_POST['filmId']);
+                    //} 
+                    //Grabamos el id de la pelicula y del lenguaje subtitulo
+                    foreach($_POST['check_caption_list'] as $selection) 
+                    {
+                        echo 'Aqui 11  -';
+                        $saveCaptionResult = burnCaptionFilm($_POST['filmId'],$selection);        
+                    }
+                }
+                
+                
+            
         }
         if(!$sendData)
         {
@@ -146,8 +207,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                                     ?>    
                                                 &nbsp;&nbsp;
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="<?php echo $languaje->getId(); ?>" value="<?php echo $languaje->getName(); ?>">
-                                                    <label class="form-check-label" for="<?php echo $languaje->getId(); ?>"><?php echo $languaje->getName(); ?></label>
+                                                    <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>">&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
                                                 </div>
                                                 &nbsp;&nbsp;
                                     <?php
@@ -168,8 +228,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                                     ?>    
                                                 &nbsp;&nbsp;
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="<?php echo $languaje->getId(); ?>" value="<?php echo $languaje->getName(); ?>">
-                                                    <label class="form-check-label" for="<?php echo $languaje->getId(); ?>"><?php echo $languaje->getName(); ?></label>
+                                                    <label><input type="checkbox" name="check_caption_list[]" value="<?php echo $languaje->getId(); ?>">&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
                                                 </div>
                                                 &nbsp;&nbsp;
                                     <?php

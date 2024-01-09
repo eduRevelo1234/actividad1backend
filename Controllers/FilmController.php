@@ -17,6 +17,14 @@ function listFilm($filmId)
     return $filmObject;
 }
 
+//funcion para leer el id del ultimo registro insertado
+function endFilm()
+{
+    $model = new Film(null, null, null, null, null);
+    $filmObject = $model->getendFilm();
+    return $filmObject;
+}
+
 //funcion para guardar el registro
 
 function burnFilm($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremiereyear,$filmTitleCurrent)
