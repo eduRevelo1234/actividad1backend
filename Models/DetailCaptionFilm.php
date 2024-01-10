@@ -71,8 +71,8 @@
         //funcion para leer de base de datos un registro 
         public function getCaptionFilm()
         {
-            $sql = "SELECT * FROM languagecaption_film_detail WHERE idfilm = ?";
-            $array = array($this->idcaptionfilm);
+            $sql = "SELECT * FROM languagecaption_film_detail WHERE idfilm = ? and idlanguage = ?";
+            $array = array($this->idcaptionfilm,$this->idcaptionlanguage);
             $result = $this->selectRecord($sql, $array);
             return $result;
         }

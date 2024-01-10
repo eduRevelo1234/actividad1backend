@@ -68,11 +68,11 @@
             return $listData;
         }
         
-        //funcion para leer de base de datos un registro 
+        //funcion para leer los registros que tenga la pelicula y el idioma
         public function getAudioFilm()
         {
-            $sql = "SELECT * FROM languageaudio_film_detail WHERE id = ?";
-            $array = array($this->id);
+            $sql = "SELECT * FROM languageaudio_film_detail WHERE idfilm = ? and idlanguage = ?";
+            $array = array($this->idaudiofilm,$this->idaudiolanguage);
             $result = $this->selectRecord($sql, $array);
             return $result;
         }

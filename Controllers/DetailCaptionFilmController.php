@@ -1,5 +1,6 @@
 <?php
     require_once('../../Models/DetailCaptionFilm.php');
+
    //funcion para listar todos los registros 
    function listCaptionFilms()
    {
@@ -8,12 +9,12 @@
        return $filmList;
    }
 
-   //funcion para leer un registro que tenga una pelicula determinada
-   function listCaptionFilm($captionfilmIdfilm)
+   //funcion para leer los registros que tenga la pelicula y el idioma
+   function listCaptionFilm($captionfilmIdfilm,$captionfilmIdlanguage)
    {
-       $model = new DetailCaptionFilm(null, $captionfilmIdfilm, null);
-       $filmObject = $model->getCaptionFilm();
-       return $filmObject;
+        $model = new DetailCaptionFilm(null, $captionfilmIdfilm, $captionfilmIdlanguage);
+        $filmObject = $model->getCaptionFilm();
+        return $filmObject;
    }
 
    //funcion para guardar el registro

@@ -28,67 +28,56 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
         }
         if($sendData) 
         {
-           
-                //Se guarda los datos de la pelicula
-                $filmResult = burnFilm($_POST['filmId'],$_POST['filmTitle'],$_POST['filmIdPlataform'],$_POST['filmIdDirector'],$_POST['filmYear'],$_POST['filmTitleCurrent']);
-                $endfilm = endFilm();
-                echo $endfilm['maxid'];
+            //Se guarda los datos de la pelicula
+            $filmResult = burnFilm($_POST['filmId'],$_POST['filmTitle'],$_POST['filmIdPlataform'],$_POST['filmIdDirector'],$_POST['filmYear'],$_POST['filmTitleCurrent']);
+            //Obtenemos el ultimo registro guardado
+            $endfilm = endFilm();
                 
-
-                //Se guarda los datos en la tabla lenguaje de audio / pelicula
-                if(!empty($_POST['check_audio_list'])) 
+            //Se guarda los datos en la tabla lenguaje de audio / pelicula
+            if(!empty($_POST['check_audio_list'])) 
+            {
+                //Verificamos si estamos editando o creando
+                if($_POST['filmId']>0)
                 {
-                    echo 'Aqui 1  -';
-                    //Si estamos editando se borra todos los registros de la pelicula 
-                    if($_POST['filmId']>0)
-                    {
-                        echo 'Aqui 2  -';
-                        $eraseAudioResult = eraseAudioFilm($_POST['filmId']);
-                        echo 'Aqui 3  -';
-                    } 
-                    echo 'Aqui 4  -';
-                    //Grabamos el id de la pelicula y del lenguaje audio
-                    if($_POST['filmId']>0)
-                    {
+                    //Borramos todos los registros de la pelicula en la tabla lenguage audio
+                    $eraseAudioResult = eraseAudioFilm($_POST['filmId']);
+                    //Grabamos los idiomas de audio con su pelicula
                     foreach($_POST['check_audio_list'] as $selection) 
                     {
-                        echo 'Aqui 5  -';
-                        echo $_POST['filmId'];
-                        echo 'Aqui 5.1  -';
-                        echo $selection;
-                        echo 'Aqui 5.2  -';
-
                         $saveAudioResult = burnAudioFilm($_POST['filmId'],$selection);        
                     }
-                }
-                echo 'Aqui 6  -';
-                //Se guarda los datos en la tabla lenguaje de subtitulo / pelicula
-                if(!empty($_POST['check_caption_list'])) 
+                }else
                 {
-                    echo 'Aqui 7  -';
-                    //Si estamos editando se borra todos los registros de la pelicula 
-                    if($_POST['filmId']>0)
+                    //Grabamos los idiomas de audio con su pelicula
+                    foreach($_POST['check_audio_list'] as $selection) 
                     {
-                        echo 'Aqui 8  -';
-                        $eraseCaptionResult = eraseCaptionFilm($_POST['filmId']);
-                        echo 'Aqui 9  -';
-                    } 
-                    echo 'Aqui 10  -';
-                    //Si existen registros de la apelicula se borra todos 
-                    //$filmList = listCaptionFilm($_POST['filmId']);
-                    //if (count($filmList) > 0) {
-                    //    $eraseCaptionResult = eraseCaptionFilm($_POST['filmId']);
-                    //} 
-                    //Grabamos el id de la pelicula y del lenguaje subtitulo
-                    foreach($_POST['check_caption_list'] as $selection) 
-                    {
-                        echo 'Aqui 11  -';
-                        $saveCaptionResult = burnCaptionFilm($_POST['filmId'],$selection);        
+                        $saveAudioResult = burnAudioFilm($endfilm['maxid'],$selection);        
                     }
                 }
-                
-                
-            
+            }
+
+            //Se guarda los datos en la tabla lenguaje de subtitulo / pelicula
+            if(!empty($_POST['check_caption_list'])) 
+            {
+                //Verificamos si estamos editando o creando
+                if($_POST['filmId']>0)
+                {
+                    //Borramos todos los registros de la pelicula en la tabla lenguage subtitulo
+                    $eraseCaptionResult = eraseCaptionFilm($_POST['filmId']);
+                    //Grabamos los idiomas de audio con su pelicula
+                    foreach($_POST['check_caption_list'] as $selection) 
+                    {
+                        $saveCaptionResult = burnCaptionFilm($_POST['filmId'],$selection);        
+                    }
+                }else
+                {
+                    //Grabamos los idiomas de subtitulo con su pelicula
+                    foreach($_POST['check_caption_list'] as $selection) 
+                    {
+                        $saveCaptionResult = burnCaptionFilm($endfilm['maxid'],$selection);        
+                    }
+                }
+            }     
         }
         if(!$sendData)
         {
@@ -204,13 +193,40 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                                         $languajeList = listLanguages();
                                         if (count($languajeList) > 0) {
                                             foreach ($languajeList as $languaje) {
-                                    ?>    
+                                                //Verificamos si estamos editando o creando
+                                                if($idFilm>0)
+                                                {
+                                                    //Verificamos si existe el registro guardado
+                                                    $selectlanguaje = listAudioFilm($idFilm,$languaje->getId());
+                                                    if(!empty($selectlanguaje))
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" checked >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }else
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }
+                                                }else
+                                                {
+                                    ?>
                                                 &nbsp;&nbsp;
                                                 <div class="form-check form-check-inline">
-                                                    <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>">&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                    <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
                                                 </div>
                                                 &nbsp;&nbsp;
                                     <?php
+                                                }
                                             }
                                         }
                                     ?>
@@ -225,13 +241,40 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                                         $languajeList = listLanguages();
                                         if (count($languajeList) > 0) {
                                             foreach ($languajeList as $languaje) {
-                                    ?>    
+                                                //Verificamos si estamos editando o creando
+                                                if($idFilm>0)
+                                                {
+                                                    //Verificamos si existe el registro guardado
+                                                    $selectlanguaje = listCaptionFilm($idFilm,$languaje->getId());
+                                                    if(!empty($selectlanguaje))
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_caption_list[]" value="<?php echo $languaje->getId(); ?>" checked >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }else
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_caption_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }
+                                                }else
+                                                {
+                                    ?>
                                                 &nbsp;&nbsp;
                                                 <div class="form-check form-check-inline">
-                                                    <label><input type="checkbox" name="check_caption_list[]" value="<?php echo $languaje->getId(); ?>">&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                    <label><input type="checkbox" name="check_caption_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
                                                 </div>
                                                 &nbsp;&nbsp;
                                     <?php
+                                                }
                                             }
                                         }
                                     ?>

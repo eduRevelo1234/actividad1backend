@@ -9,16 +9,15 @@
         return $filmList;
     }
 
-    //funcion para leer un registro
-    function listAudioFilm($audiofilmId)
+    //funcion para leer los registros que tenga la pelicula y el idioma
+    function listAudioFilm($audiofilmIdfilm,$audiofilmIdlanguage)
     {
-        $model = new LanguageAudioFilm($audiofilmId, null, null);
+        $model = new LanguageAudioFilm(null, $audiofilmIdfilm, $audiofilmIdlanguage);
         $filmObject = $model->getAudioFilm();
         return $filmObject;
     }
 
     //funcion para guardar el registro
-
     function burnAudioFilm($audiofilmIdfilm, $audiofilmIdlanguage)
     {
         $model = new LanguageAudioFilm(null,$audiofilmIdfilm, $audiofilmIdlanguage);        
