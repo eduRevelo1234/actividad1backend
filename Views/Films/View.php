@@ -3,7 +3,7 @@ include_once(__DIR__ . '/../Templates/Header.php');
 require_once(__DIR__ . '/../../Controllers/FilmController.php');
 require_once(__DIR__ . '/../../Controllers/PlatformController.php');
 require_once(__DIR__ . '/../../Controllers/LanguageController.php');
-require_once(__DIR__ . '/../../Controllers/LanguageAudioFilmController.php');
+require_once(__DIR__ . '/../../Controllers/DetailAudioFilmController.php');
 require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
 
 
@@ -30,12 +30,13 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
         {
             //Se guarda los datos de la pelicula
             $filmResult = burnFilm($_POST['filmId'],$_POST['filmTitle'],$_POST['filmIdPlataform'],$_POST['filmIdDirector'],$_POST['filmYear'],$_POST['filmTitleCurrent']);
-            //Obtenemos el ultimo registro guardado
-            $endfilm = endFilm();
-                
-            //Se guarda los datos en la tabla lenguaje de audio / pelicula
-            if(!empty($_POST['check_audio_list'])) 
+            if($filmResult == 'edited' or $filmResult == 'registered' )
             {
+                //Obtenemos el ultimo registro guardado
+                $endfilm = endFilm();
+                    
+                //Se guarda los datos en la tabla lenguaje de audio / pelicula
+                
                 //Verificamos si estamos editando o creando
                 if($_POST['filmId']>0)
                 {
@@ -54,11 +55,9 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                         $saveAudioResult = burnAudioFilm($endfilm['maxid'],$selection);        
                     }
                 }
-            }
-
-            //Se guarda los datos en la tabla lenguaje de subtitulo / pelicula
-            if(!empty($_POST['check_caption_list'])) 
-            {
+                
+                //Se guarda los datos en la tabla lenguaje de subtitulo / pelicula
+                
                 //Verificamos si estamos editando o creando
                 if($_POST['filmId']>0)
                 {
@@ -77,7 +76,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                         $saveCaptionResult = burnCaptionFilm($endfilm['maxid'],$selection);        
                     }
                 }
-            }     
+            }
         }
         if(!$sendData)
         {
@@ -169,8 +168,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                                     <button class="nav-link" id="navLanguageCaption-tab" data-bs-toggle="tab" data-bs-target="#navLanguageCaption" type="button" role="tab" aria-controls="navLanguageCaption" aria-selected="false">IDIOMAS SUBTITULO</button>
                                 </div>
                             </nav>
-                            <div class="tab-content" id="nav-tabContent">
-                                
+                            <div class="tab-content" id="nav-tabContent"> 
                                 <!-- Actores -->
                                 <div class="tab-pane fade show active" id="navActors" role="tabpanel" aria-labelledby="navActors-tab" tabindex="0">
                                     <div class="text-center">
@@ -282,10 +280,6 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                                 </div>
                             </div>
                         </div>
-
-                        
-                        
-
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <input type="submit" value="Guardar" class="btn btn-success" name="saveBtn">
                             <br> 
@@ -441,21 +435,6 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                         </div>
             <?php
                         break;
-                        case 'sametitle':
-            ?>
-                        <div class="alert alert-warning" role="alert">
-                            <i class="bi bi-exclamation-circle-fill"></i>
-                            El nombre de la Pelicula es el mismo  ! 
-                            <br> 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-primary" href="List.php">
-                                    Regresar
-                                </a>
-                            </div>         
-                        </div>
-            <?php
-                        break;
-
                 }
             ?>
             </div>

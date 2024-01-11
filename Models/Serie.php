@@ -1,7 +1,7 @@
 <?php
     require_once(__DIR__ . '/../Config/App/Querys.php');
 
-    class Film extends Query
+    class Serie extends Query
     {
         //Variables
         private $id;
@@ -11,13 +11,13 @@
         private $premiereyear;
         
         //Constructor
-        public function __construct($idFilm, $titleFilm, $idplatformFilm,$iddirectorFilm,$premiereyearFilm)
+        public function __construct($idSerie, $titleSerie, $idplatformSerie,$iddirectorSerie,$premiereyearSerie)
         {
-            $this->id = $idFilm;
-            $this->title = $titleFilm;
-            $this->idplatform = $idplatformFilm;
-            $this->iddirector = $iddirectorFilm;
-            $this->premiereyear = $premiereyearFilm;
+            $this->id = $idSerie;
+            $this->title = $titleSerie;
+            $this->idplatform = $idplatformSerie;
+            $this->iddirector = $iddirectorSerie;
+            $this->premiereyear = $premiereyearSerie;
             parent::__construct();
         }
         
@@ -82,14 +82,14 @@
         }
 
         //funcion para obtener de base de datos todos los registros 
-        public function getFilms()
+        public function getSeries()
         {
-            $sql = "SELECT * FROM films";
+            $sql = "SELECT * FROM series";
             $data = $this->selectRecords($sql);
             $listData = [];
 
             foreach ($data as $item) {
-                $itemObject = new Film($item['id'], $item['title'], $item['idplatform'], $item['iddirector'], $item['premiereyear']);
+                $itemObject = new Serie($item['id'], $item['title'], $item['idplatform'], $item['iddirector'], $item['premiereyear']);
                 array_push($listData,$itemObject);
             }
             
@@ -97,68 +97,67 @@
         }
         
         //funcion para leer de base de datos un registro 
-        public function getFilm()
+        public function getSerie()
         {
-            $sql = "SELECT * FROM films WHERE id = ?";
+            $sql = "SELECT * FROM series WHERE id = ?";
             $array = array($this->id);
             $result = $this->selectRecord($sql, $array);
             return $result;
         }
 
         //funcion para leer de base de datos el registro que contiene el nombre
-        public function getFilmTitle()
+        public function getSerieTitle()
         {
-            $sql = "SELECT title FROM films WHERE title = ?";
+            $sql = "SELECT title FROM series WHERE title = ?";
             $array = array($this->title);
             $result = $this->selectRecord($sql, $array);
             return $result;
         }
 
         //funcion para guardar el registro
-        public function saveFilm()
+        public function saveSerie()
         {
             
-            $sql = "INSERT INTO films (title,idplatform,iddirector,premiereyear) VALUES (?,?,?,?)";
+            $sql = "INSERT INTO series (title,idplatform,iddirector,premiereyear) VALUES (?,?,?,?)";
             $array = array($this->title,$this->idplatform,$this->iddirector,$this->premiereyear);
             $result = $this->insertRecord($sql, $array);
             return $result;
         }
 
         //funcion para actualizar el registro
-        public function updateFilm()
+        public function updateSerie()
         {
-            $filmUpdate = false;
+            $serieUpdate = false;
 
-            $sql = "UPDATE films SET title=?, idplatform=?, iddirector=?, premiereyear=? WHERE id = ?";
+            $sql = "UPDATE series SET title=?, idplatform=?, iddirector=?, premiereyear=? WHERE id = ?";
             $array = array($this->title,$this->idplatform,$this->iddirector,$this->premiereyear,$this->id);
             $data = $this->saveRecord($sql, $array);
             
             if($data){
-                $filmUpdate = true;
+                $serieUpdate = true;
             }
-            return $filmUpdate;
+            return $serieUpdate;
         }
 
         //funcion para borrar el registro
-        public function eliminateFilm()
+        public function eliminateSerie()
         {
-            $filmDelete = false;
+            $serieUpdate = false;
 
-            $sql = "DELETE FROM films WHERE id = ?";
+            $sql = "DELETE FROM series WHERE id = ?";
             $array = array($this->id);
             $data = $this->saveRecord($sql, $array);
             
             if($data){
-                $filmDelete = true;
+                $serieUpdate = true;
             }
-            
-            return $filmDelete;
+            return $serieUpdate;
         }
         
         //funcion para obtener el id del ultimo registro
-        public function getendFilm()
+        public function getendSerie()
         {
-            $sql = "SELECT MAX( id ) AS maxid FROM films
+            $sql = "SELECT MAX( id ) AS maxid FROM series
             
             ;";
             $array = null;

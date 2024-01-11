@@ -1,36 +1,79 @@
 <?php
 include_once(__DIR__ . '/../Templates/Header.php');
-require_once(__DIR__ . '/../../Controllers/FilmController.php');
+require_once(__DIR__ . '/../../Controllers/SerieController.php');
 require_once(__DIR__ . '/../../Controllers/PlatformController.php');
 require_once(__DIR__ . '/../../Controllers/LanguageController.php');
+require_once(__DIR__ . '/../../Controllers/DetailAudioSerieController.php');
+require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
 
 ?>
 
 <!-- Contenido -->
 <div class="container mt-4">
     <?php
-        $idFilm = $_GET['id'];
-        $filmObject = listFilm($idFilm);
+        $contlangaud = 0;
+        $idSerie = $_GET['id'];
+        $serieObject = listSerie($idSerie);
         $sendData = false;
-        $filmResult = false;
-
+        $serieResult = "";
+        $eraseAudioResult = "";
+        $saveAudioResult = "";
+        $eraseCaptionResult = "";
+        $saveCaptionResult = "";
         if(isset($_POST['saveBtn'])) 
         {
             $sendData = true;
         }
         if($sendData) 
         {
-            if(isset($_POST['filmTitle'])) 
+            //Se guarda los datos de la serie
+            $serieResult = burnSerie($_POST['serieId'],$_POST['serieTitle'],$_POST['serieIdPlataform'],$_POST['serieIdDirector'],$_POST['serieYear'],$_POST['serieTitleCurrent']);
+            if($serieResult == 'edited' or $serieResult == 'registered' )
             {
-                //Guardo los datos de la tabla pelicula
-                $filmResult = 'prueba';
-                //$filmResult = saveFilm($_POST['filmId'],$_POST['filmTitle'],$_POST['filmPlataform'],$_POST['filmDirector'],$_POST['filmPremiereyear']);
+                //Obtenemos el ultimo registro guardado
+                $endserie = endSerie();
+                    
+                //Se guarda los datos en la tabla lenguaje de audio / serie
                 
-                //Guardo los datos de la tabla Actor-Pelicula detalle
-
-                //Guardo los datos de la tabla Idioma Audio-Pelicula detalle
-
-                //Guardo los datos de la tabla Idioma Subtitulo-Pelicula detalle
+                //Verificamos si estamos editando o creando
+                if($_POST['serieId']>0)
+                {
+                    //Borramos todos los registros de la serie en la tabla lenguage audio
+                    $eraseAudioResult = eraseAudioSerie($_POST['serieId']);
+                    //Grabamos los idiomas de audio con su serie
+                    foreach($_POST['check_audio_list'] as $selection) 
+                    {
+                        $saveAudioResult = burnAudioSerie($_POST['serieId'],$selection);        
+                    }
+                }else
+                {
+                    //Grabamos los idiomas de audio con su serie
+                    foreach($_POST['check_audio_list'] as $selection) 
+                    {
+                        $saveAudioResult = burnAudioSerie($endserie['maxid'],$selection);        
+                    }
+                }
+                
+                //Se guarda los datos en la tabla lenguaje de subtitulo / serie
+                
+                //Verificamos si estamos editando o creando
+                if($_POST['serieId']>0)
+                {
+                    //Borramos todos los registros de la serie en la tabla lenguage subtitulo
+                    $eraseCaptionResult = eraseCaptionSerie($_POST['serieId']);
+                    //Grabamos los idiomas de audio con su serie
+                    foreach($_POST['check_caption_list'] as $selection) 
+                    {
+                        $saveCaptionResult = burnCaptionSerie($_POST['serieId'],$selection);        
+                    }
+                }else
+                {
+                    //Grabamos los idiomas de subtitulo con su serie
+                    foreach($_POST['check_caption_list'] as $selection) 
+                    {
+                        $saveCaptionResult = burnCaptionSerie($endserie['maxid'],$selection);        
+                    }
+                }
             }
         }
         if(!$sendData)
@@ -39,47 +82,51 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             <div class="card">
                 <div class="card-header text-center">
                     <?php 
-                        if($idFilm > 0)
+                        if($idSerie > 0)
                         {
                     ?>
-                        <h1>EDICION DE UN PELICULA</h1>
+                        <h1>EDICION DE UNA SERIE</h1>
                     <?php 
                         }else
                         {
                     ?>
-                        <h1>CREACION DE UN NUEVO PELICULA</h1>
+                        <h1>CREACION DE UNA NUEVA SERIE</h1>
                     <?php 
                         }
                     ?>
                 </div>
                 <div class="card-body">
-                    <form title="create_film" action="" method="POST">
+                    <form name="create_serie" action="" method="POST">
                         <!-- Id -->
-                        <input type="hidden" title="filmId" value="<?php echo $idFilm; ?>">
+                        <input id="serieId" name="serieId" type="hidden" value="<?php echo $idSerie; ?>">
                         
                         <!-- Titulo -->
                         <div class="form-floating mb-3">
-                            <input id="filmTitle" title="filmTitle" type="text" class="form-control" placeholder="title@example.com" value="<?php if(isset($filmObject)) echo $filmObject['title']; ?>">
-                            <label for="filmTitle">Titulo de la Pelicula</label>
+                            <input id="serieTitle" name="serieTitle" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($serieObject)) echo $serieObject['title']; ?>">
+                            <label for="serieTitle">Nombre de la Serie</label>
                         </div>
-                        <input type="hidden" title="filmTitleCurrent" value="<?php echo $filmObject['title']; ?>">
-                        
-                        <!-- Datos de la pelicula -->
+                        <input id="serieTitleCurrent" type="hidden" name="serieTitleCurrent" type="text" class="form-control" value="<?php if(isset($serieObject)) echo $serieObject['title']; ?>">
+
+                        <!-- Datos de la serie -->
                         <div class="row">
                             <!-- Plataforma -->
                             <div class="col-lg-4 col-md-12">
+                                 
                                 <?php
+                                    $valorseleccionado=$serieObject['idplatform'];
                                     $platformList = listPlatforms();
                                     if (count($platformList) > 0) {
                                 ?>
                                 <div class="form-floating mb-3">
-                                    <select id=filmPlataform class="form-select" aria-label="Default select example">
-                                        <option selected>Escojer una Plataforma</option>
+                                    <select id="serieIdPlataform" name="serieIdPlataform" class="form-select" aria-label="Default select example">
+                                        <option value=0 selected>Escojer una Plataforma</option>
                                     <?php
                                             foreach ($platformList as $platform) {  
                                     ?>
-                                        <option value="<?php echo $platform->getId(); ?>"><?php echo $platform->getName(); ?></option>
+                                        <option value="<?php  echo $platform->getId(); ?>" <?php echo ($valorseleccionado==$platform->getId()) ? "selected" : ""; ?> ><?php  echo $platform->getName(); ?></option>
+                                                
                                     <?php
+
                                             }
                                     ?>
                                     </select>
@@ -92,10 +139,10 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                             <!-- Director  -->
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">
-                                    <select id=filmDirector class="form-select" aria-label="Default select example">
-                                        <option selected>Escojer un Director</option>
+                                    <select id="serieIdDirector" name="serieIdDirector" class="form-select" aria-label="Default select example" value=1>
+                                        <option value="0" selected>Escojer un Director</option>
                                         <option value="1">Director 1</option>
-                                        <option value="1">Director 1</option>
+                                        <option value="2">Director 2</option>
                                     </select>
                                 </div>
                             </div>
@@ -103,8 +150,8 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                             <!-- Año de estreno  -->
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">
-                                    <input id="filmPremiereyear" title="filmPremiereyear" type="text" class="form-control" placeholder="title@example.com" value="<?php if(isset($filmObject)) echo $filmObject['title']; ?>">
-                                    <label for="filmPremiereyear">Año de estreno</label>
+                                    <input id="serieYear" name="serieYear" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($serieObject)) echo $serieObject['premiereyear']; ?>">
+                                    <label for="serieYear">Año de estreno</label>
                                 </div>
                             </div>
                         </div>
@@ -119,8 +166,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                                     <button class="nav-link" id="navLanguageCaption-tab" data-bs-toggle="tab" data-bs-target="#navLanguageCaption" type="button" role="tab" aria-controls="navLanguageCaption" aria-selected="false">IDIOMAS SUBTITULO</button>
                                 </div>
                             </nav>
-                            <div class="tab-content" id="nav-tabContent">
-                                
+                            <div class="tab-content" id="nav-tabContent"> 
                                 <!-- Actores -->
                                 <div class="tab-pane fade show active" id="navActors" role="tabpanel" aria-labelledby="navActors-tab" tabindex="0">
                                     <div class="text-center">
@@ -143,14 +189,40 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                                         $languajeList = listLanguages();
                                         if (count($languajeList) > 0) {
                                             foreach ($languajeList as $languaje) {
-                                    ?>    
+                                                //Verificamos si estamos editando o creando
+                                                if($idSerie>0)
+                                                {   
+                                                    //Verificamos si existe el registro guardado
+                                                    $selectlanguaje = listAudioSerie($idSerie,$languaje->getId());
+                                                    if(!empty($selectlanguaje))
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" checked >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }else
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }
+                                                }else
+                                                {
+                                    ?>
                                                 &nbsp;&nbsp;
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="<?php echo $languaje->getId(); ?>" value="<?php echo $languaje->getName(); ?>">
-                                                    <label class="form-check-label" for="<?php echo $languaje->getId(); ?>"><?php echo $languaje->getName(); ?></label>
+                                                    <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
                                                 </div>
                                                 &nbsp;&nbsp;
                                     <?php
+                                                }
                                             }
                                         }
                                     ?>
@@ -165,14 +237,40 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                                         $languajeList = listLanguages();
                                         if (count($languajeList) > 0) {
                                             foreach ($languajeList as $languaje) {
-                                    ?>    
+                                                //Verificamos si estamos editando o creando
+                                                if($idSerie>0)
+                                                {
+                                                    //Verificamos si existe el registro guardado
+                                                    $selectlanguaje = listCaptionSerie($idSerie,$languaje->getId());
+                                                    if(!empty($selectlanguaje))
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_caption_list[]" value="<?php echo $languaje->getId(); ?>" checked >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }else
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_caption_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }
+                                                }else
+                                                {
+                                    ?>
                                                 &nbsp;&nbsp;
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="<?php echo $languaje->getId(); ?>" value="<?php echo $languaje->getName(); ?>">
-                                                    <label class="form-check-label" for="<?php echo $languaje->getId(); ?>"><?php echo $languaje->getName(); ?></label>
+                                                    <label><input type="checkbox" name="check_caption_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
                                                 </div>
                                                 &nbsp;&nbsp;
                                     <?php
+                                                }
                                             }
                                         }
                                     ?>
@@ -180,9 +278,8 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                                 </div>
                             </div>
                         </div>
-                        <!-- Botones -->
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <input type="submit" value="Guardar" class="btn btn-success" title="saveBtn">
+                            <input type="submit" value="Guardar" class="btn btn-success" name="saveBtn">
                             <br> 
                             <a class="btn btn-danger" href="List.php">Regresar</a>
                         </div>
@@ -194,12 +291,13 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
         {
     ?>
             <?php
-                switch ($filmResult) {
-                    case 'errorvacio':
+                switch ($serieResult) {
+
+                    case 'errortitulovacio':
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            El nombre de la Pelicula no debe estar vacio ! 
+                            El nombre de la Serie no debe estar vacio ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -209,11 +307,53 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                         </div>
             <?php
                         break;
-                    case 'errorformat':
+                        case 'errorplataformavacio':
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            El nombre de la Pelicula solo debe contener letras ! 
+                            Se debe escojer una opcion de Plataformas ! 
+                            <br> 
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary" href="List.php">
+                                    Regresar
+                                </a>
+                            </div>      
+                        </div>
+            <?php
+                        break;
+                        case 'errordirectorvacio':
+            ?>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-x-circle-fill"></i>
+                            Se debe escojer una opcion de Directores ! 
+                            <br> 
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary" href="List.php">
+                                    Regresar
+                                </a>
+                            </div>      
+                        </div>
+            <?php
+                        break;
+                        case 'erroranovacio':
+            ?>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-x-circle-fill"></i>
+                            El año de estreno de la Serie no debe estar vacio ! 
+                            <br> 
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary" href="List.php">
+                                    Regresar
+                                </a>
+                            </div>      
+                        </div>
+            <?php
+                        break;
+                    case 'erroranoformat':
+            ?>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-x-circle-fill"></i>
+                            El año de estreno de la Serie solo debe contener 4 numeros ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -227,7 +367,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-success" role="alert">
                             <i class="bi bi-check-circle-fill"></i>
-                            La Pelicula se creo exitosamente ! 
+                            La Serie se creo exitosamente ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -241,7 +381,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            Hubo un error en la creacion de la Pelicula ! 
+                            Hubo un error en la creacion de la Serie ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -255,7 +395,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-success" role="alert">
                             <i class="bi bi-check-circle-fill"></i>
-                            La Pelicula se edito exitosamente ! 
+                            La Serie se edito exitosamente ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -269,7 +409,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            Hubo un error en la edicion de la Pelicula ! 
+                            Hubo un error en la edicion de la Serie ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -283,7 +423,7 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            El nombre de la Pelicula ya existe ! 
+                            El nombre de la Serie ya existe ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -293,60 +433,6 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                         </div>
             <?php
                         break;
-                        case 'errorisocode':
-            ?>
-                        <div class="alert alert-danger" role="alert">
-                            <i class="bi bi-x-circle-fill"></i>
-                            El ISO Code de la Pelicula ya existe ! 
-                            <br> 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-primary" href="List.php">
-                                    Regresar
-                                </a>
-                            </div>         
-                        </div>
-            <?php
-                        break;
-                        case 'sametitle':
-            ?>
-                        <div class="alert alert-warning" role="alert">
-                            <i class="bi bi-exclamation-circle-fill"></i>
-                            El nombre de la Pelicula es el mismo  ! 
-                            <br> 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-primary" href="List.php">
-                                    Regresar
-                                </a>
-                            </div>         
-                        </div>
-            <?php
-                        break;
-                        case 'sameisocode':
-            ?>
-                        <div class="alert alert-warning" role="alert">
-                            <i class="bi bi-exclamation-circle-fill"></i>
-                            El ISO Code es el mismo ! 
-                            <br> 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-primary" href="List.php">
-                                    Regresar
-                                </a>
-                            </div>         
-                        </div>
-            <?php
-                        break;
-                        case 'prueba':
-            ?>
-                        <div class="alert alert-warning" role="alert">
-                            <i class="bi bi-exclamation-circle-fill"></i>
-                            Esto es una prueba ! 
-                            <br> 
-                            <?php
-                            echo 'prueba';
-                            ?>
-                        </div>
-            <?php
-                        break;    
                 }
             ?>
             </div>

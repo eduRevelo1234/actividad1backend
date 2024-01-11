@@ -1,40 +1,40 @@
 <?php
-require_once('../../Models/Film.php');
+require_once('../../Models/Serie.php');
 
 //funcion para listar todos los registros 
-function listFilms()
+function listSeries()
 {
-    $model = new Film(null, null, null, null, null);
-    $filmList = $model->getFilms();
-    return $filmList;
+    $model = new Serie(null, null, null, null, null);
+    $serieList = $model->getSeries();
+    return $serieList;
 }
 
 //funcion para leer un registro
-function listFilm($filmId)
+function listSerie($serieId)
 {
-    $model = new Film($filmId, null, null, null, null);
-    $filmObject = $model->getFilm();
-    return $filmObject;
+    $model = new Serie($serieId, null, null, null, null);
+    $serieObject = $model->getSerie();
+    return $serieObject;
 }
 
 //funcion para leer el id del ultimo registro insertado
-function endFilm()
+function endSerie()
 {
-    $model = new Film(null, null, null, null, null);
-    $filmObject = $model->getendFilm();
-    return $filmObject;
+    $model = new Serie(null, null, null, null, null);
+    $serieObject = $model->getendSerie();
+    return $serieObject;
 }
 
 //funcion para guardar el registro
 
-function burnFilm($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremiereyear,$filmTitleCurrent)
+function burnSerie($serieId,$serieTitle, $serieIdplatform,$serieIddirector,$seriePremiereyear,$serieTitleCurrent)
 {
     $error=[];
     //Validacion del titulo
-    if (empty($filmTitle)) {
+    if (empty($serieTitle)) {
         $message = 'errortitulovacio';
         $error[0] = 'error';
-    } else if (!preg_match("/^(.|\s)*\S(.|\s)*$/", $filmTitle)) {
+    } else if (!preg_match("/^(.|\s)*\S(.|\s)*$/", $serieTitle)) {
         $message = 'errortitulovacio';
         $error[0] = 'error';
     } else {
@@ -42,7 +42,7 @@ function burnFilm($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremi
     }
     
     //Validacion del plataforma
-    if ($filmIdplatform == 0) {
+    if ($serieIdplatform == 0) {
         $message = 'errorplataformavacio';
         $error[1] = 'error';
     } else {
@@ -50,7 +50,7 @@ function burnFilm($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremi
     }
     
     //Validacion del director
-    if ($filmIddirector == 0) {
+    if ($serieIddirector == 0) {
         $message = 'errordirectorvacio';
         $error[2] = 'error';
     } else {
@@ -58,10 +58,10 @@ function burnFilm($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremi
     }
 
     //Validacion del año
-    if (empty($filmPremiereyear)) {
+    if (empty($seriePremiereyear)) {
         $message = 'erroranovacio';
         $error[3] = 'error';
-    } else if (!preg_match("/^[0-9]{4}$/", $filmPremiereyear)) {
+    } else if (!preg_match("/^[0-9]{4}$/", $seriePremiereyear)) {
         $message = 'erroranoformat';
         $error[3] = 'error';
     } else {
@@ -72,18 +72,18 @@ function burnFilm($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremi
     if ($error[0] == 'ok' && $error[1] == 'ok' && $error[2] == 'ok' && $error[3] == 'ok')
     {
         
-        $model = new Film($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremiereyear);
+        $model = new Serie($serieId,$serieTitle, $serieIdplatform,$serieIddirector,$seriePremiereyear);
         
         //Editar Pelicula
-        if ($filmId > 0 )
+        if ($serieId > 0 )
         {   
             //Buscamos el nombre de la pelicula actual en la base 
-            $resultFilm = $model->getFilmTitle();
+            $resultSerie = $model->getSerieTitle();
             //Si no existe el nombre en la base o el nombre se mantiene el mismo
-            if (empty($resultFilm) or ($filmTitle == $filmTitleCurrent))
+            if (empty($resultSerie) or ($serieTitle == $serieTitleCurrent))
             {
-                $model = new Film($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremiereyear);
-                $result = $model->updateFilm();
+                $model = new Serie($serieId,$serieTitle, $serieIdplatform,$serieIddirector,$seriePremiereyear);
+                $result = $model->updateSerie();
                 if ($result == 1) {
                     $message = 'edited';
                 } else 
@@ -99,11 +99,11 @@ function burnFilm($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremi
             //Crear Pelicula
                     
             //Verificamos si el nombre de la pelicula no existe en la base 
-            $resultFilm = $model->getFilmTitle();
+            $resultSerie = $model->getSerieTitle();
 
-            if (empty($resultFilm))
+            if (empty($resultSerie))
             {
-                $result = $model->saveFilm(); 
+                $result = $model->saveSerie(); 
                 if ($result > 0) {
                     $message = 'registered';
                 } else {
@@ -120,16 +120,15 @@ function burnFilm($filmId,$filmTitle, $filmIdplatform,$filmIddirector,$filmPremi
 }
 
 //funcion para borrar el estado del registro
-function eraseFilm($filmId)
+function eraseSerie($serieId)
 {
-    $model = new Film($filmId, null, null,null,null);
-    $result = $model->eliminateFilm();
+    $model = new Serie($serieId, null, null,null,null);
+    $result = $model->eliminateSerie();
     if ($result == 1) {
         $message = 'erased';
     } else {
         $message = 'errorrerased';
-    }
-    
+    }           
     return $message;
 }
 

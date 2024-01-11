@@ -1,19 +1,19 @@
 <?php
     require_once(__DIR__ . '/../Config/App/Querys.php');
 
-    class LanguageAudioFilm extends Query
+    class DetailAudioSerie extends Query
     {
         //Variables
         private $id;
-        private $idaudiofilm;
+        private $idaudioserie;
         private $idaudiolanguage;
         
         //Constructor
-        public function __construct($idAudioFilm, $idfilmAudioFilm,$idlanguageAudioFilm)
+        public function __construct($idAudioSerie, $idserieAudioSerie,$idlanguageAudioSerie)
         {
-            $this->id = $idAudioFilm;
-            $this->idaudiofilm = $idfilmAudioFilm;
-            $this->idaudiolanguage = $idlanguageAudioFilm;
+            $this->id = $idAudioSerie;
+            $this->idaudioserie = $idserieAudioSerie;
+            $this->idaudiolanguage = $idlanguageAudioSerie;
             parent::__construct();
         }
         
@@ -29,16 +29,16 @@
             $this->id = $id;
         }
         
-        //funcion para leer de base de datos el idfilm 
-        public function getIdAudioFilm()
+        //funcion para leer de base de datos el idserie 
+        public function getIdAudioSerie()
         {
-            return $this->idaudiofilm;
+            return $this->idaudioserie;
         }
         
-        //funcion para insertar en base de datos el idfilm
-        public function setIdAudioFilm($idaudiofilm)
+        //funcion para insertar en base de datos el idserie
+        public function setIdAudioSerie($idaudioserie)
         {
-            $this->idaudiofilm = $idaudiofilm;
+            $this->idaudioserie = $idaudioserie;
         }
 
         //funcion para leer de base de datos el idlanguaje 
@@ -54,14 +54,14 @@
         }
 
         //funcion para obtener de base de datos todos los registros 
-        public function getAudioFilms()
+        public function getAudioSeries()
         {
-            $sql = "SELECT * FROM languageaudio_film_detail";
+            $sql = "SELECT * FROM languageaudio_serie_detail";
             $data = $this->selectRecords($sql);
             $listData = [];
 
             foreach ($data as $item) {
-                $itemObject = new Film($item['id'], $item['idfilm'], $item['idlanguage']);
+                $itemObject = new Serie($item['id'], $item['idserie'], $item['idlanguage']);
                 array_push($listData,$itemObject);
             }
             
@@ -69,37 +69,37 @@
         }
         
         //funcion para leer los registros que tenga la pelicula y el idioma
-        public function getAudioFilm()
+        public function getAudioSerie()
         {
-            $sql = "SELECT * FROM languageaudio_film_detail WHERE idfilm = ? and idlanguage = ?";
-            $array = array($this->idaudiofilm,$this->idaudiolanguage);
+            $sql = "SELECT * FROM languageaudio_serie_detail WHERE idserie = ? and idlanguage = ?";
+            $array = array($this->idaudioserie,$this->idaudiolanguage);
             $result = $this->selectRecord($sql, $array);
             return $result;
         }
 
         //funcion para guardar el registro
-        public function saveAudioFilm()
+        public function saveAudioSerie()
         {
             
-            $sql = "INSERT INTO languageaudio_film_detail (idfilm,idlanguage) VALUES (?,?)";
-            $array = array($this->idaudiofilm,$this->idaudiolanguage);
+            $sql = "INSERT INTO languageaudio_serie_detail (idserie,idlanguage) VALUES (?,?)";
+            $array = array($this->idaudioserie,$this->idaudiolanguage);
             $result = $this->insertRecord($sql, $array);
             return $result;
         }
 
         //funcion para eliminar el registro
-        public function eliminateAudioFilm()
+        public function eliminateAudioSerie()
         {
-            $filmUpdate = false;
+            $serieUpdate = false;
 
-            $sql = "DELETE FROM languageaudio_film_detail WHERE idfilm = ?";
-            $array = array($this->idaudiofilm);
+            $sql = "DELETE FROM languageaudio_serie_detail WHERE idserie = ?";
+            $array = array($this->idaudioserie);
             $data = $this->saveRecord($sql, $array);
             
             if($data){
-                $filmUpdate = true;
+                $serieUpdate = true;
             }
-            return $filmUpdate;
+            return $serieUpdate;
         }
         
     }

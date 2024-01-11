@@ -1,28 +1,28 @@
 <?php
 include_once(__DIR__ . '/../Templates/Header.php');
-require_once(__DIR__ . '/../../Controllers/FilmController.php');
-require_once(__DIR__ . '/../../Controllers/DetailAudioFilmController.php');
-require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
+require_once(__DIR__ . '/../../Controllers/SerieController.php');
+require_once(__DIR__ . '/../../Controllers/DetailAudioSerieController.php');
+require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
 
 ?>
 
 <!-- Contenido -->
 <div class="container mt-4">
     <?php
-        $idFilm = $_GET['id'];
-        $filmObject = listFilm($idFilm);
+        $idSerie = $_GET['id'];
+        $serieObject = listSerie($idSerie);
         $sendData = false;
-        $filmErase = false;
+        $serieErase = false;
         if(isset($_POST['eraseBtn'])) {
             $sendData = true;
         }
         if($sendData) {
-            //Borramos todos los registros de la pelicula en la tabla lenguage audio
-            $eraseAudioResult = eraseAudioFilm($idFilm);
-            //Borramos todos los registros de la pelicula en la tabla lenguage subtitulo
-            $eraseCaptionResult = eraseCaptionFilm($idFilm);
-            //Borramos todos los registros de la pelicula en la tabla peliculas
-            $filmResult = eraseFilm($idFilm);
+            //Borramos todos los registros de la serie en la tabla lenguage audio
+            $eraseAudioResult = eraseAudioSerie($idSerie);
+            //Borramos todos los registros de la serie en la tabla lenguage subtitulo
+            $eraseCaptionResult = eraseCaptionSerie($idSerie);
+            //Borramos todos los registros de la serie en la tabla series
+            $serieResult = eraseSerie($idSerie);
         }
         if(!$sendData){
     ?>
@@ -32,13 +32,13 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                 <h1>BORRAR UN PELICULA</h1>
             </div>
             <div class="card-body">
-                <form name="create_film" action="" method="POST">
+                <form name="create_serie" action="" method="POST">
                     <h3 class="text-center">
-                        Desea borrar la Pelicula
+                        Desea borrar la Serie
                     </h3>
 
                     <h3 class="text-center">
-                        <?php if(isset($filmObject)) echo $filmObject['title']; ?> ?
+                        <?php if(isset($serieObject)) echo $serieObject['title']; ?> ?
                     </h3>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -54,12 +54,12 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
         {
     ?>
             <?php
-                switch ($filmResult) {
+                switch ($serieResult) {
                     case 'erased':
             ?>
                         <div class="alert alert-success" role="alert">
                             <i class="bi bi-check-circle-fill"></i>
-                            La Pelicula fue borrada exitosamente ! 
+                            La Serie fue borrada exitosamente ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -73,7 +73,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            Hubo un error en el borrado de la Pelicula ! 
+                            Hubo un error en el borrado de la Serie ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
