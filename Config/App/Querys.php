@@ -19,7 +19,7 @@ class Query extends Connection
     {
         $result = $this->con->prepare($sql);
         $result->execute($array);
-        $data =  $result->fetch(PDO::FETCH_ASSOC);
+        $data = $result->fetch(PDO::FETCH_ASSOC);
         return $data;
     }
 
@@ -34,8 +34,21 @@ class Query extends Connection
     //funcion para insertar un registro
     public function insertRecord($sql, $array)
     {
+        echo "<script>console.log('Consulta SQL: " . $sql . "');</script>";
+        echo "<script>console.log('Valores enlazados: " . implode(", ", $array) . "');</script>";
         $result = $this->con->prepare($sql);
+        if (!$result) {
+            $errorInfo = $this->con->errorInfo();
+            echo "<script>console.error('Error en la preparación: " . $errorInfo[2] . "');</script>";
+            return 0;
+        }
         $data = $result->execute($array);
+        if (!$data) {
+            $errorInfo = $result->errorInfo();
+            echo "<script>console.error('Error al ejecutar la consulta: " . $errorInfo[2] . "');</script>";
+            return 0;
+        }
+        echo "<script>console.log('Valor de \$data: " . ($data ? "Éxito" : "Fracaso") . "');</script>";
         if ($data) {
             $answer = $this->con->lastInsertId();
         } else {
