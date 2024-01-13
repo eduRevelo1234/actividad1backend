@@ -1,5 +1,5 @@
 <?php
-class Serie
+class Season
 {
     private $id;
     private $number;
