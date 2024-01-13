@@ -1,97 +1,96 @@
 <?php
 include_once(__DIR__ . '/../Templates/Header.php');
-require_once(__DIR__ . '/../../Controllers/PlatformController.php');
+require_once(__DIR__ . '/../../Controllers/NationalityController.php');
 
 ?>
 
 <!-- Contenido -->
 <div class="container mt-4">
     <?php
-        $idPlatform = isset($_GET['id']) ? $_GET['id'] : 0;
-        $platformObject = listPlatform($idPlatform);
+        $idNationality = isset($_GET['id']) ? $_GET['id'] : 0;
+        $nationalityObject = listNationality($idNationality);
         $sendData = false;
-        $platformResult = false;
-
-        if(isset($_POST['saveBtn'])) 
+        $nationalityResult = false;
+        
+        if (isset($_POST['saveBtn'])) 
         {
             $sendData = true;
         }
-        if($sendData) 
+        if ($sendData) 
         {
-            if(isset($_POST['platformName'])) 
+            if (isset($_POST['nationalityName'])) 
             {
-                $platformResult = burnPlatform($_POST['platformId'],$_POST['platformName'],$_POST['platformNameCurrent']);
+                $nationalityResult = burnNationality($_POST['nationalityId'], $_POST['nationalityName'],$_POST['nationalityNameCurrent']);
             }
         }
-        if(!$sendData)
+        if (!$sendData) 
         {
     ?>
             <div class="card">
                 <div class="card-header text-center">
-                    <?php 
-                        if($idPlatform > 0)
+                    <?php
+                        if ($idNationality > 0) 
                         {
                     ?>
-                        <h1>EDICION DE UNA PLATAFORMA</h1>
-                    <?php 
-                        }else
+                        <h1>EDICION DE UNA NACIONALIDAD</h1>
+                    <?php
+                        } else 
                         {
                     ?>
-                        <h1>CREACION DE UNA NUEVA PLATAFORMA</h1>
-                    <?php 
+                        <h1>CREACION DE UNA NUEVA NACIONALIDAD</h1>
+                    <?php
                         }
                     ?>
                 </div>
                 <div class="card-body">
-                    <form name="create_platform" action="" method="POST">
+                    <form name="create_nationality" action="" method="POST">
                         <div class="form-floating mb-3">
-                            <input id="platformName" name="platformName" type="text" class="form-control" placeholder="name@example.com" value="<?php if(isset($platformObject['name'])) echo $platformObject['name']; ?>" autocomplete="off">
-                            <label for="platformName">Nombre de la Plataforma</label>
+                            <input id="nationalityName" name="nationalityName" type="text" class="form-control" placeholder="Country Name" value="<?php if (isset($nationalityObject['name'])) echo $nationalityObject['name']; ?>" autocomplete="off">
+                            <label for="nationalityName">Nombre de la Nacionalidad</label>
                         </div>
-                        
-                        <input type="hidden" name="platformId" value="<?php echo $idPlatform; ?>">
-                        <input type="hidden" name="platformNameCurrent" value="<?php if (isset($platformObject['name'])) echo $platformObject['name']; ?>">
+
+                        <input type="hidden" name="nationalityId" value="<?php if (isset($nationalityObject['id'])) echo $nationalityObject['id']; ?>">
+                        <input type="hidden" name="nationalityNameCurrent" value="<?php if (isset($nationalityObject['name'])) echo $nationalityObject['name']; ?>">
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <input type="submit" value="Guardar" class="btn btn-success" name="saveBtn">
-                            <br> 
+                            <br>
                             <a class="btn btn-danger" href="List.php">Regresar</a>
                         </div>
                     </form>
                 </div>
             </div>
     <?php
-        } else
+        } else 
         {
     ?>
             <?php
-                
-                switch ($platformResult) {
-                    case 'errorvacio':
+                switch ($nationalityResult) {
+                case 'errorvacio':
             ?>
-                        <div class="alert alert-danger" role="alert">
-                            <i class="bi bi-x-circle-fill"></i>
-                            El nombre de la Plataforma no debe estar vacio ! 
-                            <br> 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-primary" href="List.php">
-                                    Regresar
-                                </a>
-                            </div>      
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-x-circle-fill"></i>
+                            El nombre de la Nacionalidad no debe estar vacío !
+                        <br>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a class="btn btn-primary" href="List.php">
+                                Regresar
+                            </a>
                         </div>
+                    </div>
             <?php
                         break;
                     case 'errorformat':
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            El nombre de la Plataforma solo debe contener letras ! 
-                            <br> 
+                            El nombre de la Nacionalidad solo debe contener letras !
+                            <br>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
                                     Regresar
                                 </a>
-                            </div>         
+                            </div>
                         </div>
             <?php
                         break;
@@ -99,13 +98,13 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
             ?>
                         <div class="alert alert-success" role="alert">
                             <i class="bi bi-check-circle-fill"></i>
-                            La Plataforma se creo exitosamente ! 
-                            <br> 
+                            La Nacionalidad se creó exitosamente !
+                            <br>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
                                     Regresar
                                 </a>
-                            </div>         
+                            </div>
                         </div>
             <?php
                         break;
@@ -113,13 +112,13 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            Hubo un error en la creacion de la Plataforma ! 
-                            <br> 
+                            Hubo un error en la creación de la Nacionalidad !
+                            <br>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
                                     Regresar
                                 </a>
-                            </div>         
+                            </div>
                         </div>
             <?php
                         break;
@@ -127,13 +126,13 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
             ?>
                         <div class="alert alert-success" role="alert">
                             <i class="bi bi-check-circle-fill"></i>
-                            La Plataforma se edito exitosamente ! 
-                            <br> 
+                            La Nacionalidad se editó exitosamente !
+                            <br>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
                                     Regresar
                                 </a>
-                            </div>         
+                            </div>
                         </div>
             <?php
                         break;
@@ -141,21 +140,21 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            Hubo un error en la edicion de la Plataforma ! 
-                            <br> 
+                            Hubo un error en la edición de la Nacionalidad !
+                            <br>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
                                     Regresar
                                 </a>
-                            </div>         
+                            </div>
                         </div>
             <?php
                         break;
-                        case 'errorname':
+                    case 'errorname':
             ?>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
-                            El nombre de la Plataforma ya existe ! 
+                            El nombre de la Nacionalidad ya existe ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
@@ -165,24 +164,41 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
                         </div>
             <?php
                         break;
-                         case 'samename':
+                    case 'samename':
             ?>
                         <div class="alert alert-warning" role="alert">
                             <i class="bi bi-exclamation-circle-fill"></i>
-                            El nombre del Idioma es el mismo  ! 
-                            <br> 
+                            El nombre de la Nacionalidad es el mismo que uno existente !
+                            <br>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
                                     Regresar
                                 </a>
-                            </div>         
+                            </div>
                         </div>
             <?php
                         break;
-                }
+                    defaul:
             ?>
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            Es una prueba !
+                            <br>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary" href="List.php">
+                                    Regresar
+                                </a>
+                            </div>
+                        </div>
+            <?php
+                        break;
+            }
+        ?>
             </div>
     <?php
-        }
+    }
     ?>
 </div>
+<?php
+include_once(__DIR__ . '/../Templates/Footer.php');
+?>

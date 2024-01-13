@@ -12,8 +12,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
 <!-- Contenido -->
 <div class="container mt-4">
     <?php
-        $contlangaud = 0;
-        $idFilm = $_GET['id'];
+        $idFilm = isset($_GET['id']) ? $_GET['id'] : 0;
         $filmObject = listFilm($idFilm);
         $sendData = false;
         $filmResult = "";

@@ -62,7 +62,7 @@
 
             foreach ($data as $item) {
                 $itemObject = new Language($item['id'], $item['name'], $item['isocode']);
-                array_push($listData,$itemObject);
+                array_push($listData, $itemObject);
             }
             
             return $listData;
@@ -119,21 +119,19 @@
             return $languageUpdate;
         }
 
-        //funcion para actualizar el registro
+        //funcion para eliminar el registro
         public function eliminateLanguage()
         {
-            $languageUpdate = false;
+            $languageEliminate = false;
 
             $sql = "DELETE FROM languages WHERE id = ?";
             $array = array($this->id);
             $data = $this->saveRecord($sql, $array);
             
             if($data){
-                $languageUpdate = true;
+                $languageEliminate = true;
             }
-            return $languageUpdate;
-        }
-        
+            return $languageEliminate;
+        }  
     }
-
  ?>
