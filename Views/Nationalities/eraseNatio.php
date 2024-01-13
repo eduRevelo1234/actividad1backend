@@ -4,8 +4,13 @@ require_once(__DIR__ . '/../../Controllers/NationalityController.php');
 
 
 
+$nationalityId= $_GET['id'];
+
 // Obtener el objeto de nacionalidad
+
+
 $nationalityObject = getNationality($nationalityId);
+
 
 // Procesar el borrado si se envían datos
 if (isset($_POST['eraseBtn'])) {
@@ -14,7 +19,7 @@ if (isset($_POST['eraseBtn'])) {
         $nationalityResult = eraseNationality($nationalityId);
 
         // Mostrar mensajes de depuración
-        echo "ID de Nacionalidad: " . $nationalityObject->getId() . "<br>";
+        echo "ID de Nacionalidad: " . $nationalityObject ['id'] . "<br>";
         echo "Resultado del borrado: " . $nationalityResult . "<br>";
     } catch (Exception $e) {
         echo "Error al intentar eliminar la Nacionalidad: " . $e->getMessage();

@@ -7,12 +7,11 @@ class Nationalities extends Query
     private $name;
     // Propiedad para almacenar la conexión PDO
 
-    public function __construct($pdo, $id = null, $name = null)
+    public function __construct( $id , $name )
     {
         parent::__construct();
-        $this->pdo = $pdo;
-        $this->setId($id);
-        $this->setName($name);
+        $this->id=$id;
+        $this->name=$name;
     }
     // Métodos GET y SET
     public function getId()
@@ -42,7 +41,7 @@ class Nationalities extends Query
         $listData = [];
 
         foreach ($data as $item) {
-            $itemObject = new Nationalities($this->pdo, $item['id'], $item['name']);
+            $itemObject = new Nationalities( $item['id'], $item['name']);
             array_push($listData, $itemObject);
         }
 
@@ -59,7 +58,7 @@ class Nationalities extends Query
     public function getNationality()
     {
         $sql = "SELECT id, name FROM nationalities WHERE id = ?";
-        $array = array($this->getId());
+        $array = array($this->id);
         $result = $this->selectRecord($sql, $array);
         return $result;
     }
@@ -89,20 +88,21 @@ class Nationalities extends Query
     }
     
 
-    public function updateNationality($nationalityName)
+    public function updateNationality()
     {
-        $sql = "UPDATE nationalities SET name = ? WHERE id = ?";
-        $array = array($nationalityName, $this->getId());
-        $result = $this->updateRecord($sql, $array);
+       $sql = "UPDATE nationalities SET name = ? WHERE id = ?";
+       $array = array( $this->name, $this->id);
+        $result = $this->saveRecord($sql, $array);
+      
         return $result;
     }
 
     public function deleteNationality()
     {
         $sql = "DELETE FROM nationalities WHERE id = ?";
-        $array = array($this->getId());
+        $array = array($this->id);
         try {
-            $result = $this->deleteRecord($sql, $array);
+            $result = $this->saveRecord($sql, $array);
             return $result;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage(); // Imprimir mensaje de error
@@ -115,11 +115,13 @@ class Nationalities extends Query
         // Implementación para actualizar un registro en la base de datos
         $stmt = $this->pdo->prepare($sql);
         $result = $stmt->execute($array);
-        return $result;
-    } catch (Exception $e) {
+        $data =  $result->fetch(PDO::FETCH_ASSOC);
+        return  $data;
+
+            } catch (Exception $e) {
         error_log("Error in listSeries function: " . $e->getMessage());
         return [];
-    }
+        }
     }
 
     public function deleteRecord($query, $params = array()) {
@@ -128,8 +130,8 @@ class Nationalities extends Query
         return $success; // Devuelve true si se eliminó correctamente, false si falló
     }
 }
-    
+
+
+
 
 ?>
-
-        

@@ -16,36 +16,25 @@ function getNationality($nationalityId)
     return $nationalityObject;
 }
 
-
-
 // Función para guardar o actualizar el registro de nacionalidad
 function saveNationality($nationalityId, $nationalityName)
 {
     // Validación del nombre de la nacionalidad
-    if (empty($nationalityName)) {
-        $message = 'errorvacio';
+   if (empty($nationalityName)) {
+      $message = 'errorvacio';
     } else {
-        $model = new Nationalities($nationalityId, $nationalityName);
+      $model = new Nationalities($nationalityId, $nationalityName);
         if ($nationalityId > 0) {
-            // Editar Nacionalidad
-            $result = $model->updateNationality($nationalityName);
-            $message = $result ? 'edited' : 'errorredited';
+            //Editar Nacionalidad
+          $result = $model->updateNationality();
+           $message = $result ? 'edited' : 'errorredited';
         } else {
             // Crear Nacionalidad
-            $result = $model->saveNationality();
+           $result = $model->saveNationality();
             $message = $result ? 'registered' : 'errorregistered';
         }
-    }
-    
-    return $message;
-}
-
-// Función para borrar el registro de nacionalidad
-function eraseNationality($nationalityId)
-{
-    $model = new Nationalities($nationalityId, null);
-    $result = $model->deleteNationality();
-    $message = $result ? 'erased' : 'errorerased';
+   }
+  //$message = $nationalityId;
     return $message;
 }
 
@@ -55,9 +44,38 @@ if(isset($_POST['editNationality'])) {
         $editedNationalityId = $_POST['editNationalityId'];
         $editedNationalityName = $_POST['editNationalityName'];
 
-        $editResult = saveNationality($editedNationalityId, $editedNationalityName);
+        // Validar si la nacionalidad existe antes de intentar editarla
+        $existingNationality = getNationality($editedNationalityId);
+        if ($existingNationality) {
+            $model = new Nationalities($editedNationalityId, $editedNationalityName);
+            $edited = $model->updateNationality();
+
+            if ($edited) {
+                $editResult = 'edited'; // Éxito al editar la nacionalidad
+            } else {
+                $editResult = 'errorredited'; // Error al editar la nacionalidad
+            }
+        } else {
+            $editResult = 'errornotfound'; // La nacionalidad no existe
+        }
         // Manejo del resultado (mensaje de éxito o error)
     }
+}
+function eraseNationality($nationalityId)
+{
+
+  
+    $model = new Nationalities($nationalityId, null);
+    $result = $model->deleteNationality();
+    echo "Entro a eraseNationality<br>";
+    if ($result == 1) {
+        
+        $message = 'erased';
+    } else {
+        $message = 'errorrerased';
+        echo "Entro a eraseNationality<br>";
+    }           
+    return $message;
 }
 
 // Lógica para eliminar una nacionalidad

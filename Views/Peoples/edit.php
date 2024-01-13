@@ -68,7 +68,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         <label for="id_nacionalidad">Seleccionar Nacionalidad:</label>
         <select id="id_nacionalidad" name="id_nacionalidad">
             <?php
-            $nationalitiesController = new Nationalities($db);
+            $nationalitiesController = new Nationalities($dd, null);
             $searchResults = $nationalitiesController->getNationalities();
             
             if (!empty($searchResults)) {

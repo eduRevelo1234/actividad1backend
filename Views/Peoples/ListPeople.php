@@ -25,7 +25,7 @@ $db = $querys->conectDb(); // Obtener la conexión existente
 }*/
 
 //echo "ListPeople: creando objeto Nacionalities <br/>";
-$nationalitiesInstance = new Nationalities($db); // Reemplaza $db con tu conexión a la base de datos
+$nationalitiesInstance = new Nationalities($db, null); // Reemplaza $db con tu conexión a la base de datos
 /*if( is_null($nationalitiesInstance) ){
 	echo "ListPeople: Objeto nationalitiesInstance vacio <br/>";
 }else{
