@@ -1,8 +1,8 @@
 <?php
 include_once(__DIR__ . '/../Templates/Header.php');
 require_once(__DIR__ . '/../../Controllers/PersonController.php');
-require_once(__DIR__ . '/../../Controllers/NationalityController.php');
-require_once(__DIR__ . '/../../Models/Nationality.php');
+require_once(__DIR__ . '/../../Controllers/NationalitiesController.php');
+require_once(__DIR__ . '/../../Models/Nationalities.php');
 require_once(__DIR__ . '/../../Models/Person.php');
 
 // Verificar si se proporciona un ID válido en la URL

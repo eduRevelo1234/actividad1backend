@@ -1,6 +1,6 @@
 <?php
 include_once(__DIR__ . '/../Templates/Header.php');
-require_once(__DIR__ . '/../../Controllers/NationalityController.php');
+require_once(__DIR__ . '/../../Controllers/NationalitiesController.php');
 
 ?>
 
