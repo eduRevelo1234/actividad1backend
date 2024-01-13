@@ -1,75 +1,135 @@
 <?php
-    require_once(__DIR__ . '/../Config/App/Querys.php');
+require_once(__DIR__ . '/../Config/App/Querys.php');
 
+class Nationalities extends Query
+{
+    private $id;
+    private $name;
+    // Propiedad para almacenar la conexión PDO
 
-
-    class Nationalities extends Query
+    public function __construct($pdo, $id = null, $name = null)
     {
-        //Variables
-        private $id;
-        private $name;
-
-        public function __construct($idNationalities, $nameNationalities)
-        {
-            $this->id = $idNationalities;
-            $this->name = $nameNationalities;
-            parent::__construct();
-        }
-            
-        //funcion para leer de base de datos el id 
-        public function getId()
-        {
-            return $this->id;
-        }
+        parent::__construct();
+        $this->pdo = $pdo;
+        $this->setId($id);
+        $this->setName($name);
+    }
+    // Métodos GET y SET
+    public function getId()
+    {
+        return $this->id;
+    }
         
-        //funcion para insertar en base de datos el id 
-        public function setId($id)
-        {
-            $this->id = $id;
-        }
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
         
-        //funcion para leer de base de datos el nombre 
-        public function getName()
-        {
-            return $this->name;
-        }
+    public function getName()
+    {
+        return $this->name;
+    }
         
-        //funcion para insertar en base de datos el nombre
-        public function setName($name)
-        {
-            $this->name = $name;
-        }
-
- //funcion para obtener de base de datos todos los registros 
-
- public function getNationalities()
-        {
-            $sql = "SELECT * FROM nationalities";
-            $data = $this->selectRecords($sql);
-            $listData = [];
-
-            foreach ($data as $item) {
-                $itemObject = new Nationalities($item['id'], $item['name']);
-                array_push($listData,$itemObject);
-            }
-            
-            return $listData;
-        }
-//funcion para leer de base de datos un registro 
-public function getNationalitie() {
-            $sql = "SELECT * FROM nationalities";
-            $data = $this->selectRecords($sql);
-            $listData = [];
-
-            foreach ($data as $item) {
-                $itemObject = new Platform($item['id'], $item['name']);
-                array_push($listData,$itemObject);
-            }
-            
-            return $listData;
-        }
-
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
-    ?>
+    public function getNationalities()
+    {
+        $sql = "SELECT * FROM nationalities";
+        $data = $this->selectRecords($sql);
+        $listData = [];
+
+        foreach ($data as $item) {
+            $itemObject = new Nationalities($this->pdo, $item['id'], $item['name']);
+            array_push($listData, $itemObject);
+        }
+
+        return $listData;
+    }
+    public function getNationalityByTerm($searchTerm)
+    {
+        $sql = "SELECT * FROM nationalities WHERE name LIKE ?";
+        $array = array("%$searchTerm%");
+        $result = $this->selectRecords($sql, $array);
+        return $result;
+    }
+
+    public function getNationality()
+    {
+        $sql = "SELECT id, name FROM nationalities WHERE id = ?";
+        $array = array($this->getId());
+        $result = $this->selectRecord($sql, $array);
+        return $result;
+    }
+
+    public function getNationalityByName()
+    {
+        $sql = "SELECT name FROM nationalities WHERE name = ?";
+        $array = array($this->getName());
+        $result = $this->selectRecord($sql, $array);
+        return $result;
+    }
+
+    public function saveNationality()
+    {
+        if ($this->getId() > 0) {
+            // Actualizar la nacionalidad existente
+            $sql = "UPDATE nationalities SET name = ? WHERE id = ?";
+            $array = array($this->getName(), $this->getId());
+            $result = $this->updateRecord($sql, $array);
+        } else {
+            // Crear nueva nacionalidad
+            $sql = "INSERT INTO nationalities (name) VALUES (?)";
+            $array = array($this->getName());
+            $result = $this->insertRecord($sql, $array);
+        }
+        return $result;
+    }
+    
+
+    public function updateNationality($nationalityName)
+    {
+        $sql = "UPDATE nationalities SET name = ? WHERE id = ?";
+        $array = array($nationalityName, $this->getId());
+        $result = $this->updateRecord($sql, $array);
+        return $result;
+    }
+
+    public function deleteNationality()
+    {
+        $sql = "DELETE FROM nationalities WHERE id = ?";
+        $array = array($this->getId());
+        try {
+            $result = $this->deleteRecord($sql, $array);
+            return $result;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage(); // Imprimir mensaje de error
+            return false; // Retorna false para indicar que hubo un error
+        }
+    }
+    
+    public function updateRecord($sql, $array) {
+        try	{
+        // Implementación para actualizar un registro en la base de datos
+        $stmt = $this->pdo->prepare($sql);
+        $result = $stmt->execute($array);
+        return $result;
+    } catch (Exception $e) {
+        error_log("Error in listSeries function: " . $e->getMessage());
+        return [];
+    }
+    }
+
+    public function deleteRecord($query, $params = array()) {
+        $stmt = $this->pdo->prepare($query);
+        $success = $stmt->execute($params);
+        return $success; // Devuelve true si se eliminó correctamente, false si falló
+    }
+}
+    
+
+?>
+
         
