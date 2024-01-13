@@ -60,10 +60,10 @@
                             Auxiliares
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Personas</a></li>
+                            <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Peoples/ListPeople.php">Personas</a></li>
                             <li><a class="dropdown-item" href="#">Actores</a></li>
                             <li><a class="dropdown-item" href="#">Directores</a></li>
-                            <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Auxiliares/Nationalities/ListAux.php">Nacionalidades</a></li>
+                            <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Nationalities/ListNationalities.php">Nacionalidades</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
