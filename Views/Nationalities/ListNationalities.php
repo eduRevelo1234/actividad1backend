@@ -1,24 +1,11 @@
 <?php
 include_once(__DIR__ . '/../Templates/Header.php');
-require_once(__DIR__ . '/../../Controllers/NationalitiesController.php');
+require_once(__DIR__ . '/../../Controllers/NationalityController.php');
 
-// Instanciar la clase Nationalities para manejar la lógica de la base de datos
+/// Instanciar la clase Nationalities para manejar la lógica de la base de datos
 $nationalitiesInstance = new Nationalities(null, null);
 
-// Lógica para la búsqueda
-$searchResults = array();
-if(isset($_POST['search'])) {
-    $searchTerm = $_POST['searchTerm'];
-    $nationalityList = $nationalitiesInstance->getNationality();
-    foreach ($nationalityList as $nationality) {
-        if (stripos($nationality->getName(), $searchTerm) !== false) {
-            $searchResults[] = $nationality;
-        }
-    }
-} else {
-    // Si no se realiza una búsqueda, mostrar todas las nacionalidades
-    $searchResults = $nationalitiesInstance->getNationalities();
-}
+
 
 // Lógica para agregar una nueva nacionalidad
 if(isset($_POST['addNationality'])) {
@@ -31,7 +18,9 @@ if(isset($_POST['addNationality'])) {
     if ($existingNationality) {
         // La nacionalidad ya existe, mostrar mensaje o redirigir con error
         $addMessage = 'La nacionalidad ya existe en la base de datos.';
-        
+        // Puedes redirigir o mostrar un mensaje de error aquí
+        // header("Location: {$_SERVER['REQUEST_URI']}");
+        // exit();
     } else {
         // La nacionalidad no existe, proceder a agregarla
         $nationalitiesInstance->setName($newNationalityName);
@@ -40,8 +29,8 @@ if(isset($_POST['addNationality'])) {
         // Mensaje de éxito o error
         $addMessage = $added ? '¡Nueva nacionalidad agregada correctamente!' : 'Error al agregar la nacionalidad.';
         // Redireccionar a la misma página para actualizar el listado
-        header("Location: {$_SERVER['REQUEST_URI']}");
-        exit();
+        //header("Location: {$_SERVER['REQUEST_URI']}");
+        //exit();
     }
 }
 
@@ -57,8 +46,8 @@ if(isset($_POST['editNationality'])) {
 
     // Mensaje de éxito o error
     $editMessage = $edited ? '¡Nacionalidad editada correctamente!' : 'Error al editar la nacionalidad.';
-    header("Location: {$_SERVER['REQUEST_URI']}");
-    exit();
+    //header("Location: {$_SERVER['REQUEST_URI']}");
+    //exit();
 }
 
 
@@ -73,8 +62,25 @@ if(isset($_POST['deleteNationality'])) {
     $deleteMessage = $deleted ? '¡Nacionalidad eliminada correctamente!' : 'Error al eliminar la nacionalidad.';
     
     // Redireccionar a la misma página para actualizar el listado
-    header("Location: {$_SERVER['PHP_SELF']}");
-    exit();
+    //header("Location: {$_SERVER['PHP_SELF']}");
+    //exit();
+}
+// Lógica para la búsqueda
+$searchResults = array();
+if(isset($_POST['search'])) {
+    $searchTerm = $_POST['searchTerm'];
+    echo "Término de búsqueda: " . $searchTerm . "<br>";
+
+    $nationalityList = $nationalitiesInstance->getNationality();
+    foreach ($nationalityList as $nationality) {
+        if (stristr($nationality->getName(), $searchTerm) !== false) {
+            $searchResults[] = $nationality;
+            echo "Coincidencia encontrada: " . $nationality->getName() . "<br>";
+        }
+    }
+} else {
+    // Si no se realiza una búsqueda, mostrar todas las nacionalidades
+    $searchResults = $nationalitiesInstance->getNationalities();
 }
 ?>
 
@@ -82,6 +88,7 @@ if(isset($_POST['deleteNationality'])) {
 ?>
 
 <!-- HTML para mostrar el listado y la opción de búsqueda -->
+<!-- Incluir estilos CSS y estructura de la página -->
 
 <div class="container mt-4">
     <div class="card">
@@ -125,12 +132,12 @@ if(isset($_POST['deleteNationality'])) {
             <hr>
             <h2>Listado de Nacionalidades</h2>
             <form method="post" action="">
-    <div class="mb-3">
-        <label for="searchTerm" class="form-label">Buscar Nacionalidad:</label>
-        <input type="text" class="form-control" id="searchTerm" name="searchTerm" placeholder="Ingrese un país" required>
-    </div>
-    <button type="submit" class="btn btn-primary" name="search">Buscar</button>
-</form>
+				<div class="mb-3">
+					<label for="searchTerm" class="form-label">Buscar Nacionalidad:</label>
+					<input type="text" class="form-control" id="searchTerm" name="searchTerm" placeholder="Ingrese un país" required>
+				</div>
+				<button type="submit" class="btn btn-primary" name="search">Buscar</button>
+			</form>
 <table class="table">
     <thead>
         <tr>
@@ -147,13 +154,10 @@ if(isset($_POST['deleteNationality'])) {
             <td><?php echo $nationality->getName(); ?></td>
             <td>
                 <!-- Enlace para editar -->
-                <a class="btn btn-primary" href="ediNatio.php?id=<?php echo $nationality->getId(); ?>">
-                    Editar
-                </a>
+                <a class="btn btn-primary" href="ediNatio.php?id=<?php echo $nationality->getId(); ?>"> Editar</a>
                 <!-- Enlace para eliminar -->
-                <a class="btn btn-danger" href="borrarNatio.php?id=<?php echo $nationality->getId(); ?>">
-                    Eliminar
-                </a>
+                <a class="btn btn-danger" href="eraseNatio.php?id=<?php echo $nationality->getId(); ?>">Eliminar</a>
+
             </td>
         </tr>
     <?php } ?>
