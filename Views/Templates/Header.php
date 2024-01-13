@@ -63,7 +63,7 @@
                             <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Peoples/ListPeople.php">Personas</a></li>
                             <li><a class="dropdown-item" href="#">Actores</a></li>
                             <li><a class="dropdown-item" href="#">Directores</a></li>
-                            <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Nationalities/ListNationalities.php">Nacionalidades</a></li>
+                            <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Nationality/ListNationality.php">Nacionalidades</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
