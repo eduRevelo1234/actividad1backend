@@ -53,6 +53,31 @@ function insertSerie($title, $idDirector, $idPlatform, $premierYear)
     }
 }
 
+function editSerie($id, $title, $idDirector, $idPlatform, $premierYear)
+{
+    try {
+        $message = "ok";
+        $idPlatform = empty($idPlatform) ? null : strval($idPlatform);
+        $idDirector = empty($idDirector) ? null : strval($idDirector);
+        $premierYear = empty($premierYear) ? null : strval($premierYear);
+        $message = validation($title, $idDirector, $idPlatform, $premierYear);
+        if ($message == 'ok') {
+            $mysqli = initConnectionDB();
+            $stmt = $mysqli->prepare("UPDATE series SET title = ?, id_platform = ?, id_director = ?, premiere_year = ? WHERE id = ?");
+            $stmt->bind_param("ssssi", $title, $idPlatform, $idDirector, $premierYear, $id);
+            if ($stmt->execute()) {
+                $message = 'okUpdate';
+            }
+
+            $mysqli->close();
+        }
+        return $message;
+    } catch (Exception $e) {
+        error_log("Error in editSerie function: " . $e->getMessage());
+        return false; // Devuelve un valor que indica que la actualización falló
+    }
+}
+
 function validation($title, $idDirector, $idPlatform, $premierYear)
 {
     $message = "ok";
@@ -80,13 +105,9 @@ function existSerie($title)
 {
     $mysqli = initConnectionDB();
     $numRows = 0;
-
-    // Modificar la consulta para buscar en la columna 'title'
     $stmt = $mysqli->prepare("SELECT 1 FROM series WHERE title = ?");
     $stmt->bind_param("s", $title);
-
     if ($stmt->execute()) {
-        // Si la ejecución es exitosa, verificar si se encontró un registro
         $stmt->store_result();
         $numRows = ($stmt->num_rows > 0);
     }
@@ -96,4 +117,42 @@ function existSerie($title)
     return $exist;
 }
 
+//Function to return a serie with id
+function findSerie($id)
+{
+    try {
+        $mysqli = initConnectionDB();
+        $stmt = $mysqli->prepare("SELECT * FROM series WHERE id = ?");
+        $stmt->bind_param("s", $id);
+        $serie = null;
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            // Fetch the results as an associative array
+            $serie = $result->fetch_assoc();
+        }
+        return $serie;
+    } catch (Exception $e) {
+        error_log("Error in listSeries function: " . $e->getMessage());
+        return [];
+    }
+}
+
+function deleteSerie($id)
+{
+    try {
+        $mysqli = initConnectionDB();
+        $stmt = $mysqli->prepare("DELETE FROM series WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        if ($stmt->execute()) {
+            $message = 'okDelete';
+        } else {
+            $message = 'errorDelete';
+        }
+        $mysqli->close();
+        return $message;
+    } catch (Exception $e) {
+        error_log("Error in deleteSerie function: " . $e->getMessage());
+        return 'errorDelete';
+    }
+}
 ?>

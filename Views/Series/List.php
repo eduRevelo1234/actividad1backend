@@ -46,7 +46,9 @@ require_once('../../Controllers/PlatformController.php');
                                     <?php echo $serie->getTitle(); ?>
                                 </td>
                                 <td>
-                                   <?php echo $platformObject['name']; ?>
+                                    <?php if (!empty($platformObject)) {
+                                        echo $platformObject['name'];
+                                    } ?>
                                 </td>
                                 <td>
                                     <?php echo $serie->getIdDirector(); ?>
@@ -56,11 +58,11 @@ require_once('../../Controllers/PlatformController.php');
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a class="btn btn-primary" href="#">
+                                        <a class="btn btn-primary" href="NewSerie.php?id=<?php echo $serie->getId(); ?>">
                                             Editar
                                         </a>
                                         &nbsp;&nbsp;
-                                        <a class="btn btn-danger" href="#">
+                                        <a class="btn btn-danger" href="DeleteSerie.php?id=<?php echo $serie->getId(); ?>">
                                             Eliminar
                                         </a>
                                         &nbsp;&nbsp;
