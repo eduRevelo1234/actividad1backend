@@ -29,6 +29,7 @@ require_once('../../Controllers/SeasonController.php');
                             <th>Id serie</th>
                             <th>Serie</th>
                             <th>Numero de temporada</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

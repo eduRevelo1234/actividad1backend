@@ -159,7 +159,7 @@ require_once('../../Controllers/ChapterController.php');
                 ?>
                 <div class="alert alert-danger" role="alert">
                     <i class="bi bi-x-circle-fill"></i>
-                    Ya existe ese el episodio para la temporada de esa serie!
+                    Ya existe ese episodio para la temporada de esa serie!
                     <br>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a class="btn btn-primary" href="List.php">

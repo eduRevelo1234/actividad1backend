@@ -27,10 +27,11 @@ require_once('../../Controllers/ChapterController.php');
                         <tr>
                             <th>Id</th>
                             <th>Serie</th>
-                            <th>Season</th>
+                            <th>Temporada</th>
                             <th>Numero de episodio</th>
                             <th>Titulo</th>
                             <th>Duaracion</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
