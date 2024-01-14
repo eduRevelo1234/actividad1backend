@@ -8,7 +8,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
 require_once(__DIR__ . '/../../Controllers/ActorController.php');
 require_once(__DIR__ . '/../../Controllers/DetailActorFilmController.php');
 require_once(__DIR__ . '/../../Controllers/PersonController.php');
-
+require_once(__DIR__ . '/../../Controllers/DirectorController.php');
 ?>
 
 <!-- Contenido -->
@@ -167,13 +167,30 @@ require_once(__DIR__ . '/../../Controllers/PersonController.php');
                             
                             <!-- Director  -->
                             <div class="col-lg-4 col-md-12">
+                                <?php
+                                    $valorseleccionado=isset($filmObject['iddirector']) ? $filmObject['iddirector'] : 0;
+                                    $directorList = listDirectors();
+                                    if (count($directorList) > 0) {
+                                ?>
                                 <div class="form-floating mb-3">
-                                    <select id="filmIdDirector" name="filmIdDirector" class="form-select" aria-label="Default select example" value=1>
-                                        <option value="0" selected>Escojer un Director</option>
-                                        <option value="1">Director 1</option>
-                                        <option value="2">Director 2</option>
+                                    <select id="filmIdDirector" name="filmIdDirector" class="form-select" aria-label="Default select example">
+                                        <option value=0 selected>Escojer un Director</option>
+                                    <?php
+                                            foreach ($directorList as $director) 
+                                            {
+                                                //Traemos el nombre y Apellido del Director 
+                                                $personObject = listPerson($director->getIdperson());        
+                                    ?>
+                                        <option value="<?php  echo $director->getId(); ?>" <?php echo ($valorseleccionado==$director->getId()) ? "selected" : ""; ?> ><?php  echo $personObject['name']." " .$personObject['lastname']; ?></option>   
+                                    <?php
+
+                                            }
+                                    ?>
                                     </select>
                                 </div>
+                                    <?php
+                                        }
+                                    ?>
                             </div>
                             
                             <!-- Año de estreno  -->

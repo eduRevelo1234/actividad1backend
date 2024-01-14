@@ -3,6 +3,7 @@ include_once(__DIR__ . '/../Templates/Header.php');
 require_once(__DIR__ . '/../../Controllers/FilmController.php');
 require_once(__DIR__ . '/../../Controllers/DetailAudioFilmController.php');
 require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
+require_once(__DIR__ . '/../../Controllers/DetailActorFilmController.php');
 
 ?>
 
@@ -17,6 +18,8 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
             $sendData = true;
         }
         if($sendData) {
+            //Borramos todos los registros de la pelicula en la tabla actores pelicula
+            $eraseAudioResult = eraseActorFilm($idFilm);
             //Borramos todos los registros de la pelicula en la tabla lenguage audio
             $eraseAudioResult = eraseAudioFilm($idFilm);
             //Borramos todos los registros de la pelicula en la tabla lenguage subtitulo

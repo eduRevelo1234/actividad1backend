@@ -2,6 +2,8 @@
 include_once(__DIR__ . '/../Templates/Header.php');
 require_once(__DIR__ . '/../../Controllers/FilmController.php');
 require_once(__DIR__ . '/../../Controllers/PlatformController.php');
+require_once(__DIR__ . '/../../Controllers/DirectorController.php');
+require_once(__DIR__ . '/../../Controllers/PersonController.php');
 ?>
 
 <!-- Contenido -->
@@ -45,7 +47,12 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
                                     $platformList = listPlatform($film->getIdplatform());
                                 ?>   
                                 <td><?php if(isset($platformList)) echo $platformList['name']; ?></td>
-                                <td><?php echo $film->getIddirector(); ?> </td>
+                                <?php
+                                    $directorObject = listDirector($film->getIddirector());
+                                    //Traemos el nombre y Apellido del Director 
+                                    $personObject = listPerson($directorObject['idperson']);
+                                ?> 
+                                <td><?php echo $personObject['name']." " .$personObject['lastname']; ?></td>
                                 <td><?php echo $film->getPremiereyear(); ?> </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">

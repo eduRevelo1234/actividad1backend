@@ -62,7 +62,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Persons/List.php">Personas</a></li>
                             <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Actors/List.php">Actores</a></li>
-                            <li><a class="dropdown-item" href="#">Directores</a></li>
+                            <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Directors/List.php">Directores</a></li>
                             <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Nationalities/List.php">Nacionalidades</a></li>
                             <li>
                                 <hr class="dropdown-divider">

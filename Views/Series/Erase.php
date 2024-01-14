@@ -3,6 +3,7 @@ include_once(__DIR__ . '/../Templates/Header.php');
 require_once(__DIR__ . '/../../Controllers/SerieController.php');
 require_once(__DIR__ . '/../../Controllers/DetailAudioSerieController.php');
 require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
+require_once(__DIR__ . '/../../Controllers/DetailActorSerieController.php');
 
 ?>
 
@@ -17,6 +18,8 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
             $sendData = true;
         }
         if($sendData) {
+            //Borramos todos los registros de la serie en la tabla actores serie
+            $eraseActorResult = eraseActorSerie($idSerie);
             //Borramos todos los registros de la serie en la tabla lenguage audio
             $eraseAudioResult = eraseAudioSerie($idSerie);
             //Borramos todos los registros de la serie en la tabla lenguage subtitulo

@@ -5,13 +5,15 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
 require_once(__DIR__ . '/../../Controllers/LanguageController.php');
 require_once(__DIR__ . '/../../Controllers/DetailAudioSerieController.php');
 require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
-
+require_once(__DIR__ . '/../../Controllers/ActorController.php');
+require_once(__DIR__ . '/../../Controllers/DetailActorSerieController.php');
+require_once(__DIR__ . '/../../Controllers/PersonController.php');
+require_once(__DIR__ . '/../../Controllers/DirectorController.php');
 ?>
 
 <!-- Contenido -->
 <div class="container mt-4">
     <?php
-        $contlangaud = 0;
         $idSerie = isset($_GET['id']) ? $_GET['id'] : 0;
         $serieObject = listSerie($idSerie);
         $sendData = false;
@@ -20,6 +22,9 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
         $saveAudioResult = "";
         $eraseCaptionResult = "";
         $saveCaptionResult = "";
+        $eraseActorResult = "";
+        $saveActorResult = "";
+
         if(isset($_POST['saveBtn'])) 
         {
             $sendData = true;
@@ -32,7 +37,28 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
             {
                 //Obtenemos el ultimo registro guardado
                 $endserie = endSerie();
-                    
+                
+                //Se guarda los datos en la tabla actor / serie
+                
+                //Verificamos si estamos editando o creando
+                if($_POST['serieId']>0)
+                {
+                    //Borramos todos los registros de la serie en la tabla actores series
+                    $eraseActorResult = eraseActorSerie($_POST['serieId']);
+                    //Grabamos los actores con su pelicula
+                    foreach($_POST['check_actor_list'] as $selection) 
+                    {
+                        $saveActorResult = burnActorSerie($selection,$_POST['serieId']);        
+                    }
+                }else
+                {
+                    //Grabamos los actores con su pelicula
+                    foreach($_POST['check_actor_list'] as $selection) 
+                    {
+                        $saveActorResult = burnActorSerie($selection,$endserie['maxid']);        
+                    }
+                }
+
                 //Se guarda los datos en la tabla lenguaje de audio / serie
                 
                 //Verificamos si estamos editando o creando
@@ -138,13 +164,30 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
                             
                             <!-- Director  -->
                             <div class="col-lg-4 col-md-12">
+                                <?php
+                                    $valorseleccionado=isset($serieObject['iddirector']) ? $serieObject['iddirector'] : 0;
+                                    $directorList = listDirectors();
+                                    if (count($directorList) > 0) {
+                                ?>
                                 <div class="form-floating mb-3">
-                                    <select id="serieIdDirector" name="serieIdDirector" class="form-select" aria-label="Default select example" value=1>
-                                        <option value="0" selected>Escojer un Director</option>
-                                        <option value="1">Director 1</option>
-                                        <option value="2">Director 2</option>
+                                    <select id="serieIdDirector" name="serieIdDirector" class="form-select" aria-label="Default select example">
+                                        <option value=0 selected>Escojer un Director</option>
+                                    <?php
+                                            foreach ($directorList as $director) 
+                                            {
+                                                //Traemos el nombre y Apellido del Director 
+                                                $personObject = listPerson($director->getIdperson());        
+                                    ?>
+                                        <option value="<?php  echo $director->getId(); ?>" <?php echo ($valorseleccionado==$director->getId()) ? "selected" : ""; ?> ><?php  echo $personObject['name']." " .$personObject['lastname']; ?></option>   
+                                    <?php
+
+                                            }
+                                    ?>
                                     </select>
                                 </div>
+                                    <?php
+                                        }
+                                    ?>
                             </div>
                             
                             <!-- Año de estreno  -->
@@ -173,19 +216,23 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
                                     <div text-align: justify;>
                                     <?php
                                         $actorList = listActors();
-                                        if (count($actorList) > 0) {
+                                        
+                                        if (count($actorList) > 0) 
+                                        {
                                             foreach ($actorList as $actor) {
+                                                //Traemos el nombre y Apellido del Actor 
+                                                $personObject = listPerson($actor->getIdperson());
                                                 //Verificamos si estamos editando o creando
                                                 if($idSerie>0)
-                                                {   
+                                                {
                                                     //Verificamos si existe el registro guardado
-                                                    $selectactor = listActor($idSerie,$languaje->getId());
-                                                    if(!empty($selectlanguaje))
+                                                    $selectactor = listActorSerie($actor->getId(),$idSerie);
+                                                    if(!empty($selectactor))
                                                     {
                                     ?>
                                                         &nbsp;&nbsp;
                                                         <div class="form-check form-check-inline">
-                                                            <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" checked >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                            <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" checked >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
                                                         </div>
                                                         &nbsp;&nbsp;
                                     <?php
@@ -194,7 +241,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
                                     ?>
                                                         &nbsp;&nbsp;
                                                         <div class="form-check form-check-inline">
-                                                            <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                            <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
                                                         </div>
                                                         &nbsp;&nbsp;
                                     <?php
@@ -204,7 +251,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
                                     ?>
                                                 &nbsp;&nbsp;
                                                 <div class="form-check form-check-inline">
-                                                    <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                    <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
                                                 </div>
                                                 &nbsp;&nbsp;
                                     <?php
