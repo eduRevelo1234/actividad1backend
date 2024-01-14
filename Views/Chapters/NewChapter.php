@@ -17,7 +17,7 @@ require_once('../../Controllers/ChapterController.php');
         $idSeason = $chapter['id_season'];
         $season = findSeason($idSeason);
         $idserie = $season['id_serie'];
-        $serie = findSerie($idserie);
+        $serie = listSerie($idserie);
     }
     $sendData = false;
     $chapterResult = false;

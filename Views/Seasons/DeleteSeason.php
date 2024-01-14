@@ -9,7 +9,7 @@ require_once('../../Controllers/SerieController.php');
     <?php
     $idSeason = $_GET['id'];
     $seasonObject = findSeason($idSeason);
-    $serieObject = findSerie($seasonObject['id_serie']);
+    $serieObject = listSerie($seasonObject['id_serie']);
     $sendData = false;
 
     if (isset($_POST['deleteBtn'])) {

@@ -13,7 +13,7 @@ require_once('../../Controllers/PlatformController.php');
         $idSeason = $_GET['id'];
         $season = findSeason($idSeason);
         $idserie = $season['id_serie'];
-        $serie = findSerie($idserie);
+        $serie = listSerie($idserie);
     }
     $sendData = false;
     $seasonResult = false;

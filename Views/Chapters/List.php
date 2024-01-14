@@ -39,7 +39,7 @@ require_once('../../Controllers/ChapterController.php');
                             $idSeason = $chapter->getIdSeason();
                             $seasonObject = findSeason($idSeason);
                             $idSerie = $seasonObject['id_serie'];
-                            $serieObject = findSerie($idSerie);
+                            $serieObject = listSerie($idSerie);
                             ?>
                             <tr>
                                 <td>

@@ -35,7 +35,7 @@ require_once('../../Controllers/SeasonController.php');
                         <?php
                         foreach ($seasonList as $season) {
                             $idSerie = $season->getIdSerie();
-                            $serieObject = findSerie($idSerie);    
+                            $serieObject = listSerie($idSerie);    
                             ?>
                             <tr>
                                 <td>

@@ -11,7 +11,7 @@ require_once('../../Controllers/SerieController.php');
     $idChapter = $_GET['id'];
     $chapterObject = findChapter($idChapter);
     $seasonObject = findSeason($chapterObject['id_season']);
-    $serieObject = findSerie($seasonObject['id_serie']);
+    $serieObject = listSerie($seasonObject['id_serie']);
     $sendData = false;
 
     if (isset($_POST['deleteBtn'])) {
