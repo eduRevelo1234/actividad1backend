@@ -1,6 +1,8 @@
 <?php
 include_once(__DIR__ . '/../Templates/Header.php');
 require_once(__DIR__ . '/../../Controllers/PersonController.php');
+require_once(__DIR__ . '/../../Controllers/ActorController.php');
+require_once(__DIR__ . '/../../Controllers/DirectorController.php');
 ?>
 
 <!-- Contenido -->
@@ -18,9 +20,13 @@ require_once(__DIR__ . '/../../Controllers/PersonController.php');
                 if($personObject['status'] == 'Activa') 
                 {
                     $personResult = activePerson($personObject['id'],'Inactiva');
+                    $actorResult = activeActorPerson($personObject['id'],'Inactiva');
+                    $directorResult = activeDirectorPerson($personObject['id'],'Inactiva');
                 }else
                 {
                     $personResult = activePerson($personObject['id'],'Activa');
+                    $actorResult = activeActorPerson($personObject['id'],'Activa');
+                    $directorResult = activeDirectorPerson($personObject['id'],'Activa');
                 }    
             }
         }

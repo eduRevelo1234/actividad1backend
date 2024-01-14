@@ -119,4 +119,27 @@ function activeDirector($directorId, $directorStatus)
     }  
     return $message;
 }
+
+//funcion para activar el estado del registro de acuerdo a la persona
+function activeDirectorPerson($directorIdperson, $directorStatus)
+{
+    $model = new Director(null, $directorIdperson, null, $directorStatus);
+    $result = $model->activateDirectorPerson();
+    if($directorStatus == 'Activa') 
+    {
+        if ($result == 1) {
+            $message = 'actived';
+        } else {
+            $message = 'errorractived';
+        }                
+    }else
+    {
+        if ($result == 1) {
+            $message = 'inactive';
+        } else {
+            $message = 'errorrinactive';
+        }           
+    }  
+    return $message;
+}
 ?>

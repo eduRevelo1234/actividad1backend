@@ -119,4 +119,27 @@ function activeActor($actorId, $actorStatus)
     }  
     return $message;
 }
+
+//funcion para activar el estado del registro de acuerdo a la persona
+function activeActorPerson($actorIdperson, $actorStatus)
+{
+    $model = new Actor(null, $actorIdperson, null, $actorStatus);
+    $result = $model->activateActorPerson();
+    if($actorStatus == 'Activa') 
+    {
+        if ($result == 1) {
+            $message = 'actived';
+        } else {
+            $message = 'errorractived';
+        }                
+    }else
+    {
+        if ($result == 1) {
+            $message = 'inactive';
+        } else {
+            $message = 'errorrinactive';
+        }           
+    }  
+    return $message;
+}
 ?>

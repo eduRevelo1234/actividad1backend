@@ -154,6 +154,22 @@
             }
             return $actorUpdate;
         }
+
+        //funcion para actualizar el registro
+        public function activateActorPerson()
+        {
+            
+            $actorUpdate = false;
+
+            $sql = "UPDATE actors SET status=? WHERE idperson = ?";
+            $array = array($this->status,$this->idperson);
+            $data = $this->saveRecord($sql, $array);
+            
+            if($data){
+                $actorUpdate = true;
+            }
+            return $actorUpdate;
+        }
     }
 
  ?>

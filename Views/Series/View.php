@@ -166,7 +166,7 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                             <div class="col-lg-4 col-md-12">
                                 <?php
                                     $valorseleccionado=isset($serieObject['iddirector']) ? $serieObject['iddirector'] : 0;
-                                    $directorList = listDirectors();
+                                    $directorList = listDirectorsActive();
                                     if (count($directorList) > 0) {
                                 ?>
                                 <div class="form-floating mb-3">
@@ -215,7 +215,7 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                                     &nbsp;&nbsp;
                                     <div text-align: justify;>
                                     <?php
-                                        $actorList = listActors();
+                                        $actorList = listActorsActive();
                                         
                                         if (count($actorList) > 0) 
                                         {

@@ -142,11 +142,25 @@
         //funcion para actualizar el registro
         public function activateDirector()
         {
-            
             $directorUpdate = false;
 
             $sql = "UPDATE directors SET status=? WHERE id = ?";
             $array = array($this->status,$this->id);
+            $data = $this->saveRecord($sql, $array);
+            
+            if($data){
+                $directorUpdate = true;
+            }
+            return $directorUpdate;
+        }
+
+        //funcion para actualizar el registro
+        public function activateDirectorPerson()
+        {
+            $directorUpdate = false;
+
+            $sql = "UPDATE directors SET status=? WHERE idperson = ?";
+            $array = array($this->status,$this->idperson);
             $data = $this->saveRecord($sql, $array);
             
             if($data){
