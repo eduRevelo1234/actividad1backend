@@ -3,47 +3,47 @@ require_once(__DIR__ . '/../Config/App/Querys.php');
 require_once('../../Models/Chapter.php');
 require_once(__DIR__ . '/../Config/App/InitConnectionDB.php');
 
-function listSeasons()
+function listChapters()
 {
     try {
         $query = new Query();
-        $seasonList = $query->selectRecords("SELECT * FROM chapters");
-        $seasonObjectArray = [];
-        foreach ($seasonList as $item) {
-            $seasonObject = new Chapter(
+        $chapterList = $query->selectRecords("SELECT * FROM chapters");
+        $chapterObjectArray = [];
+        foreach ($chapterList as $item) {
+            $chapterObject = new Chapter(
                 $item['id'],
                 $item['number'],
                 $item['title'],
                 $item['duration'],
                 $item['id_season']
             );
-            array_push($seasonObjectArray, $seasonObject);
+            array_push($chapterObjectArray, $chapterObject);
         }
-        echo "<script>console.log('Season ID:', " . json_encode($seasonObjectArray) . ");</script>";
-        echo "<script>console.log('Season ID:', " . json_encode($seasonObjectArray[0]) . ");</script>";
-        return $seasonObjectArray;
+        return $chapterObjectArray;
     } catch (Exception $e) {
-        error_log("Error in listSeasons function: " . $e->getMessage());
+        error_log("Error in listChapters function: " . $e->getMessage());
         return [];
     }
 }
 
-function insertSeason($number, $idSerie)
+function insertChapter($number, $title, $duration, $idSeason)
 {
     try {
         $message = "ok";
         $number = empty($number) ? null : strval($number);
-        $idSerie = empty($idSerie) ? null : strval($idSerie);
-        $message = validationSeason($number, $idSerie);
+        $title = empty($title) ? null : strval($title);
+        $duration = empty($duration) ? null : strval($duration);
+        $idSeason = empty($idSeason) ? null : strval($idSeason);
+        $message = validationChapter($number, $title, $duration, $idSeason);
         if ($message == 'ok') {
-            if (!isSeasonExisting($number, $idSerie)) {
+            if (!isChapterExisting($number, $idSeason)) {
                 $mysqli = initConnectionDB();
-                $stmt = $mysqli->prepare("INSERT INTO seasons (number, id_serie) VALUES (?, ?)");
-                $stmt->bind_param("ss", $number, $idSerie);
+
+                $stmt = $mysqli->prepare("INSERT INTO chapters (number, title, duration, id_season) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("ssss", $number, $title, $duration, $idSeason);
                 if ($stmt->execute()) {
                     $message = 'ok';
                 } else {
-                    echo "<script> console.log('$stmt->error')</script>";
                     error_log("Error executing statement: " . $stmt->error);
                 }
                 $mysqli->close();
@@ -53,60 +53,65 @@ function insertSeason($number, $idSerie)
         }
         return $message;
     } catch (Exception $e) {
-        error_log("Error in insertSeries function: " . $e->getMessage());
+        error_log("Error in insertChapter function: " . $e->getMessage());
         return false;
     }
 }
 
-function editSeason($id, $number, $idSerie)
+function editChapter($id, $number, $title, $duration, $idSeason)
 {
     try {
         $message = "ok";
         $number = empty($number) ? null : strval($number);
-        $idSerie = empty($idSerie) ? null : strval($idSerie);
-        $message = validationSeason($number, $idSerie);
+        $title = empty($title) ? null : strval($title);
+        $duration = empty($duration) ? null : strval($duration);
+        $idSeason = empty($idSeason) ? null : strval($idSeason);
+        $message = validationChapter($number, $title, $duration, $idSeason);
         if ($message == 'ok') {
             $mysqli = initConnectionDB();
-            $stmt = $mysqli->prepare("UPDATE seasons SET number = ?, id_serie = ? WHERE id = ?");
-            $stmt->bind_param("sii", $number, $idSerie, $id);
+            $stmt = $mysqli->prepare("UPDATE chapters SET number = ?, title = ?, duration = ?, id_Season = ? WHERE id = ?");
+            $stmt->bind_param("ssssi", $number, $title, $duration, $idSeason, $id);
             if ($stmt->execute()) {
                 $message = 'okUpdate';
             }
             $mysqli->close();
         }
-        echo "<script> console.log('$message'); </script>";
         return $message;
     } catch (Exception $e) {
-        error_log("Error in editSeason function: " . $e->getMessage());
+        error_log("Error in editChapter function: " . $e->getMessage());
         return false;
     }
 }
 
-function validationSeason($number, $idserie)
+function validationChapter($number, $title, $duration, $idSeason)
 {
     $message = "ok";
     //Empty validation
-    if (empty($number) || empty($idserie)) {
+    if (empty($number) || empty($idSeason)) {
         $message = 'emptyerror';
     }
     //idPlatform validation 
     if ($number !== null && null !== $number && !preg_match("/^\d+$/", $number)) {
         $message = 'errorformat';
     }
+    //duration validation 
+    if ($duration !== null && null !== $duration && !preg_match("/^\d+$/", $duration)) {
+        $message = 'errorformat';
+    }
     //idDirector validation 
-    if ($idserie !== null && null !== $idserie && !preg_match("/^\d+$/", $idserie)) {
+    if ($idSeason !== null && null !== $idSeason && !preg_match("/^\d+$/", $idSeason)) {
         $message = 'errorformat';
     }
     return $message;
 }
 
 //function to validate if serie exist
-function isSeasonExisting($number, $id_serie)
+function isChapterExisting($number, $idSeason)
 {
     $mysqli = initConnectionDB();
     $numRows = 0;
-    $stmt = $mysqli->prepare("SELECT 1 FROM seasons WHERE number = ? and id_serie = ?");
-    $stmt->bind_param("ss", $number, $id_serie);
+    $stmt = $mysqli->prepare("SELECT 1 FROM chapters WHERE number = ? and id_Season = ?");
+    $stmt->bind_param("ss", $number, $idSeason);
     if ($stmt->execute()) {
         $stmt->store_result();
         $numRows = ($stmt->num_rows > 0);
@@ -118,30 +123,30 @@ function isSeasonExisting($number, $id_serie)
 }
 
 //Function to return a serie with id
-function findSeason($id)
+function findChapter($id)
 {
     try {
         $mysqli = initConnectionDB();
-        $stmt = $mysqli->prepare("SELECT * FROM seasons WHERE id = ?");
+        $stmt = $mysqli->prepare("SELECT * FROM chapters WHERE id = ?");
         $stmt->bind_param("s", $id);
-        $season = null;
+        $chapter = null;
         if ($stmt->execute()) {
             $result = $stmt->get_result();
             // Fetch the results as an associative array
-            $season = $result->fetch_assoc();
+            $chapter = $result->fetch_assoc();
         }
-        return $season;
+        return $chapter;
     } catch (Exception $e) {
-        error_log("Error in findSeason function: " . $e->getMessage());
+        error_log("Error in findChapter function: " . $e->getMessage());
         return [];
     }
 }
 
-function deleteSeason($id)
+function deleteChapter($id)
 {
     try {
         $mysqli = initConnectionDB();
-        $stmt = $mysqli->prepare("DELETE FROM seasons WHERE id = ?");
+        $stmt = $mysqli->prepare("DELETE FROM chapters WHERE id = ?");
         $stmt->bind_param("i", $id);
         if ($stmt->execute()) {
             $message = 'okDelete';
@@ -151,7 +156,7 @@ function deleteSeason($id)
         $mysqli->close();
         return $message;
     } catch (Exception $e) {
-        error_log("Error in deleteSerie function: " . $e->getMessage());
+        error_log("Error in deleteChapter function: " . $e->getMessage());
         return 'errorDelete';
     }
 }
