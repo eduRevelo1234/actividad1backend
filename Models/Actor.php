@@ -81,6 +81,21 @@
             
             return $listData;
         }
+
+        //funcion para obtener de base de datos todos los registros Activos
+        public function getActorsActive()
+        {
+            $sql = "SELECT * FROM actors WHERE status = 'Activa'";
+            $data = $this->selectRecords($sql);
+            $listData = [];
+
+            foreach ($data as $item) {
+                $itemObject = new Actor($item['id'], $item['idperson'], $item['code'], $item['status']);
+                array_push($listData,$itemObject);
+            }
+            
+            return $listData;
+        }
         
         //funcion para leer de base de datos un registro 
         public function getActor()
@@ -139,7 +154,6 @@
             }
             return $actorUpdate;
         }
-        
     }
 
  ?>

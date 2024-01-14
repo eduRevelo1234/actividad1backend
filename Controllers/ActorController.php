@@ -9,6 +9,14 @@ function listActors()
     return $actorList;
 }
 
+//funcion para listar todos los registros Activos
+function listActorsActive()
+{
+    $model = new Actor(null, null, null,null);
+    $actorList = $model->getActorsActive();
+    return $actorList;
+}
+
 //funcion para leer un registro
 function listActor($actorId)
 {

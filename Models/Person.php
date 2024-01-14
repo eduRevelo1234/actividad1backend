@@ -123,6 +123,21 @@
             
             return $listData;
         }
+
+        //funcion para obtener de base de datos todos los registros Activos
+        public function getPersonsActive()
+        {
+            $sql = "SELECT * FROM persons WHERE status = 'Activa'";
+            $data = $this->selectRecords($sql);
+            $listData = [];
+
+            foreach ($data as $item) {
+                $itemObject = new Person($item['id'], $item['name'], $item['lastname'], $item['code'], $item['datebirth'], $item['idnationality'], $item['status']);
+                array_push($listData,$itemObject);
+            }
+            
+            return $listData;
+        }
         
         //funcion para leer de base de datos un registro 
         public function getPerson()

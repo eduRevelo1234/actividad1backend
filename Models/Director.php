@@ -81,6 +81,21 @@
             
             return $listData;
         }
+
+        //funcion para obtener de base de datos todos los registros Activos
+        public function getDirectorsActive()
+        {
+            $sql = "SELECT * FROM directors WHERE status = 'Activa'";
+            $data = $this->selectRecords($sql);
+            $listData = [];
+
+            foreach ($data as $item) {
+                $itemObject = new Director($item['id'], $item['idperson'], $item['code'], $item['status']);
+                array_push($listData,$itemObject);
+            }
+            
+            return $listData;
+        }
         
         //funcion para leer de base de datos un registro 
         public function getDirector()

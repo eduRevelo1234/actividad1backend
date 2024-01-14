@@ -9,6 +9,14 @@ function listPersons()
     return $personList;
 }
 
+//funcion para listar todos los registros activos
+function listPersonsActive()
+{
+    $model = new Person(null, null, null, null, null, null, null);
+    $platformList = $model->getPersonsActive();
+    return $platformList;
+}
+
 //funcion para leer un registro
 function listPerson($personId)
 {

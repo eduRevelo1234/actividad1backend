@@ -50,7 +50,7 @@ require_once(__DIR__ . '/../../Controllers/PersonController.php');
                             <div class="col-lg-4 col-md-12">
                                     <?php
                                         $valorseleccionado=isset($actorObject['idperson']) ? $actorObject['idperson'] : 0; 
-                                        $personList = listPersons();
+                                        $personList = listPersonsActive();
                                         if (count($personList) > 0) {
                                     ?>
                                     <div class="form-floating mb-3">
@@ -96,7 +96,6 @@ require_once(__DIR__ . '/../../Controllers/PersonController.php');
         {
     ?>
             <?php
-                echo $actorResult;
                 switch ($actorResult) {
                     case 'errorpersonvacio':
             ?>

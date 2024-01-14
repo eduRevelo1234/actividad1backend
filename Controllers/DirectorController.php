@@ -9,6 +9,14 @@ function listDirectors()
     return $directorList;
 }
 
+//funcion para listar todos los registros activos
+function listDirectorsActive()
+{
+    $model = new Director(null, null, null,null);
+    $directorList = $model->getDirectorsActive();
+    return $directorList;
+}
+
 //funcion para leer un registro
 function listDirector($directorId)
 {
