@@ -10,25 +10,25 @@ require_once(__DIR__ . '/../../Controllers/DetailActorSerieController.php');
 <!-- Contenido -->
 <div class="container mt-4">
     <?php
-        $idSerie = $_GET['id'];
-        $serieObject = listSerie($idSerie);
-        $sendData = false;
-        $serieErase = false;
-        if(isset($_POST['eraseBtn'])) {
-            $sendData = true;
-        }
-        if($sendData) {
-            //Borramos todos los registros de la serie en la tabla actores serie
-            $eraseActorResult = eraseActorSerie($idSerie);
-            //Borramos todos los registros de la serie en la tabla lenguage audio
-            $eraseAudioResult = eraseAudioSerie($idSerie);
-            //Borramos todos los registros de la serie en la tabla lenguage subtitulo
-            $eraseCaptionResult = eraseCaptionSerie($idSerie);
-            //Borramos todos los registros de la serie en la tabla series
-            $serieResult = eraseSerie($idSerie);
-        }
-        if(!$sendData){
-    ?>
+    $idSerie = $_GET['id'];
+    $serieObject = listSerie($idSerie);
+    $sendData = false;
+    $serieErase = false;
+    if (isset($_POST['eraseBtn'])) {
+        $sendData = true;
+    }
+    if ($sendData) {
+        //Borramos todos los registros de la serie en la tabla actores serie
+        $eraseActorResult = eraseActorSerie($idSerie);
+        //Borramos todos los registros de la serie en la tabla lenguage audio
+        $eraseAudioResult = eraseAudioSerie($idSerie);
+        //Borramos todos los registros de la serie en la tabla lenguage subtitulo
+        $eraseCaptionResult = eraseCaptionSerie($idSerie);
+        //Borramos todos los registros de la serie en la tabla series
+        $serieResult = eraseSerie($idSerie);
+    }
+    if (!$sendData) {
+        ?>
 
         <div class="card">
             <div class="card-header text-center">
@@ -41,55 +41,55 @@ require_once(__DIR__ . '/../../Controllers/DetailActorSerieController.php');
                     </h3>
 
                     <h3 class="text-center">
-                        <?php if(isset($serieObject)) echo $serieObject['title']; ?> ?
+                        <?php if (isset($serieObject))
+                            echo $serieObject['title']; ?> ?
                     </h3>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <input type="submit" value="Borrar" class="btn btn-success" name="eraseBtn">
-                        <br> 
+                        <br>
                         <a class="btn btn-danger" href="List.php">Regresar</a>
                     </div>
                 </form>
             </div>
         </div>
-    <?php
-        } else
-        {
-    ?>
-            <?php
-                switch ($serieResult) {
-                    case 'erased':
-            ?>
-                        <div class="alert alert-success" role="alert">
-                            <i class="bi bi-check-circle-fill"></i>
-                            La Serie fue borrada exitosamente ! 
-                            <br> 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-primary" href="List.php">
-                                    Regresar
-                                </a>
-                            </div>         
-                        </div>
-            <?php
-                        break;
-                    case 'errorrerased':
-            ?>
-                        <div class="alert alert-danger" role="alert">
-                            <i class="bi bi-x-circle-fill"></i>
-                            Hubo un error en el borrado de la Serie ! 
-                            <br> 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-primary" href="List.php">
-                                    Regresar
-                                </a>
-                            </div>         
-                        </div>
-            <?php
-                        break;
-                }
-            ?>
-            </div>
-    <?php
+        <?php
+    } else {
+        ?>
+        <?php
+        switch ($serieResult) {
+            case 'erased':
+                ?>
+                <div class="alert alert-success" role="alert">
+                    <i class="bi bi-check-circle-fill"></i>
+                    La Serie fue borrada exitosamente !
+                    <br>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a class="btn btn-primary" href="List.php">
+                            Regresar
+                        </a>
+                    </div>
+                </div>
+                <?php
+                break;
+            case 'errorrerased':
+                ?>
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-x-circle-fill"></i>
+                    Hubo un error en el borrado de la Serie !
+                    <br>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a class="btn btn-primary" href="List.php">
+                            Regresar
+                        </a>
+                    </div>
+                </div>
+                <?php
+                break;
         }
+        ?>
+    </div>
+    <?php
+    }
     ?>
 </div>

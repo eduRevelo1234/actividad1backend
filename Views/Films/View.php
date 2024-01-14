@@ -146,7 +146,7 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                         
                         <!-- Titulo -->
                         <div class="form-floating mb-3">
-                            <input id="filmTitle" name="filmTitle" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($filmObject['title'])) echo $filmObject['title']; ?>">
+                            <input id="filmTitle" name="filmTitle" type="text" required class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($filmObject['title'])) echo $filmObject['title']; ?>">
                             <label for="filmTitle">Nombre de la Pelicula</label>
                         </div>
                         <input id="filmTitleCurrent" type="hidden" name="filmTitleCurrent" type="text" class="form-control" value="<?php if(isset($filmObject)) echo $filmObject['title']; ?>">
@@ -210,7 +210,7 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                             <!-- Año de estreno  -->
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">
-                                    <input id="filmYear" name="filmYear" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($filmObject['premiereyear'])) echo $filmObject['premiereyear']; ?>">
+                                    <input id="filmYear" name="filmYear" type="text" required class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($filmObject['premiereyear'])) echo $filmObject['premiereyear']; ?>">
                                     <label for="filmYear">Año de estreno</label>
                                 </div>
                             </div>

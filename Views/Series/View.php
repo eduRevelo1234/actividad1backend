@@ -146,7 +146,7 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                         
                         <!-- Titulo -->
                         <div class="form-floating mb-3">
-                            <input id="serieTitle" name="serieTitle" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($serieObject['title'])) echo $serieObject['title']; ?>">
+                            <input id="serieTitle" name="serieTitle" type="text" required class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($serieObject['title'])) echo $serieObject['title']; ?>">
                             <label for="serieTitle">Nombre de la Serie</label>
                         </div>
                         <input id="serieTitleCurrent" type="hidden" name="serieTitleCurrent" type="text" class="form-control" value="<?php if(isset($serieObject['title'])) echo $serieObject['title']; ?>">
@@ -211,7 +211,7 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                             <!-- Año de estreno  -->
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">
-                                    <input id="serieYear" name="serieYear" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($serieObject['premiereyear'])) echo $serieObject['premiereyear']; ?>">
+                                    <input id="serieYear" name="serieYear" type="text" required class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($serieObject['premiereyear'])) echo $serieObject['premiereyear']; ?>">
                                     <label for="serieYear">Año de estreno</label>
                                 </div>
                             </div>

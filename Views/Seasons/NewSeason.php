@@ -83,7 +83,7 @@ require_once('../../Controllers/PlatformController.php');
                     <div class="form-group row margin-top offset-2">
                         <label for="number" class="col-3 col-form-label">Numero de temporada</label>
                         <div class="col-1">
-                            <input id="number" name="number" type="text" class="form-control" placeholder="Id" value="<?php if (isset($season))
+                            <input id="number" name="number" type="text" required class="form-control" placeholder="Id" value="<?php if (isset($season))
                                 echo $season['number']; ?>">
                         </div>
                     </div>
