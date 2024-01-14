@@ -75,7 +75,7 @@ require_once(__DIR__ . '/../../Controllers/PersonController.php');
                             <!-- Codigo -->
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">
-                                    <input id="directorCode" name="directorCode" type="text" class="form-control" placeholder="name@example.com" value="<?php if(isset($directorObject['code'])) echo $directorObject['code']; ?>" autocomplete="off">
+                                    <input id="directorCode" name="directorCode" type="text" required class="form-control" placeholder="name@example.com" value="<?php if(isset($directorObject['code'])) echo $directorObject['code']; ?>" autocomplete="off">
                                     <label for="directorCode">Codigo del Director</label>
                                 </div>
                             </div>

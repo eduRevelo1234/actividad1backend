@@ -97,21 +97,21 @@ require_once('../../Controllers/ChapterController.php');
                     <div class="form-group row margin-top offset-2">
                         <label for="idSeason" class="col-3 col-form-label">Id de temporada</label>
                         <div class="col-1">
-                            <input id="idSeason" name="idSeason" type="text" class="form-control" placeholder="Id" value="<?php if (isset($season))
+                            <input id="idSeason" name="idSeason" type="text" required class="form-control" placeholder="Id" value="<?php if (isset($season))
                                 echo $season['id']; ?>">
                         </div>
                     </div>
                     <div class="form-group row margin-top offset-2">
                         <label for="number" class="col-3 col-form-label">Numero de episodio</label>
                         <div class="col-2">
-                            <input id="number" name="number" type="text" class="form-control" placeholder="Episodio" value="<?php if (isset($chapter))
+                            <input id="number" name="number" type="text" required class="form-control" placeholder="Episodio" value="<?php if (isset($chapter))
                                 echo $chapter['number']; ?>">
                         </div>
                     </div>
                     <div class="form-group row margin-top offset-2">
                         <label for="title" class="col-3 col-form-label">Titulo</label>
                         <div class="col-5">
-                            <input id="title" name="title" type="text" class="form-control" placeholder="Titulo de episodio"
+                            <input id="title" name="title" type="text" required class="form-control" placeholder="Titulo de episodio"
                                 value="<?php if (isset($chapter))
                                     echo $chapter['title']; ?>">
                         </div>
@@ -119,7 +119,7 @@ require_once('../../Controllers/ChapterController.php');
                     <div class="form-group row margin-top offset-2">
                         <label for="duration" class="col-3 col-form-label">Duracion</label>
                         <div class="col-2">
-                            <input id="duration" name="duration" type="text" class="form-control" placeholder="Duracion" value="<?php if (isset($chapter))
+                            <input id="duration" name="duration" type="text" required class="form-control" placeholder="Duracion" value="<?php if (isset($chapter))
                                 echo $chapter['duration']; ?>">
                         </div>
                     </div>
