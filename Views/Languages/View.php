@@ -45,21 +45,21 @@ require_once(__DIR__ . '/../../Controllers/LanguageController.php');
                 <div class="card-body">
                     <form name="create_language" action="" method="POST">
                         <div class="form-floating mb-3">
-                            <input required id="languageName" name="languageName" type="text" required class="form-control" placeholder="name@example.com" value="<?php if(isset($languageObject['name'])) echo $languageObject['name']; ?>" autocomplete="off">
+                            <input required id="languageName" name="languageName" type="text" class="form-control" placeholder="name@example.com" value="<?php if(isset($languageObject['name'])) echo $languageObject['name']; ?>" autocomplete="off">
                             <label for="languageName">Nombre del Idioma</label>
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input required id="languageIsocode" name="languageIsocode" type="text" required class="form-control" placeholder="name@example.com" value="<?php if(isset($languageObject['isocode'])) echo $languageObject['isocode']; ?>">
+                            <input required id="languageIsocode" name="languageIsocode" type="text" class="form-control" placeholder="name@example.com" value="<?php if(isset($languageObject['isocode'])) echo $languageObject['isocode']; ?>">
                             <label for="languageIsocode">Codigo ISO 639</label>
                         </div>
                         
-                        <input required type="hidden" name="languageId" value="<?php echo $idLanguage; ?>">
-                        <input required type="hidden" name="languageNameCurrent" value="<?php if (isset($languageObject['name'])) echo $languageObject['name']; ?>">
-                        <input required type="hidden" name="languageIsocodeCurrent" value="<?php echo $languageObject['isocode']; ?>">
+                        <input type="hidden" name="languageId" value="<?php echo $idLanguage; ?>">
+                        <input type="hidden" name="languageNameCurrent" value="<?php if (isset($languageObject['name'])) echo $languageObject['name']; ?>">
+                        <input type="hidden" name="languageIsocodeCurrent" value="<?php echo $languageObject['isocode']; ?>">
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <input required type="submit" value="Guardar" class="btn btn-success" name="saveBtn">
+                            <input type="submit" value="Guardar" class="btn btn-success" name="saveBtn">
                             <br> 
                             <a class="btn btn-danger" href="List.php">Regresar</a>
                         </div>
