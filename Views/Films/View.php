@@ -46,16 +46,22 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                     //Borramos todos los registros de la pelicula en la tabla actores peliculas
                     $eraseActorResult = eraseActorFilm($_POST['filmId']);
                     //Grabamos los actores con su pelicula
-                    foreach($_POST['check_actor_list'] as $selection) 
+                    if(isset($_POST['check_actor_list'])) 
                     {
-                        $saveActorResult = burnActorFilm($selection,$_POST['filmId']);        
+                        foreach($_POST['check_actor_list'] as $selection) 
+                        {
+                            $saveActorResult = burnActorFilm($selection,$_POST['filmId']);        
+                        }
                     }
                 }else
                 {
                     //Grabamos los actores con su pelicula
-                    foreach($_POST['check_actor_list'] as $selection) 
+                    if(isset($_POST['check_actor_list'])) 
                     {
-                        $saveActorResult = burnActorFilm($selection,$endfilm['maxid']);        
+                        foreach($_POST['check_actor_list'] as $selection) 
+                        {
+                            $saveActorResult = burnActorFilm($selection,$endfilm['maxid']);        
+                        }
                     }
                 }
 
@@ -67,16 +73,22 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                     //Borramos todos los registros de la pelicula en la tabla lenguage audio
                     $eraseAudioResult = eraseAudioFilm($_POST['filmId']);
                     //Grabamos los idiomas de audio con su pelicula
-                    foreach($_POST['check_audio_list'] as $selection) 
+                    if(isset($_POST['check_audio_list'])) 
                     {
-                        $saveAudioResult = burnAudioFilm($_POST['filmId'],$selection);        
+                        foreach($_POST['check_audio_list'] as $selection) 
+                        {
+                            $saveAudioResult = burnAudioFilm($_POST['filmId'],$selection);        
+                        }
                     }
                 }else
                 {
                     //Grabamos los idiomas de audio con su pelicula
-                    foreach($_POST['check_audio_list'] as $selection) 
+                    if(isset($_POST['check_audio_list'])) 
                     {
-                        $saveAudioResult = burnAudioFilm($endfilm['maxid'],$selection);        
+                        foreach($_POST['check_audio_list'] as $selection) 
+                        {
+                            $saveAudioResult = burnAudioFilm($endfilm['maxid'],$selection);        
+                        }
                     }
                 }
                 
@@ -88,16 +100,22 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                     //Borramos todos los registros de la pelicula en la tabla lenguage subtitulo
                     $eraseCaptionResult = eraseCaptionFilm($_POST['filmId']);
                     //Grabamos los idiomas de audio con su pelicula
-                    foreach($_POST['check_caption_list'] as $selection) 
+                    if(isset($_POST['check_caption_list'])) 
                     {
-                        $saveCaptionResult = burnCaptionFilm($_POST['filmId'],$selection);        
+                        foreach($_POST['check_caption_list'] as $selection) 
+                        {
+                            $saveCaptionResult = burnCaptionFilm($_POST['filmId'],$selection);        
+                        }
                     }
                 }else
                 {
                     //Grabamos los idiomas de subtitulo con su pelicula
-                    foreach($_POST['check_caption_list'] as $selection) 
+                    if(isset($_POST['check_caption_list'])) 
                     {
-                        $saveCaptionResult = burnCaptionFilm($endfilm['maxid'],$selection);        
+                        foreach($_POST['check_caption_list'] as $selection) 
+                        {
+                            $saveCaptionResult = burnCaptionFilm($endfilm['maxid'],$selection);        
+                        }
                     }
                 }
             }

@@ -46,16 +46,22 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                     //Borramos todos los registros de la serie en la tabla actores series
                     $eraseActorResult = eraseActorSerie($_POST['serieId']);
                     //Grabamos los actores con su pelicula
-                    foreach($_POST['check_actor_list'] as $selection) 
+                    if(isset($_POST['check_actor_list'])) 
                     {
-                        $saveActorResult = burnActorSerie($selection,$_POST['serieId']);        
+                        foreach($_POST['check_actor_list'] as $selection) 
+                        {
+                            $saveActorResult = burnActorSerie($selection,$_POST['serieId']);        
+                        }
                     }
                 }else
                 {
                     //Grabamos los actores con su pelicula
-                    foreach($_POST['check_actor_list'] as $selection) 
+                    if(isset($_POST['check_actor_list'])) 
                     {
-                        $saveActorResult = burnActorSerie($selection,$endserie['maxid']);        
+                        foreach($_POST['check_actor_list'] as $selection) 
+                        {
+                            $saveActorResult = burnActorSerie($selection,$endserie['maxid']);        
+                        }
                     }
                 }
 
@@ -67,16 +73,22 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                     //Borramos todos los registros de la serie en la tabla lenguage audio
                     $eraseAudioResult = eraseAudioSerie($_POST['serieId']);
                     //Grabamos los idiomas de audio con su serie
-                    foreach($_POST['check_audio_list'] as $selection) 
+                    if(isset($_POST['check_audio_list'])) 
                     {
-                        $saveAudioResult = burnAudioSerie($_POST['serieId'],$selection);        
+                        foreach($_POST['check_audio_list'] as $selection) 
+                        {
+                            $saveAudioResult = burnAudioSerie($_POST['serieId'],$selection);        
+                        }
                     }
                 }else
                 {
                     //Grabamos los idiomas de audio con su serie
-                    foreach($_POST['check_audio_list'] as $selection) 
+                    if(isset($_POST['check_audio_list'])) 
                     {
-                        $saveAudioResult = burnAudioSerie($endserie['maxid'],$selection);        
+                        foreach($_POST['check_audio_list'] as $selection) 
+                        {
+                            $saveAudioResult = burnAudioSerie($endserie['maxid'],$selection);        
+                        }
                     }
                 }
                 
@@ -88,16 +100,22 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                     //Borramos todos los registros de la serie en la tabla lenguage subtitulo
                     $eraseCaptionResult = eraseCaptionSerie($_POST['serieId']);
                     //Grabamos los idiomas de audio con su serie
-                    foreach($_POST['check_caption_list'] as $selection) 
+                    if(isset($_POST['check_caption_list'])) 
                     {
-                        $saveCaptionResult = burnCaptionSerie($_POST['serieId'],$selection);        
+                        foreach($_POST['check_caption_list'] as $selection) 
+                        {
+                            $saveCaptionResult = burnCaptionSerie($_POST['serieId'],$selection);        
+                        }
                     }
                 }else
                 {
                     //Grabamos los idiomas de subtitulo con su serie
-                    foreach($_POST['check_caption_list'] as $selection) 
+                    if(isset($_POST['check_caption_list'])) 
                     {
-                        $saveCaptionResult = burnCaptionSerie($endserie['maxid'],$selection);        
+                        foreach($_POST['check_caption_list'] as $selection) 
+                        {
+                            $saveCaptionResult = burnCaptionSerie($endserie['maxid'],$selection);        
+                        }
                     }
                 }
             }
