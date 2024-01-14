@@ -47,8 +47,8 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Series/List.php">Series</a></li>
-                            <li><a class="dropdown-item" href="#">Temporadas</a></li>
-                            <li><a class="dropdown-item" href="#">Capitulos</a></li>
+                            <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Seasons/List.php">Temporadas</a></li>
+                            <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Chapters/List.php">Capitulos</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
