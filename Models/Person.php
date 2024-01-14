@@ -151,6 +151,15 @@
             return $result;
         }
 
+        //funcion para leer de base de datos el registro que contiene el nombre
+        public function getPersonNationality()
+        {
+            $sql = "SELECT name FROM persons WHERE idnationality = ?";
+            $array = array($this->idnationality);
+            $result = $this->selectRecord($sql, $array);
+            return $result;
+        }
+
         //funcion para guardar el registro
         public function savePerson()
         {

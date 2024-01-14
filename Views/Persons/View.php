@@ -77,7 +77,8 @@ require_once(__DIR__ . '/../../Controllers/NationalityController.php');
                              <!-- Fecha de nacimiento  -->
                             <?php 
                                 //Cambio de formato de la fecha a dd/mm/aaaa
-                                $mostrarFecha = date("d/m/Y", strtotime($personObject['datebirth']));
+                                $fechaactual=isset($personObject['datebirth']) ? $personObject['datebirth'] : 0; 
+                                $mostrarFecha = date("d/m/Y", strtotime($fechaactual));
                             ?>
                              <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">

@@ -77,6 +77,15 @@
             return $result;
         }
 
+        //funcion para leer de base de datos los registros que contiene un lenguaje
+        public function getSerieLanguajeCaption()
+        {
+            $sql = "SELECT idserie FROM languagecaption_serie_detail WHERE idlanguage = ?";
+            $array = array($this->idcaptionlanguage);
+            $result = $this->selectRecord($sql, $array);
+            return $result;
+        }
+
         //funcion para guardar el registro
         public function saveCaptionSerie()
         {

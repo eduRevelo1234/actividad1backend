@@ -43,4 +43,12 @@
        return $message;
    }
 
+   //funcion para leer registros q tenga un lenguaje y cualquier serie 
+   function listLanguageCaptionFilm($audiofilmIdlanguage)
+   {
+       $model = new DetailCaptionFilm(null,null, $audiofilmIdlanguage);  
+       $personObject = $model->getFilmLanguajeCaption();
+       return $personObject;
+   }
+
 ?>

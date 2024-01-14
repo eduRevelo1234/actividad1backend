@@ -77,6 +77,15 @@
             return $result;
         }
 
+        //funcion para leer de base de datos los registros que contiene un lenguaje
+        public function getFilmLanguajeCaption()
+        {
+            $sql = "SELECT idfilm FROM languagecaption_film_detail WHERE idlanguage = ?";
+            $array = array($this->idcaptionlanguage);
+            $result = $this->selectRecord($sql, $array);
+            return $result;
+        }
+
         //funcion para guardar el registro
         public function saveCaptionFilm()
         {

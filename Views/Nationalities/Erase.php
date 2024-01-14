@@ -1,6 +1,7 @@
 <?php
 include_once(__DIR__ . '/../Templates/Header.php');
 require_once(__DIR__ . '/../../Controllers/NationalityController.php');
+require_once(__DIR__ . '/../../Controllers/PersonController.php');
 ?>
 
 <!-- Contenido -->
@@ -14,7 +15,15 @@ require_once(__DIR__ . '/../../Controllers/NationalityController.php');
             $sendData = true;
         }
         if($sendData) {
-            $nationalityResult = eraseNationality($nationalityObject['id']);
+            //Verificamos si no hay personas que utilizan esta nacionalidad
+            $personList = listPersonNationality($nationalityObject['id']);        
+            if (empty($personList))
+            {
+                $nationalityResult = eraseNationality($nationalityObject['id']);
+            }else
+            {
+                $nationalityResult = 'errorexists';
+            }
         }
         if(!$sendData){
     ?>    
@@ -67,6 +76,21 @@ require_once(__DIR__ . '/../../Controllers/NationalityController.php');
                             <i class="bi bi-x-circle-fill"></i>
                             Hubo un error en el borrado de la Nacionalidad ! 
                             <br> 
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary" href="List.php">
+                                    Regresar
+                                </a>
+                            </div>         
+                        </div>
+            <?php
+                        break;
+                    case 'errorexists':
+            ?>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-x-circle-fill"></i>
+                            EXISTEN PERSONAS QUE TIENEN ESTA NACIONALIDAD 
+                            <br>
+                            ANTES DE ELIMINAR SE DEBE CAMBIAR LA NACIONALIDAD DE LAS PERSONAS ! 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">
                                     Regresar

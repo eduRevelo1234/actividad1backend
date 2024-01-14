@@ -70,7 +70,6 @@ function burnPerson($personId,$personName, $personLastname,$personCode,$personDa
         $error[2] = 'ok';
     }
 
-
     //Validacion del Apellido
     if (empty($personLastname)) 
     {
@@ -100,12 +99,13 @@ function burnPerson($personId,$personName, $personLastname,$personCode,$personDa
     }
 
     //Cambio de formato de la fecha a aaaa/mm/dd
-    $nuevaFecha = date("Y/m/d", strtotime($personDatebirth));
+    $tempDate = str_replace('/', '-', $personDatebirth);
+    $newDate= date('Y-m-d', strtotime($tempDate));
     
     //No existe error en las entradas
     if ($error[0] == 'ok' && $error[1] == 'ok' && $error[2] == 'ok' && $error[3] == 'ok' && $error[4] == 'ok')
     {
-        $model = new Person($personId,$personName, $personLastname,$personCode,$nuevaFecha,$personIdnationality,null);
+        $model = new Person($personId,$personName, $personLastname,$personCode,$newDate,$personIdnationality,null);
         
         //Editar Pelicula
         if ($personId > 0 )
@@ -120,7 +120,7 @@ function burnPerson($personId,$personName, $personLastname,$personCode,$personDa
                 //Si no existe el codigo en la base o el codigo se mantiene el mismo
                 if (empty($resultCodePerson) or ($personCode == $personCodeCurrent))
                 {
-                    $model = new Person($personId,$personName, $personLastname,$personCode,$nuevaFecha,$personIdnationality,null);
+                    $model = new Person($personId,$personName, $personLastname,$personCode,$newDate,$personIdnationality,null);
                     $result = $model->updatePerson();
                     if ($result == 1) {
                         $message = 'edited';
@@ -191,5 +191,13 @@ function activePerson($personId, $personStatus)
         }           
     }  
     return $message;
+}
+
+//funcion para leer un registro q tengo una nacionalidad
+function listPersonNationality($personIdnationality)
+{
+    $model = new Person(null, null, null, null, null, $personIdnationality, null);
+    $personObject = $model->getPersonNationality();
+    return $personObject;
 }
 ?>

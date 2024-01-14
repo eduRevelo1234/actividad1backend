@@ -48,10 +48,6 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                     //Grabamos los actores con su pelicula
                     foreach($_POST['check_actor_list'] as $selection) 
                     {
-                        echo $selection;
-                        echo '  --   ';
-                        echo $_POST['filmId'];
-                        echo '     ';
                         $saveActorResult = burnActorFilm($selection,$_POST['filmId']);        
                     }
                 }else
@@ -377,7 +373,6 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
     ?>
             <?php
                 switch ($filmResult) {
-
                     case 'errortitulovacio':
             ?>
                         <div class="alert alert-danger" role="alert">
