@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 14, 2024 at 04:06 PM
+-- Generation Time: Jan 14, 2024 at 01:28 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -38,11 +38,6 @@ CREATE TABLE `actors` (
 -- Dumping data for table `actors`
 --
 
-INSERT INTO `actors` (`id`, `idperson`, `code`, `status`) VALUES
-(1, 1, 'AC-001', 'Activa'),
-(2, 2, 'AC002', 'Activa'),
-(3, 4, 'AC-004', 'Inactiva');
-
 -- --------------------------------------------------------
 
 --
@@ -59,12 +54,6 @@ CREATE TABLE `actor_film_detail` (
 -- Dumping data for table `actor_film_detail`
 --
 
-INSERT INTO `actor_film_detail` (`id`, `idactor`, `idfilm`) VALUES
-(34, 2, 11),
-(39, 2, 1),
-(40, 3, 1),
-(41, 1, 28);
-
 -- --------------------------------------------------------
 
 --
@@ -80,11 +69,6 @@ CREATE TABLE `actor_serie_detail` (
 --
 -- Dumping data for table `actor_serie_detail`
 --
-
-INSERT INTO `actor_serie_detail` (`id`, `idactor`, `idserie`) VALUES
-(1, 1, 2),
-(5, 2, 1),
-(6, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -117,12 +101,6 @@ CREATE TABLE `directors` (
 -- Dumping data for table `directors`
 --
 
-INSERT INTO `directors` (`id`, `idperson`, `code`, `status`) VALUES
-(1, 2, 'Dir-001', 'Activa'),
-(2, 1, 'Dir-002', 'Activa'),
-(3, 3, 'Dir-003', 'Activa'),
-(4, 4, 'DR-002', 'Inactiva');
-
 -- --------------------------------------------------------
 
 --
@@ -141,25 +119,6 @@ CREATE TABLE `films` (
 -- Dumping data for table `films`
 --
 
-INSERT INTO `films` (`id`, `title`, `idplatform`, `iddirector`, `premiereyear`) VALUES
-(1, 'Titanic', 10, 4, 2010),
-(9, 'Hombre de la Mascara d Hierro', 10, 1, 2000),
-(10, 'Iron Man 1', 10, 1, 2015),
-(11, 'Capitan America', 10, 3, 2223),
-(12, 'Rapidos y Furiosos x', 5, 1, 2023),
-(13, 'Prueba 1', 7, 1, 2023),
-(17, 'qqqqq', 11, 1, 1526),
-(18, 'Prueba de id', 4, 1, 8020),
-(19, 'Prueba 2 de Id', 4, 1, 8978),
-(20, 'Prueba 3 del id', 7, 1, 2023),
-(21, 'Prueba 4', 6, 1, 2025),
-(22, 'Prueba 5', 10, 1, 2525),
-(23, 'Prueba 6 de id', 17, 1, 4525),
-(24, 'Prueba 7', 20, 2, 2556),
-(25, 'Prueba 251', 20, 2, 2556),
-(26, 'Prueba definitiva id1', 18, 1, 2023),
-(27, 'Borrar 49', 16, 1, 2024),
-(28, 'Tarzan', 10, 1, 2025);
 
 -- --------------------------------------------------------
 
@@ -177,24 +136,6 @@ CREATE TABLE `languageaudio_film_detail` (
 -- Dumping data for table `languageaudio_film_detail`
 --
 
-INSERT INTO `languageaudio_film_detail` (`id`, `idfilm`, `idlanguage`) VALUES
-(19, 12, 1),
-(20, 12, 2),
-(113, 13, 1),
-(114, 13, 2),
-(127, 25, 1),
-(128, 25, 5),
-(131, 26, 3),
-(132, 26, 5),
-(157, 27, 1),
-(158, 27, 2),
-(175, 11, 2),
-(183, 1, 3),
-(184, 28, 2),
-(185, 10, 1),
-(186, 10, 3),
-(187, 9, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -210,13 +151,6 @@ CREATE TABLE `languageaudio_serie_detail` (
 --
 -- Dumping data for table `languageaudio_serie_detail`
 --
-
-INSERT INTO `languageaudio_serie_detail` (`id`, `idserie`, `idlanguage`) VALUES
-(9, 2, 1),
-(10, 2, 2),
-(15, 1, 3),
-(16, 1, 5),
-(17, 4, 2);
 
 -- --------------------------------------------------------
 
@@ -234,22 +168,6 @@ CREATE TABLE `languagecaption_film_detail` (
 -- Dumping data for table `languagecaption_film_detail`
 --
 
-INSERT INTO `languagecaption_film_detail` (`id`, `idfilm`, `idlanguage`) VALUES
-(13, 13, 3),
-(14, 13, 5),
-(27, 25, 2),
-(28, 25, 3),
-(43, 26, 1),
-(44, 26, 2),
-(59, 27, 1),
-(68, 11, 5),
-(76, 1, 5),
-(77, 28, 3),
-(78, 10, 2),
-(79, 10, 5),
-(80, 9, 1),
-(81, 9, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -265,13 +183,6 @@ CREATE TABLE `languagecaption_serie_detail` (
 --
 -- Dumping data for table `languagecaption_serie_detail`
 --
-
-INSERT INTO `languagecaption_serie_detail` (`id`, `idserie`, `idlanguage`) VALUES
-(9, 2, 3),
-(10, 2, 5),
-(15, 1, 2),
-(16, 1, 3),
-(17, 4, 3);
 
 -- --------------------------------------------------------
 
@@ -289,12 +200,6 @@ CREATE TABLE `languages` (
 -- Dumping data for table `languages`
 --
 
-INSERT INTO `languages` (`id`, `name`, `isocode`) VALUES
-(1, 'afar', 'aa'),
-(2, 'abjasiano', 'ab'),
-(3, 'español', 'es'),
-(5, 'ingles', 'in');
-
 -- --------------------------------------------------------
 
 --
@@ -309,11 +214,6 @@ CREATE TABLE `nationalities` (
 --
 -- Dumping data for table `nationalities`
 --
-
-INSERT INTO `nationalities` (`id`, `name`) VALUES
-(1, 'Ecuatoriano'),
-(2, 'Colombiano'),
-(3, 'Argentino');
 
 -- --------------------------------------------------------
 
@@ -335,13 +235,6 @@ CREATE TABLE `persons` (
 -- Dumping data for table `persons`
 --
 
-INSERT INTO `persons` (`id`, `name`, `lastname`, `code`, `datebirth`, `idnationality`, `status`) VALUES
-(1, 'Darwin', 'Lara', '1802816809', '1975-12-08', 1, 'Activa'),
-(2, 'Enrique', 'Robayo', '1803346152', '2023-01-12', 2, 'Activa'),
-(3, 'Mercy', 'Parra', '180334615-2', '1975-01-11', 3, 'Activa'),
-(4, 'Borrar', 'Borrar', '1802566', '1969-12-31', 3, 'Inactiva'),
-(5, 'Cindt', 'llll', '4588888', '1983-12-08', 1, 'Activa');
-
 -- --------------------------------------------------------
 
 --
@@ -358,33 +251,6 @@ CREATE TABLE `platforms` (
 -- Dumping data for table `platforms`
 --
 
-INSERT INTO `platforms` (`id`, `name`, `status`) VALUES
-(4, 'HBOsed', 'Inactiva'),
-(5, 'HBO', 'Inactiva'),
-(6, 'Borrar', 'Inactiva'),
-(7, 'Borrar4', 'Inactiva'),
-(8, 'borrar1', 'Inactiva'),
-(9, 'borrar1', 'Inactiva'),
-(10, 'Amazon', 'Activa'),
-(11, 'Prueba 100', 'Inactiva'),
-(12, 'Asociacn', 'Inactiva'),
-(13, 'Plataforma', 'Inactiva'),
-(14, 'PlataformaBorrar', 'Inactiva'),
-(15, 'PlataformaBorrar1', 'Inactiva'),
-(16, 'Plataforma nueva', 'Activa'),
-(17, 'Plataforma inexistente', 'Activa'),
-(18, 'Ultima', 'Activa'),
-(19, 'Prueba 200', 'Activa'),
-(20, 'Prueba 300', 'Activa'),
-(21, 'Prueba 600', 'Activa'),
-(22, 'Prueba 701', 'Activa'),
-(23, 'Darwin', 'Activa'),
-(24, 'Mercy Parra', 'Activa'),
-(25, 'Darq', 'Activa'),
-(26, 'BHO', 'Activa'),
-(27, 'BHOs', 'Activa'),
-(28, 'Disney', 'Inactiva');
-
 -- --------------------------------------------------------
 
 --
@@ -400,12 +266,6 @@ CREATE TABLE `prueba` (
 --
 -- Dumping data for table `prueba`
 --
-
-INSERT INTO `prueba` (`id`, `nombre`, `edad`) VALUES
-(2, 'Mercy', 32),
-(3, 'Pato', 34),
-(6, 'Cindy', 35),
-(8, 'Emily', 37);
 
 -- --------------------------------------------------------
 
@@ -436,11 +296,6 @@ CREATE TABLE `series` (
 --
 -- Dumping data for table `series`
 --
-
-INSERT INTO `series` (`id`, `title`, `idplatform`, `iddirector`, `premiereyear`) VALUES
-(1, 'FRIENDS', 5, 2, 1980),
-(2, 'La casa de Papel', 4, 3, 2020),
-(4, 'Batman', 10, 2, 2020);
 
 --
 -- Indexes for dumped tables
@@ -577,13 +432,13 @@ ALTER TABLE `series`
 -- AUTO_INCREMENT for table `actors`
 --
 ALTER TABLE `actors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `actor_film_detail`
 --
 ALTER TABLE `actor_film_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `actor_serie_detail`
@@ -601,19 +456,19 @@ ALTER TABLE `chapters`
 -- AUTO_INCREMENT for table `directors`
 --
 ALTER TABLE `directors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `films`
 --
 ALTER TABLE `films`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `languageaudio_film_detail`
 --
 ALTER TABLE `languageaudio_film_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
 
 --
 -- AUTO_INCREMENT for table `languageaudio_serie_detail`
@@ -625,7 +480,7 @@ ALTER TABLE `languageaudio_serie_detail`
 -- AUTO_INCREMENT for table `languagecaption_film_detail`
 --
 ALTER TABLE `languagecaption_film_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `languagecaption_serie_detail`
@@ -649,7 +504,7 @@ ALTER TABLE `nationalities`
 -- AUTO_INCREMENT for table `persons`
 --
 ALTER TABLE `persons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `platforms`
