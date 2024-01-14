@@ -51,7 +51,7 @@ require_once(__DIR__ . '/../../Controllers/NationalityController.php');
                             <!-- Nombre  -->
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">
-                                    <input id="personName" name="personName" type="text" class="form-control" placeholder="name@example.com" value="<?php if(isset($personObject['name'])) echo $personObject['name']; ?>" autocomplete="off">
+                                    <input id="personName" required  name="personName" type="text" class="form-control" placeholder="name@example.com" value="<?php if(isset($personObject['name'])) echo $personObject['name']; ?>" autocomplete="off">
                                     <label for="personName">Nombre de la persona</label>
                                 </div>
                             </div>
