@@ -106,11 +106,29 @@
             return $result;
         }
 
+        //funcion para leer de base de datos un registro con idperson
+        public function getActorPerson()
+        {
+            $sql = "SELECT * FROM actors WHERE idperson = ?";
+            $array = array($this->idperson);
+            $result = $this->selectRecord($sql, $array);
+            return $result;
+        }
+
         //funcion para leer de base de datos el registro que contiene el codigo
         public function getActorCode()
         {
             $sql = "SELECT code FROM actors WHERE code = ?";
             $array = array($this->code);
+            $result = $this->selectRecord($sql, $array);
+            return $result;
+        }
+
+        //funcion para contar los registros que contiene idpersona
+        public function countActorPerson()
+        {
+            $sql = "SELECT COUNT(*) AS num FROM actors WHERE idperson = ?";
+            $array = array($this->idperson);
             $result = $this->selectRecord($sql, $array);
             return $result;
         }

@@ -316,6 +316,7 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                                 </div>
                                 
                                 <!-- Idiomas de Audio -->
+                                
                                 <div class="tab-pane fade" id="navLanguageAudio" role="tabpanel" aria-labelledby="navLanguageAudio-tab" tabindex="0">
                                     &nbsp;&nbsp;
                                     <div text-align: justify;>
