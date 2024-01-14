@@ -13,7 +13,7 @@ require_once('../../Controllers/SeasonController.php');
         </div>
         <div class="card-body">
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a class="btn btn-success" href="NewSerie.php">
+                <a class="btn btn-success" href="NewSeason.php">
                     <i class="bi bi-file-earmark-plus"></i>
                     Nuevo registro
                 </a>
@@ -28,16 +28,14 @@ require_once('../../Controllers/SeasonController.php');
                             <th>Id</th>
                             <th>Id serie</th>
                             <th>Serie</th>
-                            <th>Numero</th>
+                            <th>Numero de temporada</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         foreach ($seasonList as $season) {
                             $idSerie = $season->getIdSerie();
-                            echo "<script>console.log('$idSerie');</script>";
-                            $serieObject = findSerie($idSerie);
-                            echo "<script>console.log(" . json_encode($serieObject) . ");</script>";
+                            $serieObject = findSerie($idSerie);    
                             ?>
                             <tr>
                                 <td>
@@ -56,11 +54,11 @@ require_once('../../Controllers/SeasonController.php');
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a class="btn btn-primary" href="NewSerie.php?id=<?php echo $season->getId(); ?>">
+                                        <a class="btn btn-primary" href="NewSeason.php?id=<?php echo $season->getId(); ?>">
                                             Editar
                                         </a>
                                         &nbsp;&nbsp;
-                                        <a class="btn btn-danger" href="DeleteSerie.php?id=<?php echo $season->getId(); ?>">
+                                        <a class="btn btn-danger" href="DeleteSeason.php?id=<?php echo $season->getId(); ?>">
                                             Eliminar
                                         </a>
                                     </div>

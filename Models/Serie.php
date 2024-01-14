@@ -34,7 +34,7 @@ class Serie
         $this->id = $id;
     }
 
-    public function getTitle()
+    public function title()
     {
         return $this->title;
     }

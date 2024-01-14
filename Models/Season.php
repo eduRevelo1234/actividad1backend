@@ -10,8 +10,8 @@ class Season
         $idSerie
     ) {
         $this->id = $id;
-        $this->$number = $number;
-        $this->$idSerie = $idSerie;
+        $this->number = $number;
+        $this->idSerie = $idSerie;
     }
 
     /**

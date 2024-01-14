@@ -1,22 +1,26 @@
 <?php
 require_once(__DIR__ . '/../Config/App/Querys.php');
-require_once('../../Models/Season.php');
+require_once('../../Models/Chapter.php');
 require_once(__DIR__ . '/../Config/App/InitConnectionDB.php');
 
 function listSeasons()
 {
     try {
         $query = new Query();
-        $seasonList = $query->selectRecords("SELECT * FROM seasons");
+        $seasonList = $query->selectRecords("SELECT * FROM chapters");
         $seasonObjectArray = [];
         foreach ($seasonList as $item) {
-            $seasonObject = new Season(
+            $seasonObject = new Chapter(
                 $item['id'],
                 $item['number'],
-                $item['id_serie']
+                $item['title'],
+                $item['duration'],
+                $item['id_season']
             );
             array_push($seasonObjectArray, $seasonObject);
         }
+        echo "<script>console.log('Season ID:', " . json_encode($seasonObjectArray) . ");</script>";
+        echo "<script>console.log('Season ID:', " . json_encode($seasonObjectArray[0]) . ");</script>";
         return $seasonObjectArray;
     } catch (Exception $e) {
         error_log("Error in listSeasons function: " . $e->getMessage());
