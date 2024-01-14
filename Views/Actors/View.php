@@ -96,6 +96,7 @@ require_once(__DIR__ . '/../../Controllers/PersonController.php');
         {
     ?>
             <?php
+                echo $actorResult;
                 switch ($actorResult) {
                     case 'errorpersonvacio':
             ?>
@@ -186,6 +187,20 @@ require_once(__DIR__ . '/../../Controllers/PersonController.php');
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i>
                             El codigo del Actor ya existe ! 
+                            <br> 
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a class="btn btn-primary" href="List.php">
+                                    Regresar
+                                </a>
+                            </div>         
+                        </div>
+            <?php
+                        break;
+                        case 'errorperson':
+            ?>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-x-circle-fill"></i>
+                            La Persona del Actor ya existe ! 
                             <br> 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <a class="btn btn-primary" href="List.php">

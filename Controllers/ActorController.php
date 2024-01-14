@@ -51,42 +51,58 @@ function burnActor($actorId, $actorIdperson,$actorCode, $actorCodeCurrent)
         if ($actorId > 0 )
         {
             //Editar Plataforma
-            if ($actorCode == $actorCodeCurrent )
-            {
-                $message = 'samecode'; 
-            }else
-            {
+            
                 //Verificamos si el codigo del actor no existe en la base 
+                $model = new Actor(null, null, null, null);
                 $resultActor = $model->getActorCode();
+
+                //Verificamos si la persona no existe en la base  como actor
+                $model = new Actor(null, $actorIdperson, null, null);
+                $resultPerson = $model->countActorPerson();    
+                
                 if (empty($resultActor))
                 {
-                    $model = new Actor($actorId, $actorIdperson, $actorCode, null);
-                    $result = $model->updateActor();
-                    if ($result == 1) {
-                        $message = 'edited';
-                    } else {
-                        $message = 'errorredited';
+                    if ($resultPerson['num'] == 0)
+                    {
+                        $model = new Actor($actorId, $actorIdperson, $actorCode, null);
+                        $result = $model->updateActor();
+                        if ($result == 1) {
+                            $message = 'edited';
+                        } else {
+                            $message = 'errorredited';
+                        }
+                    }else
+                    {
+                        $message = 'errorperson';    
                     }
                 }else
                 {
                     $message = 'errorcode';
                 }
-            }
         }else
         {
             //Crear Plataforma
                     
-            //Verificamos si el nombre de la plataforma no existe en la base 
-            $resultActor = $model->getActorCode();
-            if (empty($resultActor))
-            {
-                $model = new Actor(null, $actorIdperson, $actorCode, 'Activa');
-                $result = $model->saveActor();
-                if ($result > 0) {
-                    $message = 'registered';
-                } else {
-                    $message = 'errorregistered';
-                }
+            //Verificamos si el codigo del actor no existe en la base 
+            $resultCode = $model->getActorCode();
+            //Verificamos si la persona no existe en la base  como acctor
+            $resultPerson = $model->getActorPerson();
+
+                if (empty($resultCode))
+                {
+                    if (empty($resultPerson))
+                    {   
+                        $model = new Actor(null, $actorIdperson, $actorCode, 'Activa');
+                        $result = $model->saveActor();
+                        if ($result > 0) {
+                            $message = 'registered';
+                        } else {
+                            $message = 'errorregistered';
+                        }
+                    }else
+                    {
+                        $message = 'errorperson';        
+                    }
             }else
             {
                 $message = 'errorcode';

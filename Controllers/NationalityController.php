@@ -23,7 +23,8 @@
         //Validacion del nombre
         if (empty($nationalityName)) {
             $message = 'errorvacio';
-        } else if (!preg_match("/^[a-zA-Zñ]+$/", $nationalityName)) {
+        } else if (!preg_match("/^(.|\s)*\S(.|\s)*$/", $nationalityName)) 
+        {
             $message = 'errorformat';
         } else {
             $message = 'ok';

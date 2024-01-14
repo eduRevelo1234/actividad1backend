@@ -118,11 +118,7 @@ function burnPerson($personId,$personName, $personLastname,$personCode,$personDa
         //Editar Pelicula
         if ($personId > 0 )
         {   
-            //Buscamos el nombre de la persona actual en la base 
-            $resultPerson = $model->getPersonName();
-            //Si no existe el nombre en la base o el nombre se mantiene el mismo
-            if (empty($resultPerson) or ($personName == $personNameCurrent))
-            {
+            
                 //Buscamos el codigo personal en la base 
                 $resultCodePerson = $model->getPersonCode();
                 //Si no existe el codigo en la base o el codigo se mantiene el mismo
@@ -140,19 +136,12 @@ function burnPerson($personId,$personName, $personLastname,$personCode,$personDa
                 {
                     $message = 'errorcode';
                 }
-            }else
-            {
-                $message = 'errorname';
-            }
+        
         }else
         {
             //Crear Pelicula
                     
-            //Verificamos si el nombre de la persona no existe en la base 
-            $resultPerson = $model->getPersonName();
-
-            if (empty($resultPerson))
-            {   
+              
                 //Buscamos el codigo personal en la base 
                 $resultCodePerson = $model->getPersonCode();
                 //Si no existe el codigo en la base o el codigo se mantiene el mismo
@@ -168,10 +157,7 @@ function burnPerson($personId,$personName, $personLastname,$personCode,$personDa
                 {
                     $message = 'errorcode';
                 }
-            }else
-            {
-                $message = 'errorname';
-            }
+            
         }
     }  
   

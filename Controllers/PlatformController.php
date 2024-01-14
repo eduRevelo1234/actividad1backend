@@ -31,7 +31,8 @@ function burnPlatform($platformId, $platformName, $platformNameCurrent)
     //Validacion del nombre
     if (empty($platformName)) {
         $message = 'errorvacio';
-    } else if (!preg_match("/^[a-zA-Zñ]+$/", $platformName)) {
+    } else if (!preg_match("/^(.|\s)*\S(.|\s)*$/", $platformName)) 
+    {
         $message = 'errorformat';
     } else {
         $message = 'ok';
