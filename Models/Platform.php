@@ -68,6 +68,21 @@
             return $listData;
         }
         
+        //funcion para obtener de base de datos todos los registros Activos
+        public function getPlatformsActive()
+        {
+            $sql = "SELECT * FROM platforms WHERE status = 'Activa'";
+            $data = $this->selectRecords($sql);
+            $listData = [];
+
+            foreach ($data as $item) {
+                $itemObject = new Platform($item['id'], $item['name'], $item['status']);
+                array_push($listData,$itemObject);
+            }
+            
+            return $listData;
+        }
+
         //funcion para leer de base de datos un registro 
         public function getPlatform()
         {

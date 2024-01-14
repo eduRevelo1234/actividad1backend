@@ -140,7 +140,7 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                                  
                                 <?php
                                     $valorseleccionado=isset($serieObject['idplatform']) ? $serieObject['idplatform'] : 0;
-                                    $platformList = listPlatforms();
+                                    $platformList = listPlatformsActive();
                                     if (count($platformList) > 0) {
                                 ?>
                                 <div class="form-floating mb-3">

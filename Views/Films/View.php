@@ -139,7 +139,7 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                             <div class="col-lg-4 col-md-12">
                                 <?php
                                     $valorseleccionado=isset($filmObject['idplatform']) ? $filmObject['idplatform'] : 0; 
-                                    $platformList = listPlatforms();
+                                    $platformList = listPlatformsActive();
                                     if (count($platformList) > 0) {
                                 ?>
                                 <div class="form-floating mb-3">

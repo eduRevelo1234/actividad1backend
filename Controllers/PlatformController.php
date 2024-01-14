@@ -9,6 +9,14 @@ function listPlatforms()
     return $platformList;
 }
 
+//funcion para listar todos los registros activos
+function listPlatformsActive()
+{
+    $model = new Platform(null, null, null);
+    $platformList = $model->getPlatformsActive();
+    return $platformList;
+}
+
 //funcion para leer un registro
 function listPlatform($platformId)
 {
