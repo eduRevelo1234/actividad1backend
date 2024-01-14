@@ -5,7 +5,9 @@ require_once(__DIR__ . '/../../Controllers/PlatformController.php');
 require_once(__DIR__ . '/../../Controllers/LanguageController.php');
 require_once(__DIR__ . '/../../Controllers/DetailAudioFilmController.php');
 require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
-
+require_once(__DIR__ . '/../../Controllers/ActorController.php');
+require_once(__DIR__ . '/../../Controllers/DetailActorFilmController.php');
+require_once(__DIR__ . '/../../Controllers/PersonController.php');
 
 ?>
 
@@ -20,6 +22,8 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
         $saveAudioResult = "";
         $eraseCaptionResult = "";
         $saveCaptionResult = "";
+        $eraseActorResult = "";
+        $saveActorResult = "";
 
         if(isset($_POST['saveBtn'])) 
         {
@@ -34,6 +38,31 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                 //Obtenemos el ultimo registro guardado
                 $endfilm = endFilm();
                     
+                //Se guarda los datos en la tabla actor / pelicula
+                
+                //Verificamos si estamos editando o creando
+                if($_POST['filmId']>0)
+                {
+                    //Borramos todos los registros de la pelicula en la tabla actores peliculas
+                    $eraseActorResult = eraseActorFilm($_POST['filmId']);
+                    //Grabamos los actores con su pelicula
+                    foreach($_POST['check_actor_list'] as $selection) 
+                    {
+                        echo $selection;
+                        echo '  --   ';
+                        echo $_POST['filmId'];
+                        echo '     ';
+                        $saveActorResult = burnActorFilm($selection,$_POST['filmId']);        
+                    }
+                }else
+                {
+                    //Grabamos los actores con su pelicula
+                    foreach($_POST['check_actor_list'] as $selection) 
+                    {
+                        $saveActorResult = burnActorFilm($selection,$endfilm['maxid']);        
+                    }
+                }
+
                 //Se guarda los datos en la tabla lenguaje de audio / pelicula
                 
                 //Verificamos si estamos editando o creando
@@ -91,7 +120,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                         }else
                         {
                     ?>
-                        <h1>CREACION DE UN NUEVO PELICULA</h1>
+                        <h1>CREACION DE UNA NUEVA PELICULA</h1>
                     <?php 
                         }
                     ?>
@@ -103,7 +132,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                         
                         <!-- Titulo -->
                         <div class="form-floating mb-3">
-                            <input id="filmTitle" name="filmTitle" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($filmObject)) echo $filmObject['title']; ?>">
+                            <input id="filmTitle" name="filmTitle" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($filmObject['title'])) echo $filmObject['title']; ?>">
                             <label for="filmTitle">Nombre de la Pelicula</label>
                         </div>
                         <input id="filmTitleCurrent" type="hidden" name="filmTitleCurrent" type="text" class="form-control" value="<?php if(isset($filmObject)) echo $filmObject['title']; ?>">
@@ -112,9 +141,8 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                         <div class="row">
                             <!-- Plataforma -->
                             <div class="col-lg-4 col-md-12">
-                                 
                                 <?php
-                                    $valorseleccionado=$filmObject['idplatform'];
+                                    $valorseleccionado=isset($filmObject['idplatform']) ? $filmObject['idplatform'] : 0; 
                                     $platformList = listPlatforms();
                                     if (count($platformList) > 0) {
                                 ?>
@@ -151,7 +179,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                             <!-- Año de estreno  -->
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">
-                                    <input id="filmYear" name="filmYear" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($filmObject)) echo $filmObject['premiereyear']; ?>">
+                                    <input id="filmYear" name="filmYear" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($filmObject['premiereyear'])) echo $filmObject['premiereyear']; ?>">
                                     <label for="filmYear">Año de estreno</label>
                                 </div>
                             </div>
@@ -170,15 +198,53 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                             <div class="tab-content" id="nav-tabContent"> 
                                 <!-- Actores -->
                                 <div class="tab-pane fade show active" id="navActors" role="tabpanel" aria-labelledby="navActors-tab" tabindex="0">
-                                    <div class="text-center">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                            <label class="form-check-label" for="inlineCheckbox1">1</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                                            <label class="form-check-label" for="inlineCheckbox2">2</label>
-                                        </div>
+                                    &nbsp;&nbsp;
+                                    <div text-align: justify;>
+                                    <?php
+                                        $actorList = listActors();
+                                        
+                                        if (count($actorList) > 0) 
+                                        {
+                                            foreach ($actorList as $actor) {
+                                                //Traemos el nombre y Apellido del Actor 
+                                                $personObject = listPerson($actor->getIdperson());
+                                                //Verificamos si estamos editando o creando
+                                                if($idFilm>0)
+                                                {
+                                                    //Verificamos si existe el registro guardado
+                                                    $selectactor = listActorFilm($actor->getId(),$idFilm);
+                                                    if(!empty($selectactor))
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" checked >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }else
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }
+                                                }else
+                                                {
+                                    ?>
+                                                &nbsp;&nbsp;
+                                                <div class="form-check form-check-inline">
+                                                    <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
+                                                </div>
+                                                &nbsp;&nbsp;
+                                    <?php
+                                                }
+                                            }
+                                        }
+                                    ?>
                                     </div>
                                 </div>
                                 
@@ -279,6 +345,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionFilmController.php');
                                 </div>
                             </div>
                         </div>
+                        &nbsp;&nbsp;
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <input type="submit" value="Guardar" class="btn btn-success" name="saveBtn">
                             <br> 

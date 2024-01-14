@@ -38,9 +38,6 @@
                         <a class="nav-link" aria-current="page" href="http://localhost/Sericine/Index.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="http://localhost/Sericine/Views/Platforms/List.php">Plataformas</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="http://localhost/Sericine/Views/Films/List.php">Peliculas</a>
                     </li>
                     <li class="nav-item dropdown">
@@ -54,14 +51,17 @@
                             <li><a class="dropdown-item" href="#">Capitulos</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="http://localhost/Sericine/Views/Platforms/List.php">Plataformas</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            Auxiliares
+                            Personas
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Personas</a></li>
-                            <li><a class="dropdown-item" href="#">Actores</a></li>
+                            <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Persons/List.php">Personas</a></li>
+                            <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Actors/List.php">Actores</a></li>
                             <li><a class="dropdown-item" href="#">Directores</a></li>
                             <li><a class="dropdown-item" href="http://localhost/Sericine/Views/Nationalities/List.php">Nacionalidades</a></li>
                             <li>

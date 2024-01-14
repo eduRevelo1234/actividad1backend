@@ -12,7 +12,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
 <div class="container mt-4">
     <?php
         $contlangaud = 0;
-        $idSerie = $_GET['id'];
+        $idSerie = isset($_GET['id']) ? $_GET['id'] : 0;
         $serieObject = listSerie($idSerie);
         $sendData = false;
         $serieResult = "";
@@ -102,10 +102,10 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
                         
                         <!-- Titulo -->
                         <div class="form-floating mb-3">
-                            <input id="serieTitle" name="serieTitle" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($serieObject)) echo $serieObject['title']; ?>">
+                            <input id="serieTitle" name="serieTitle" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($serieObject['title'])) echo $serieObject['title']; ?>">
                             <label for="serieTitle">Nombre de la Serie</label>
                         </div>
-                        <input id="serieTitleCurrent" type="hidden" name="serieTitleCurrent" type="text" class="form-control" value="<?php if(isset($serieObject)) echo $serieObject['title']; ?>">
+                        <input id="serieTitleCurrent" type="hidden" name="serieTitleCurrent" type="text" class="form-control" value="<?php if(isset($serieObject['title'])) echo $serieObject['title']; ?>">
 
                         <!-- Datos de la serie -->
                         <div class="row">
@@ -113,7 +113,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
                             <div class="col-lg-4 col-md-12">
                                  
                                 <?php
-                                    $valorseleccionado=$serieObject['idplatform'];
+                                    $valorseleccionado=isset($serieObject['idplatform']) ? $serieObject['idplatform'] : 0;
                                     $platformList = listPlatforms();
                                     if (count($platformList) > 0) {
                                 ?>
@@ -150,7 +150,7 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
                             <!-- Año de estreno  -->
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-floating mb-3">
-                                    <input id="serieYear" name="serieYear" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($serieObject)) echo $serieObject['premiereyear']; ?>">
+                                    <input id="serieYear" name="serieYear" type="text" class="form-control" autocomplete="off" placeholder="name@example.com" value="<?php if(isset($serieObject['premiereyear'])) echo $serieObject['premiereyear']; ?>">
                                     <label for="serieYear">Año de estreno</label>
                                 </div>
                             </div>
@@ -169,15 +169,49 @@ require_once(__DIR__ . '/../../Controllers/DetailCaptionSerieController.php');
                             <div class="tab-content" id="nav-tabContent"> 
                                 <!-- Actores -->
                                 <div class="tab-pane fade show active" id="navActors" role="tabpanel" aria-labelledby="navActors-tab" tabindex="0">
-                                    <div class="text-center">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                            <label class="form-check-label" for="inlineCheckbox1">1</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                                            <label class="form-check-label" for="inlineCheckbox2">2</label>
-                                        </div>
+                                    &nbsp;&nbsp;
+                                    <div text-align: justify;>
+                                    <?php
+                                        $actorList = listActors();
+                                        if (count($actorList) > 0) {
+                                            foreach ($actorList as $actor) {
+                                                //Verificamos si estamos editando o creando
+                                                if($idSerie>0)
+                                                {   
+                                                    //Verificamos si existe el registro guardado
+                                                    $selectactor = listActor($idSerie,$languaje->getId());
+                                                    if(!empty($selectlanguaje))
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" checked >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }else
+                                                    {
+                                    ?>
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
+                                    <?php
+                                                    }
+                                                }else
+                                                {
+                                    ?>
+                                                &nbsp;&nbsp;
+                                                <div class="form-check form-check-inline">
+                                                    <label><input type="checkbox" name="check_audio_list[]" value="<?php echo $languaje->getId(); ?>" >&nbsp;&nbsp;<?php echo $languaje->getName(); ?></label>
+                                                </div>
+                                                &nbsp;&nbsp;
+                                    <?php
+                                                }
+                                            }
+                                        }
+                                    ?>
                                     </div>
                                 </div>
                                 

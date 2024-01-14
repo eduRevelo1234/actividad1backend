@@ -1,52 +1,195 @@
 <?php
+require_once('../../Models/Person.php');
 
-require_once(__DIR__ .'../../Models/Person.php');
-
-function listPeople()
+//funcion para listar todos los registros 
+function listPersons()
 {
-    $personModel = new Person(null,null,null,null,null,null);
-    $peopleList = $personModel->getPeople();
-    return $peopleList;
+    $model = new Person(null, null, null, null, null, null, null);
+    $personList = $model->getPersons();
+    return $personList;
 }
-function addPerson($name, $last_name, $code, $date_birth, $id_nationalities)
+
+//funcion para leer un registro
+function listPerson($personId)
 {
-    try {
-        // Validar los datos antes de crear una nueva persona
-        validatePersonData($name, $last_name, $code, $date_birth, $id_nationalities);
+    $model = new Person($personId, null, null, null, null, null, null);
+    $personObject = $model->getPerson();
+    return $personObject;
+}
 
-        $personModel = new Person(null, $name, $last_name, $code, $date_birth, $id_nationalities);
-        $added = $personModel->savePerson();
+//funcion para leer el id del ultimo registro insertado
+function endPerson()
+{
+    $model = new Person(null, null, null, null, null, null, null);
+    $personObject = $model->getendPerson();
+    return $personObject;
+}
 
-        if ($added) {
-            return 'added';
-        } else {
-            return 'erroradding';
+//funcion para guardar el registro
+
+function burnPerson($personId,$personName, $personLastname,$personCode,$personDatebirth,$personIdnationality,$personNameCurrent,$personCodeCurrent)
+{
+
+    $error=[];
+    
+    //Validacion de la nacionalidad
+    if ($personIdnationality == 0) 
+    {
+        $message = 'errornationalityvacio';
+        $error[4] = 'error';
+    } else 
+    {
+        $error[4] = 'ok';
+    }
+    
+    //Validacion de la fecha de nacimiento
+    if (empty($personDatebirth)) 
+    {
+        $message = 'errordatevacio';
+        $error[3] = 'error';
+    } else if (!preg_match('/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/', trim($personDatebirth))) 
+    {
+        $message = 'errordateformat';
+        $error[3] = 'error';
+    } else 
+    {
+        $error[3] = 'ok';
+    }
+
+    //Validacion del codigo
+    if (empty($personCode)) 
+    {
+        $message = 'errorcodevacio';
+        $error[2] = 'error';
+    } else if (!preg_match('/^[a-zA-Z0-9\-]+$/', trim($personCode))) 
+    {
+        $message = 'errorcodeformat';
+        $error[2] = 'error';
+    } else 
+    {
+        $error[2] = 'ok';
+    }
+
+
+    //Validacion del Apellido
+    if (empty($personLastname)) 
+    {
+        $message = 'errorlastvacio';
+        $error[1] = 'error';
+    } else if (!preg_match("/^(.|\s)*\S(.|\s)*$/", $personLastname)) 
+    {
+        $message = 'errorlastformat';
+        $error[1] = 'error';
+    } else 
+    {
+        $error[1] = 'ok';
+    }
+
+    //Validacion del Nombre
+    if (empty($personName)) 
+    {
+        $message = 'errornamevacio';
+        $error[0] = 'error';
+    } else if (!preg_match("/^(.|\s)*\S(.|\s)*$/", $personName)) 
+    {
+        $message = 'errornameformat';
+        $error[0] = 'error';
+    } else 
+    {
+        $error[0] = 'ok';
+    }
+
+    //Cambio de formato de la fecha a aaaa/mm/dd
+    $nuevaFecha = date("Y/m/d", strtotime($personDatebirth));
+    
+    //No existe error en las entradas
+    if ($error[0] == 'ok' && $error[1] == 'ok' && $error[2] == 'ok' && $error[3] == 'ok' && $error[4] == 'ok')
+    {
+        $model = new Person($personId,$personName, $personLastname,$personCode,$nuevaFecha,$personIdnationality,null);
+        
+        //Editar Pelicula
+        if ($personId > 0 )
+        {   
+            //Buscamos el nombre de la persona actual en la base 
+            $resultPerson = $model->getPersonName();
+            //Si no existe el nombre en la base o el nombre se mantiene el mismo
+            if (empty($resultPerson) or ($personName == $personNameCurrent))
+            {
+                //Buscamos el codigo personal en la base 
+                $resultCodePerson = $model->getPersonCode();
+                //Si no existe el codigo en la base o el codigo se mantiene el mismo
+                if (empty($resultCodePerson) or ($personCode == $personCodeCurrent))
+                {
+                    $model = new Person($personId,$personName, $personLastname,$personCode,$nuevaFecha,$personIdnationality,null);
+                    $result = $model->updatePerson();
+                    if ($result == 1) {
+                        $message = 'edited';
+                    } else 
+                    {
+                        $message = 'errorredited';
+                    }
+                }else
+                {
+                    $message = 'errorcode';
+                }
+            }else
+            {
+                $message = 'errorname';
+            }
+        }else
+        {
+            //Crear Pelicula
+                    
+            //Verificamos si el nombre de la persona no existe en la base 
+            $resultPerson = $model->getPersonName();
+
+            if (empty($resultPerson))
+            {   
+                //Buscamos el codigo personal en la base 
+                $resultCodePerson = $model->getPersonCode();
+                //Si no existe el codigo en la base o el codigo se mantiene el mismo
+                if (empty($resultCodePerson) or ($personCode == $personCodeCurrent))
+                {
+                    $result = $model->savePerson(); 
+                    if ($result > 0) {
+                        $message = 'registered';
+                    } else {
+                        $message = 'errorregistered';
+                    }
+                }else
+                {
+                    $message = 'errorcode';
+                }
+            }else
+            {
+                $message = 'errorname';
+            }
         }
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }
-}
-function validatePersonData($name, $last_name, $code, $date_birth, $id_nationalities)
-{
-    // Realizar validaciones según tus necesidades
-    if (empty($name) || empty($last_name) || empty($code) || empty($date_birth) || empty($id_nationalities)) {
-        throw new Exception('errormissingdata');
-    }
-
-    // Puedes agregar más validaciones según sea necesario
-}
-function editPerson($id, $name, $last_name, $code, $date_birth, $id_nationalities, $db)
-{
-    $personModel = new Person($id, $name, $last_name, $code, $date_birth, $id_nationalities);
-    $edited = $personModel->savePerson();
-    return $edited;
+    }  
+  
+    return $message;
 }
 
-function deletePerson($id, $db)
+//funcion para activar el estado del registro
+function activePerson($personId, $personStatus)
 {
-    $personModel = new Person($id, null, null, null, null, null);
-    $deleted = $personModel->deletePersonById($id);
-    return $deleted;
+    $model = new Person($personId, null, null, null, null, null, $personStatus);
+    $result = $model->activatePerson();
+    if($personStatus == 'Activa') 
+    {
+        if ($result == 1) {
+            $message = 'actived';
+        } else {
+            $message = 'errorractived';
+        }                
+    }else
+    {
+        if ($result == 1) {
+            $message = 'inactive';
+        } else {
+            $message = 'errorrinactive';
+        }           
+    }  
+    return $message;
 }
-// Otras funciones para manejar las operaciones de las personas
 ?>
