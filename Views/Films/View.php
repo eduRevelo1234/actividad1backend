@@ -214,7 +214,7 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                                     &nbsp;&nbsp;
                                     <div text-align: justify;>
                                     <?php
-                                        $actorList = listActorsActive();
+                                        $actorList = listActors();
                                         
                                         if (count($actorList) > 0) 
                                         {
@@ -228,14 +228,50 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                                                     $selectactor = listActorFilm($actor->getId(),$idFilm);
                                                     if(!empty($selectactor))
                                                     {
+                                                        if($actor->getStatus()=='Activa')
+                                                        {
                                     ?>
-                                                        &nbsp;&nbsp;
-                                                        <div class="form-check form-check-inline">
-                                                            <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" checked >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
-                                                        </div>
-                                                        &nbsp;&nbsp;
+                                                            &nbsp;&nbsp;
+                                                            <div class="form-check form-check-inline">
+                                                                <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" checked >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
+                                                            </div>
+                                                            &nbsp;&nbsp;
                                     <?php
+                                                        }else
+                                                        {
+                                    ?>
+                                                            &nbsp;&nbsp;
+                                                            <div class="form-check form-check-inline">
+                                                                <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" checked disabled >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
+                                                            </div>
+                                                            &nbsp;&nbsp;
+                                    <?php
+                                                        }
                                                     }else
+                                                    {
+                                                        if($actor->getStatus()=='Activa')
+                                                        {
+                                    ?>
+                                                            &nbsp;&nbsp;
+                                                            <div class="form-check form-check-inline">
+                                                                <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
+                                                            </div>
+                                                            &nbsp;&nbsp;
+                                    <?php
+                                                        }else
+                                                        {
+                                    ?>
+                                                            &nbsp;&nbsp;
+                                                            <div class="form-check form-check-inline">
+                                                                <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" disabled >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
+                                                            </div>
+                                                            &nbsp;&nbsp;
+                                    <?php
+                                                        }
+                                                    }
+                                                }else
+                                                {
+                                                    if($actor->getStatus()=='Activa')
                                                     {
                                     ?>
                                                         &nbsp;&nbsp;
@@ -244,16 +280,16 @@ require_once(__DIR__ . '/../../Controllers/DirectorController.php');
                                                         </div>
                                                         &nbsp;&nbsp;
                                     <?php
-                                                    }
-                                                }else
-                                                {
+                                                    }else
+                                                    {
                                     ?>
-                                                &nbsp;&nbsp;
-                                                <div class="form-check form-check-inline">
-                                                    <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
-                                                </div>
-                                                &nbsp;&nbsp;
+                                                        &nbsp;&nbsp;
+                                                        <div class="form-check form-check-inline">
+                                                            <label><input type="checkbox" name="check_actor_list[]" value="<?php echo $actor->getId(); ?>" disabled >&nbsp;&nbsp;<?php echo $personObject['name']." " .$personObject['lastname']; ?></label>
+                                                        </div>
+                                                        &nbsp;&nbsp;
                                     <?php
+                                                    }
                                                 }
                                             }
                                         }
